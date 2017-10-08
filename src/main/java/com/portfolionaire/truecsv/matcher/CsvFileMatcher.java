@@ -1,9 +1,7 @@
 package com.portfolionaire.truecsv.matcher;
 
-import com.portfolionaire.truecsv.reader.CsvFileReader;
-import com.portfolionaire.truecsv.util.Files;
+import com.portfolionaire.truecsv.validator.CsvFileValidator;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,36 +9,27 @@ import java.util.List;
  */
 public class CsvFileMatcher extends FileMatcher<String, List<String[]>> {
 
-  public CsvFileMatcher(String csv) {
-    super(csv, new CsvFileReader());
+  public CsvFileMatcher(String filename) {
+    super(filename, new CsvFileValidator<>());
   }
 
+  @Override
   public CsvFileMatcher isSameAs(File file) throws Exception {
-    List<String[]> allRows = Files.readCsvFile(file);
-    int i = 0;
-    for(String[] row : allRows){
-      if(!Arrays.toString(row).equals(Arrays.toString(rows.get(i)))){
-        throw new Exception("Rows are not exactly the same");
-      }
-      i++;
-    }
-    return this;
+    return (CsvFileMatcher) super.isSameAs(file);
   }
 
+  @Override
   public CsvFileMatcher isSameAs(String filename) throws Exception {
-    return isSameAs(Files.newFile(filename));
+    return (CsvFileMatcher) super.isSameAs(filename);
   }
 
+  @Override
   public CsvFileMatcher isNotSameAs(File file) throws Exception {
-    try {
-       isSameAs(file);
-    }catch (Exception e){
-      return this;
-    }
-    throw new Exception("Rows are exactly the same");
+    return (CsvFileMatcher) super.isNotSameAs(file);
   }
 
+  @Override
   public CsvFileMatcher isNotSameAs(String filename) throws Exception {
-    return isNotSameAs(Files.newFile(filename));
+    return (CsvFileMatcher) super.isNotSameAs(filename);
   }
 }

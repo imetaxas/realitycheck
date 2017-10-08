@@ -2,12 +2,12 @@ package com.portfolionaire.truecsv.util;
 
 import au.com.bytecode.opencsv.CSVParser;
 import au.com.bytecode.opencsv.CSVReader;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,9 +15,10 @@ import java.util.List;
  */
 public class Files {
 
-  private Files(){}
+  private Files() {
+  }
 
-  public static File newFile(String filename) throws Exception {
+  public static File toFile(String filename) throws Exception {
     ClassLoader classLoader = Files.class.getClassLoader();
     URL url = classLoader.getResource(filename);
     return new File(url.getFile());
@@ -26,7 +27,14 @@ public class Files {
   public static List<String> readFile(String filename) throws Exception {
     ClassLoader classLoader = Files.class.getClassLoader();
     URL url = classLoader.getResource(filename);
-    return java.nio.file.Files.readAllLines(Paths.get(url.getFile()), StandardCharsets.UTF_8);
+    List<String> lines = new ArrayList<>();
+    try (BufferedReader br = new BufferedReader(new FileReader(url.getFile()))) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        lines.add(line);
+      }
+    }
+    return lines;
   }
 
   public static List<String[]> readCsvFile(String filename) throws IOException {
@@ -39,13 +47,6 @@ public class Files {
 
   public static String[] readCsv(String csv) throws IOException {
     CSVParser parser = new CSVParser();
-    return parser.parseLine(csv) ;
-  }
-
-  public static List<String[]> readCsvFile(File file) throws IOException {
-    try (FileReader fileReader = new FileReader(file)) {
-      CSVReader reader = new CSVReader(fileReader);
-      return reader.readAll();
-    }
+    return parser.parseLine(csv);
   }
 }

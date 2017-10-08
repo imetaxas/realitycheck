@@ -1,18 +1,16 @@
 package com.portfolionaire.truecsv.Assert;
 
+import static com.portfolionaire.truecsv.Assert.Assertable.asserts;
+
 import com.portfolionaire.truecsv.matcher.FileMatcher;
-import com.portfolionaire.truecsv.matcher.Matchable;
+import java.io.File;
 
 /**
- * Created by imeta on 24-Sep-17.
+ * Created by imeta on 07-Oct-17.
  */
-public abstract class FileAssert implements Assertable<FileMatcher> {
+public class FileAssert extends AbstractAssert {
 
-  public static Matchable asserts(Matchable matcher)  {
-    try {
-      return matcher.build();
-    } catch (Exception e) {
-      throw new AssertionError(e);
-    }
+  public static FileMatcher assertThat(File file) {
+    return (FileMatcher) asserts(new FileMatcher<>(file.getName()));
   }
 }

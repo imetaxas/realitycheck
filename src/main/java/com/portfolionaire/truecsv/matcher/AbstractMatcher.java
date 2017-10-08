@@ -1,32 +1,24 @@
 package com.portfolionaire.truecsv.matcher;
 
-import com.portfolionaire.truecsv.reader.Reader;
+import com.portfolionaire.truecsv.exception.ValidationException;
+import com.portfolionaire.truecsv.validator.Validator;
 
 /**
  * Created by imeta on 25-Sep-17.
  */
 public abstract class AbstractMatcher<T, K> implements Matchable<T> {
 
-  private T actual;
+  public T actual;
+  private Validator<T> validator;
 
-  public K headers;
-  public K rows;
-  public String errorMessage;
-  private Reader<T, K> reader;
-
-  public AbstractMatcher(T actual, Reader<T, K> reader) {
+  public AbstractMatcher(T actual, Validator<T> validator) {
     this.actual = actual;
-    this.reader = reader;
+    this.validator = validator;
   }
 
   @Override
-  public Matchable<T> build() throws Exception {
-    rows = (K) getReader().read(actual);
+  public Matchable<T> validate() throws ValidationException {
+    validator.validate(actual);
     return this;
   }
-
-  public Reader getReader() {
-    return reader;
-  }
-
 }

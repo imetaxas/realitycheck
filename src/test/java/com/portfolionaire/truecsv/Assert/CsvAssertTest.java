@@ -1,10 +1,9 @@
 package com.portfolionaire.truecsv.Assert;
 
+import static com.portfolionaire.truecsv.Assert.CsvAssert.assertThatCsv;
 import static com.portfolionaire.truecsv.Assert.CsvAssert.assertThatFileCsv;
 import static org.junit.Assert.*;
 
-import com.portfolionaire.truecsv.Assert.CsvAssert;
-import com.portfolionaire.truecsv.matcher.CsvFileMatcher;
 import com.portfolionaire.truecsv.tools.CoverageTool;
 import com.portfolionaire.truecsv.util.Files;
 import java.io.File;
@@ -18,7 +17,7 @@ public class CsvAssertTest {
 
   @Test
   public void isSameAs_given_file() throws Exception {
-    File file = Files.newFile("sampleA.csv");
+    File file = Files.toFile("sampleA.csv");
 
     assertNotNull(assertThatFileCsv(file).isSameAs(file));
   }
@@ -32,10 +31,17 @@ public class CsvAssertTest {
 
   @Test
   public void isNotSameAs_given_file() throws Exception {
-    File file1 = Files.newFile("sampleA.csv");
-    File file2 = Files.newFile("sampleB.csv");
+    File file1 = Files.toFile("sampleA.csv");
+    File file2 = Files.toFile("sampleB.csv");
 
     assertNotNull(assertThatFileCsv(file1).isNotSameAs(file2));
+  }
+
+  @Test(expected = Exception.class)
+  public void isNotSameAs_False() throws Exception {
+    File file = Files.toFile("sampleA.csv");
+
+    assertNotNull(assertThatFileCsv(file).isNotSameAs(file));
   }
 
   @Test
@@ -44,6 +50,13 @@ public class CsvAssertTest {
     String filename2 = "sampleB.csv";
 
     assertNotNull(assertThatFileCsv(filename1).isNotSameAs(filename2));
+  }
+
+  @Test
+  public void assertThatCsvTest() throws Exception {
+    String csv = "1,\"Eldon Base for stackable storage shelf, platinum\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8";
+
+    assertNotNull(assertThatCsv(csv));
   }
 
   @After
