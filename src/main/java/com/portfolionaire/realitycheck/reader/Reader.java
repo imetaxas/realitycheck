@@ -5,5 +5,7 @@ package com.portfolionaire.realitycheck.reader;
  */
 public interface Reader<T, K> {
 
-  K read(T url) throws Exception;
+  K read() throws Exception;
+
+  K getContent();
 }

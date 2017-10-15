@@ -7,10 +7,9 @@ import com.portfolionaire.realitycheck.matcher.Matchable;
  */
 public interface Assertable {
 
-
-  static Matchable asserts(Matchable machable) {
+  static Matchable asserts(Matchable matchable) {
     try {
-      return machable.validate();
+      return matchable.validate();
     } catch (Exception e) {
       throw new AssertionError(e);
     }

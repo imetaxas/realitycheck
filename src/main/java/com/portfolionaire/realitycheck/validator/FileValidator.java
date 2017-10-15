@@ -1,20 +1,20 @@
 package com.portfolionaire.realitycheck.validator;
 
-import com.portfolionaire.realitycheck.util.Files;
-import java.io.File;
-import java.net.URL;
+import com.portfolionaire.realitycheck.exception.ValidationException;
+import com.portfolionaire.realitycheck.reader.Reader;
 
 /**
  * Created by imeta on 08-Oct-17.
  */
-public class FileValidator<T> implements Validator<String> {
+public class FileValidator implements Validator<String, byte[]> {
 
-
+  @SuppressWarnings("ConstantConditions")
   @Override
-  public boolean validate(String filename)  {
-    ClassLoader classLoader = Files.class.getClassLoader();
-    URL url = classLoader.getResource(filename);
-
-    return new File(url.getFile()).exists();
+  public byte[] validatedValue(Reader<String, byte[]> reader) throws ValidationException {
+    try {
+      return reader.read();
+    } catch (Exception e) {
+      throw new ValidationException(e);
+    }
   }
 }

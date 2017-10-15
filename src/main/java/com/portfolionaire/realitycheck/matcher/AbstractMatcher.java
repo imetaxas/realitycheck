@@ -1,6 +1,7 @@
 package com.portfolionaire.realitycheck.matcher;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
+import com.portfolionaire.realitycheck.reader.Reader;
 import com.portfolionaire.realitycheck.validator.Validator;
 
 /**
@@ -8,17 +9,18 @@ import com.portfolionaire.realitycheck.validator.Validator;
  */
 public abstract class AbstractMatcher<T, K> implements Matchable<T> {
 
-  public T actual;
-  private Validator<T> validator;
+  public K actual;
+  private Validator<T, K> validator;
+  public Reader reader;
 
-  public AbstractMatcher(T actual, Validator<T> validator) {
-    this.actual = actual;
+  public AbstractMatcher(Validator<T, K> validator, Reader reader) {
     this.validator = validator;
+    this.reader = reader;
   }
 
   @Override
   public Matchable<T> validate() throws ValidationException {
-    validator.validate(actual);
+    actual = (K) validator.validatedValue(reader);
     return this;
   }
 }

@@ -1,12 +1,13 @@
 package com.portfolionaire.realitycheck.validator;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
+import com.portfolionaire.realitycheck.reader.Reader;
 
 /**
  * Created by imeta on 07-Oct-17.
  */
 @FunctionalInterface
-public interface Validator<T> {
+public interface Validator<T, K> {
 
-  boolean validate(T value) throws ValidationException;
+  K validatedValue(Reader<T, K> reader) throws ValidationException;
 }
