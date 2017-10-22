@@ -1,8 +1,8 @@
 package com.portfolionaire.realitycheck.asserter;
 
 /**
- * Created by imeta on 24-Sep-17.
+ * @author yanimetaxas
  */
-public abstract class AbstractAssert implements Assertable {
+abstract class AbstractAssert implements Assertable {
 
 }

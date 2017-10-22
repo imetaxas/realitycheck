@@ -2,6 +2,7 @@ package com.portfolionaire.realitycheck.reader;
 
 import static org.junit.Assert.assertEquals;
 
+import com.portfolionaire.realitycheck.exception.ReaderException;
 import java.util.List;
 import org.junit.Test;
 
@@ -22,4 +23,30 @@ public class CsvReaderTest {
     assertEquals(contents.get(0).split(",")[10], "0.8");
   }
 
+  @Test(expected = ReaderException.class)
+  public void readCsv_csvIsNull() throws Exception {
+    CsvReader csvReader = new CsvReader(null);
+
+    csvReader.read();
+  }
+
+  @Test
+  public void readCsv_csvIsEmpty() throws Exception {
+    String csv = "";
+
+    CsvReader csvReader = new CsvReader(csv);
+    List<String> contents = csvReader.read();
+
+    assertEquals(contents.size(), 0);
+  }
+
+  @Test
+  public void readCsv_csvIsNotCsv() throws Exception {
+    String csv = "aaaa";
+
+    CsvReader csvReader = new CsvReader(csv);
+    List<String> contents = csvReader.read();
+
+    assertEquals(contents.size(), 1);
+  }
 }

@@ -3,9 +3,9 @@ package com.portfolionaire.realitycheck.validator;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 
 /**
- * Created by imeta on 21-Oct-17.
+ * @author yanimetaxas
  */
-public class AbstractValidator<T> implements Validator<T> {
+class AbstractValidator<T> implements Validator<T> {
 
   @Override
   public T validate(T value) throws ValidationException {
