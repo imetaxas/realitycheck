@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- * Created by imeta on 14-Oct-17.
+ * @author yanimetaxas
  */
 public class StringReaderTest {
 
@@ -16,15 +16,10 @@ public class StringReaderTest {
     assertNotNull(stringReader.read());
   }
 
-  @Test(expected = Exception.class)
-  public void read_isNull() throws Exception {
-    StringReader stringReader = new StringReader(null);
-    stringReader.read();
-  }
-
-  @Test(expected = Exception.class)
+  @Test
   public void read_IsEmpty() throws Exception {
     StringReader stringReader = new StringReader("");
-    stringReader.read();
+
+    assertNotNull(stringReader.read());
   }
 }

@@ -1,5 +1,6 @@
 package com.portfolionaire.realitycheck.reader;
 
+import com.portfolionaire.realitycheck.exception.ReaderException;
 import com.portfolionaire.realitycheck.util.IoUtil;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,22 +11,19 @@ import org.apache.commons.io.IOUtils;
  */
 public class FileReader implements Reader<String, byte[]> {
 
-  private String filename;
-  private byte[] content;
+  private File file;
 
-  public FileReader(String filename) {
-    this.filename = filename;
-  }
-
-  @SuppressWarnings("ConstantConditions")
-  @Override
-  public byte[] read() throws Exception {
-    File file = IoUtil.loadResource(filename);
-    return IOUtils.toByteArray(new FileInputStream(file));
+  public FileReader(File file) {
+    this.file = file;
   }
 
   @Override
-  public byte[] getContent() {
-    return this.content;
+  public byte[] read() throws ReaderException {
+    try {
+      File resource = IoUtil.loadResource(file.getName());
+      return IOUtils.toByteArray(new FileInputStream(resource));
+    } catch (Exception e){
+      throw new ReaderException(e);
+    }
   }
 }

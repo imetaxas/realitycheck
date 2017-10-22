@@ -1,8 +1,9 @@
 package com.portfolionaire.realitycheck.matcher;
 
+import com.portfolionaire.realitycheck.asserter.CsvAssert;
+import com.portfolionaire.realitycheck.matchervalidator.MatcherValidator;
 import com.portfolionaire.realitycheck.reader.Reader;
 import com.portfolionaire.realitycheck.util.IoUtil;
-import com.portfolionaire.realitycheck.validator.Validator;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,19 +11,22 @@ import java.io.FileInputStream;
 /**
  * @author yanimetaxas
  */
-public class FileMatcher<T, K> extends AbstractMatcher<String, byte[]> {
+public class FileMatcher<T, K> extends AbstractMatcher<File, byte[]> {
 
-  public FileMatcher(Validator<String, byte[]> validator, Reader reader) {
-    super(validator, reader);
-  }
-
-  /*public CsvFileMatcher isCsv() throws Exception {
-    return CsvAssert.assertThatFileCsv(actual);
+  /*public FileMatcher(String filename, MatcherValidator<String, byte[]> validator, Reader reader) {
+    super(filename, validator, reader);
   }*/
 
-  public FileMatcher isSameAs(File file) throws Exception {
+  public FileMatcher(File file, MatcherValidator<File, byte[]> validator, Reader reader) {
+    super(file, validator, reader);
+  }
 
-    if(!IoUtil.areInputStreamsEqual(new ByteArrayInputStream(actual), new FileInputStream(file))){
+  public CsvFileMatcher isCsv() throws Exception {
+    return CsvAssert.assertThatFileCsv(actual);
+  }
+
+  public FileMatcher isSameAs(File file) throws Exception {
+    if(!IoUtil.areInputStreamsEqual(new ByteArrayInputStream(actualValue), new FileInputStream(file))){
       throw new Exception("IoUtil are not exactly the same");
     }
     return this;

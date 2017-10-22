@@ -1,9 +1,11 @@
 package com.portfolionaire.realitycheck.reader;
 
+import com.portfolionaire.realitycheck.exception.ReaderException;
+
 /**
  * Created by imeta on 24-Sep-17.
  */
-public class StringReader implements Reader<String, String> {
+public class StringReader implements Reader<String, byte[]> {
 
   private String string;
 
@@ -12,18 +14,7 @@ public class StringReader implements Reader<String, String> {
   }
 
   @Override
-  public String read() throws Exception {
-    if (string == null) {
-      throw new Exception();
-    }
-    if (string.isEmpty()) {
-      throw new Exception();
-    }
-    return string;
-  }
-
-  @Override
-  public String getContent() {
-    return this.string;
+  public byte[] read() throws ReaderException {
+    return string.getBytes();
   }
 }

@@ -9,7 +9,7 @@ public interface Assertable {
 
   static Matchable asserts(Matchable matchable) {
     try {
-      return matchable.validate();
+      return matchable.match();
     } catch (Exception e) {
       throw new AssertionError(e);
     }

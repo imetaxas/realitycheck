@@ -4,6 +4,7 @@ import static com.portfolionaire.realitycheck.asserter.CsvAssert.assertThatCsv;
 import static com.portfolionaire.realitycheck.asserter.CsvAssert.assertThatFileCsv;
 import static org.junit.Assert.assertNotNull;
 
+import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.tools.CoverageTool;
 import com.portfolionaire.realitycheck.tools.Files;
 import java.io.File;
@@ -14,6 +15,20 @@ import org.junit.Test;
  * @author yanimetaxas
  */
 public class CsvAssertTest {
+
+  @Test(expected = ValidationException.class)
+  public void assertThatFileCsv_FilenameIsNull() throws Exception {
+    String filename = null;
+
+    assertThatFileCsv(filename);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertThatFileCsv_FilenameIsEmpty() throws Exception {
+    String filename = "";
+
+    assertThatFileCsv(filename);
+  }
 
   @Test
   public void isSameAs_given_file() throws Exception {

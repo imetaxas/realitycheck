@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
- * Created by imeta on 24-Sep-17.
+ * @author yanimetaxas
  */
 public class IoUtilTest {
 

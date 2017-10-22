@@ -8,5 +8,5 @@ import com.portfolionaire.realitycheck.exception.ValidationException;
 @FunctionalInterface
 public interface Matchable<T> {
 
-  Matchable<T> validate() throws ValidationException;
+  Matchable<T> match() throws ValidationException;
 }

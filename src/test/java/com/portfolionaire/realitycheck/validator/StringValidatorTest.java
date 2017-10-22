@@ -6,7 +6,7 @@ import com.portfolionaire.realitycheck.reader.StringReader;
 import org.junit.Test;
 
 /**
- * Created by imeta on 14-Oct-17.
+ * @author yanimetaxas
  */
 public class StringValidatorTest {
 
@@ -14,19 +14,19 @@ public class StringValidatorTest {
   public void validate() throws Exception {
     StringValidator validator = new StringValidator();
 
-    assertNotNull(validator.validatedValue(new StringReader("string")));
+    assertNotNull(validator.validate("string".getBytes()));
   }
 
   @Test(expected = Exception.class)
   public void validate_isNull() throws Exception {
     StringValidator validator = new StringValidator();
-    validator.validatedValue(new StringReader(null));
+    validator.validate(null);
   }
 
   @Test(expected = Exception.class)
   public void validate_IsEmpty() throws Exception {
     StringValidator validator = new StringValidator();
-    validator.validatedValue(new StringReader(""));
+    validator.validate("".getBytes());
   }
 
 }

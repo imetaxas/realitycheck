@@ -1,22 +1,23 @@
 package com.portfolionaire.realitycheck.matcher;
 
-import com.portfolionaire.realitycheck.reader.CsvFileReader;
+import com.portfolionaire.realitycheck.matchervalidator.MatcherValidatorImpl;
+import com.portfolionaire.realitycheck.reader.FileReader;
 import com.portfolionaire.realitycheck.util.IoUtil;
-import com.portfolionaire.realitycheck.validator.CsvFileValidator;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
+import com.portfolionaire.realitycheck.validator.CsvValidator;
+import com.portfolionaire.realitycheck.validator.FileValidator;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
 
 /**
  * @author yanimetaxas
  */
-public class CsvFileMatcher extends FileMatcher<String, List<String[]>> {
+public class CsvFileMatcher extends FileMatcher<File, byte[]> {
 
-  public CsvFileMatcher(String filename) {
-    super(new CsvFileValidator(), new CsvFileReader(filename));
+  /*public CsvFileMatcher(String filename) {
+    super(filename, new MatcherValidatorImpl<>(new FileValidator(), new CsvValidator()), new FileReader(filename));
+  }*/
+
+  public CsvFileMatcher(File file) {
+    super(file, new MatcherValidatorImpl<>(new FileValidator(), new CsvValidator()), new FileReader(file));
   }
 
   @Override
@@ -41,16 +42,15 @@ public class CsvFileMatcher extends FileMatcher<String, List<String[]>> {
 
   public CsvFileMatcher headerHasNoDigits() throws Exception {
     try {
-      String[] lineColumns = IoUtil.readFirstLine(actual).split(",");
-      for(String column: lineColumns) {
-        if (column.matches("[0-9]+")) {
+      String headers = IoUtil.readFirstLine(actualValue);
+      for(String header: headers.split(",")) {
+        if (header.matches("[0-9]+")) {
           throw new Exception();
         }
       }
     } catch (Exception e) {
       throw new Exception();
     }
-
     return this;
   }
 }

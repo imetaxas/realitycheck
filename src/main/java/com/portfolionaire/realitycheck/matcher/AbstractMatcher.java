@@ -2,25 +2,29 @@ package com.portfolionaire.realitycheck.matcher;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.reader.Reader;
-import com.portfolionaire.realitycheck.validator.Validator;
+import com.portfolionaire.realitycheck.matchervalidator.MatcherValidator;
 
 /**
  * Created by imeta on 25-Sep-17.
  */
 public abstract class AbstractMatcher<T, K> implements Matchable<T> {
 
-  public K actual;
-  private Validator<T, K> validator;
+  public T actual;
+  public K actualValue;
+  private MatcherValidator<T, K> validator;
   public Reader reader;
 
-  public AbstractMatcher(Validator<T, K> validator, Reader reader) {
+  public AbstractMatcher(T actual, MatcherValidator<T, K> validator, Reader reader) {
+    this.actual = actual;
     this.validator = validator;
     this.reader = reader;
   }
 
   @Override
-  public Matchable<T> validate() throws ValidationException {
-    actual = (K) validator.validatedValue(reader);
+  public Matchable<T> match() throws ValidationException {
+    validator.preValidate(actual);
+    actualValue =  (K) reader.read();
+    validator.postValidate(actualValue);
     return this;
   }
 }

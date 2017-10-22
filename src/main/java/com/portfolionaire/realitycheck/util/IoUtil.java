@@ -23,8 +23,7 @@ public class IoUtil {
   private IoUtil() {
   }
 
-  @SuppressWarnings("ConstantConditions")
-  public static File toFile(String filename) throws Exception {
+  public static File toFile(String filename)  {
     ClassLoader classLoader = IoUtil.class.getClassLoader();
     URL url = classLoader.getResource(filename);
     return new File(url.getFile());

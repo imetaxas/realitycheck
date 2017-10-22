@@ -1,20 +1,21 @@
 package com.portfolionaire.realitycheck.validator;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
-import com.portfolionaire.realitycheck.reader.Reader;
+import com.portfolionaire.realitycheck.util.IoUtil;
+import java.io.File;
 
 /**
  * Created by imeta on 08-Oct-17.
  */
-public class FileValidator implements Validator<String, byte[]> {
+public class FileValidator extends AbstractValidator<File> {
 
-  @SuppressWarnings("ConstantConditions")
   @Override
-  public byte[] validatedValue(Reader<String, byte[]> reader) throws ValidationException {
-    try {
-      return reader.read();
-    } catch (Exception e) {
-      throw new ValidationException(e);
+  public File validate(File file) throws ValidationException {
+    super.validate(file);
+    File resource = IoUtil.loadResource(file.getName());
+    if (!resource.exists() || !resource.isFile()) {
+      throw new ValidationException("File not found");
     }
+    return file;
   }
 }

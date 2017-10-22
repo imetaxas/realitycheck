@@ -6,8 +6,7 @@ import com.portfolionaire.realitycheck.reader.Reader;
 /**
  * Created by imeta on 07-Oct-17.
  */
-@FunctionalInterface
-public interface Validator<T, K> {
+public interface Validator<T> {
 
-  K validatedValue(Reader<T, K> reader) throws ValidationException;
+  T validate(T value) throws ValidationException;
 }

@@ -5,7 +5,7 @@ import java.io.File;
 import java.net.URL;
 
 /**
- * Created by imeta on 14-Oct-17.
+ * @author yanimetaxas
  */
 public class Files {
 

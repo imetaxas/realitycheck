@@ -2,8 +2,9 @@ package com.portfolionaire.realitycheck.asserter;
 
 import static com.portfolionaire.realitycheck.asserter.Assertable.asserts;
 
+import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.matcher.CsvFileMatcher;
-import com.portfolionaire.realitycheck.matcher.CsvMatcher;
+import com.portfolionaire.realitycheck.matcher.CsvStringMatcher;
 import java.io.File;
 /**
  * @author yanimetaxas
@@ -14,15 +15,19 @@ public class CsvAssert extends AbstractAssert {
   }
 
   public static CsvFileMatcher assertThatFileCsv(File file) {
-    return assertThatFileCsv(file.getName());
+    return (CsvFileMatcher) asserts(new CsvFileMatcher(file));
   }
 
-  public static CsvFileMatcher assertThatFileCsv(String filename) {
-    return (CsvFileMatcher) asserts(new CsvFileMatcher(filename));
+  public static CsvFileMatcher assertThatFileCsv(String filename) throws ValidationException {
+    try {
+      return assertThatFileCsv(new File(filename));
+    } catch (Exception e) {
+      throw new ValidationException(e);
+    }
   }
 
-  public static CsvMatcher assertThatCsv(String csv) {
-    return (CsvMatcher) asserts(new CsvMatcher(csv));
+  public static CsvStringMatcher assertThatCsv(String csv) {
+    return (CsvStringMatcher) asserts(new CsvStringMatcher(csv));
   }
 
 }
