@@ -34,7 +34,7 @@ public class CsvAssertTest {
   public void isSameAs_given_file() throws Exception {
     File file = Files.toFile("sampleA.csv");
 
-    assertNotNull(assertThatFileCsv(file).isSameAs(file));
+    assertNotNull(assertThatFileCsv(file).isSameAs(file.getName()));
   }
 
   @Test
@@ -106,6 +106,6 @@ public class CsvAssertTest {
 
   @After
   public void tearDown() throws Exception {
-    CoverageTool.testPrivateConstructor(CsvAssert.class);
+    CoverageTool.testProtectedConstructor(CsvAssert.class);
   }
 }

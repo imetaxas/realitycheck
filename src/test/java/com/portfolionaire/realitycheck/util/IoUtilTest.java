@@ -40,6 +40,6 @@ public class IoUtilTest {
 
   @After
   public void tearDown() throws Exception {
-    CoverageTool.testPrivateConstructor(IoUtil.class);
+    CoverageTool.testProtectedConstructor(IoUtil.class);
   }
 }

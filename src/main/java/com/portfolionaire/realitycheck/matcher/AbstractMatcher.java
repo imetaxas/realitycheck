@@ -14,6 +14,9 @@ public abstract class AbstractMatcher<T, K> implements Matchable<T> {
   private MatcherValidator<T, K> validator;
   public Reader reader;
 
+  public AbstractMatcher() {
+  }
+
   public AbstractMatcher(T actual, MatcherValidator<T, K> validator, Reader reader) {
     this.actual = actual;
     this.validator = validator;

@@ -4,7 +4,6 @@ import static com.portfolionaire.realitycheck.asserter.CsvAssert.assertThatFileC
 import static com.portfolionaire.realitycheck.asserter.FileAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 
-import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.tools.CoverageTool;
 import com.portfolionaire.realitycheck.tools.Files;
 import java.io.File;
@@ -53,6 +52,6 @@ public class FileAssertTest {
 
   @After
   public void tearDown() throws Exception {
-    CoverageTool.testPrivateConstructor(FileAssert.class);
+    CoverageTool.testProtectedConstructor(FileAssert.class);
   }
 }

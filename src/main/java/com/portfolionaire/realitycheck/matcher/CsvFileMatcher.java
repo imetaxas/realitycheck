@@ -12,17 +12,16 @@ import java.io.File;
  */
 public class CsvFileMatcher extends FileMatcher<File, byte[]> {
 
-  /*public CsvFileMatcher(String filename) {
-    super(filename, new MatcherValidatorImpl<>(new FileValidator(), new CsvValidator()), new FileReader(filename));
-  }*/
+  public CsvFileMatcher() {
+
+  }
 
   public CsvFileMatcher(File file) {
     super(file, new MatcherValidatorImpl<>(new FileValidator(), new CsvValidator()), new FileReader(file));
   }
 
-  @Override
-  public CsvFileMatcher isSameAs(File file) throws Exception {
-    return (CsvFileMatcher) super.isSameAs(file);
+  private CsvFileMatcher isSameAs(File file) throws Exception {
+    return (CsvFileMatcher) super.isSameAs(file.getName());
   }
 
   @Override

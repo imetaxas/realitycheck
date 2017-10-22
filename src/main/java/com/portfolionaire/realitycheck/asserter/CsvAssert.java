@@ -5,20 +5,24 @@ import static com.portfolionaire.realitycheck.asserter.Assertable.asserts;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.matcher.CsvFileMatcher;
 import com.portfolionaire.realitycheck.matcher.CsvStringMatcher;
+import com.sun.istack.internal.Nullable;
 import java.io.File;
+
 /**
  * @author yanimetaxas
  */
-public class CsvAssert extends AbstractAssert {
+public final class CsvAssert extends AbstractAssert {
 
-  private CsvAssert() {
+  CsvAssert(Object csv) {
+    super(csv, CsvAssert.class);
   }
 
-  public static CsvFileMatcher assertThatFileCsv(File file) {
+  public static CsvFileMatcher assertThatFileCsv(@Nullable File file) {
     return (CsvFileMatcher) asserts(new CsvFileMatcher(file));
   }
 
-  public static CsvFileMatcher assertThatFileCsv(String filename) throws ValidationException {
+  public static CsvFileMatcher assertThatFileCsv(@Nullable String filename)
+      throws ValidationException {
     try {
       return assertThatFileCsv(new File(filename));
     } catch (Exception e) {
@@ -26,8 +30,7 @@ public class CsvAssert extends AbstractAssert {
     }
   }
 
-  public static CsvStringMatcher assertThatCsv(String csv) {
+  public static CsvStringMatcher assertThatCsv(@Nullable String csv) {
     return (CsvStringMatcher) asserts(new CsvStringMatcher(csv));
   }
-
 }
