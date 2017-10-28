@@ -1,9 +1,11 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import static com.portfolionaire.realitycheck.asserter.CsvAssert.assertThatFileCsv;
-import static com.portfolionaire.realitycheck.asserter.FileAssert.assertThat;
+//import static com.portfolionaire.realitycheck.asserter.CsvAssert.assertThatFileCsv;
+//import static com.portfolionaire.realitycheck.asserter.FileAssert.assertThat;
+import static com.portfolionaire.realitycheck.asserter.Reality.assertThat;
 import static org.junit.Assert.assertNotNull;
 
+import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.tools.CoverageTool;
 import com.portfolionaire.realitycheck.tools.Files;
 import java.io.File;
@@ -15,21 +17,21 @@ import org.junit.Test;
  */
 public class FileAssertTest {
 
-  @Test(expected = AssertionError.class)
+  @Test(expected = ValidationException.class)
   public void assertThatFileCsv_FilenameIsNull() throws Exception {
     File file = null;
 
     assertNotNull(assertThat(file));
   }
 
-  @Test(expected = AssertionError.class)
+  @Test(expected = ValidationException.class)
   public void assertThatFileCsv_FilenameIsEmpty() throws Exception {
     File file = new File("");
 
     assertNotNull(assertThat(file));
   }
 
-  @Test(expected = AssertionError.class)
+  @Test(expected = ValidationException.class)
   public void assertThatFileCsv_FilenameIsNonFile() throws Exception {
     File file = new File("aaa");
 
@@ -43,7 +45,7 @@ public class FileAssertTest {
     assertNotNull(assertThat(file));
   }
 
-  @Test(expected = AssertionError.class)
+  @Test(expected = ValidationException.class)
   public void assertThat_FileIsNull() throws Exception {
     File file = null;
 

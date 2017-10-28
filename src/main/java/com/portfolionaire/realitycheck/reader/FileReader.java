@@ -1,6 +1,7 @@
 package com.portfolionaire.realitycheck.reader;
 
 import com.portfolionaire.realitycheck.exception.ReaderException;
+import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.util.IoUtil;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,9 +22,14 @@ public class FileReader implements Reader<String, byte[]> {
   public byte[] read() throws ReaderException {
     try {
       File resource = IoUtil.loadResource(file.getName());
-      return IOUtils.toByteArray(new FileInputStream(resource));
+      return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
     } catch (Exception e){
       throw new ReaderException(e);
     }
+  }
+
+  @Override
+  public byte[] doAction() throws ValidationException {
+    return read();
   }
 }

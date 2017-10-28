@@ -10,14 +10,22 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author yanimetaxas
  */
-public class CsvValidator extends AbstractValidator<byte[]> {
+public class CsvValidator extends AbstractValidator<byte[], byte[]> {
+
+  @Deprecated
+  public CsvValidator() {
+
+  }
+
+  public CsvValidator(byte[] value) {
+    super(value);
+  }
 
   @Override
   public byte[] validate(byte[] csv) throws ValidationException {
     super.validate(csv);
     try {
-      List lines = IOUtils
-          .readLines(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(csv))));
+      List lines = IOUtils.readLines(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(csv))));
 
       if (lines.isEmpty()) {
         throw new ValidationException("File is empty");
@@ -31,5 +39,10 @@ public class CsvValidator extends AbstractValidator<byte[]> {
       throw new ValidationException(e);
     }
     return csv;
+  }
+
+  @Override
+  public byte[] doAction() throws ValidationException {
+    return validate(value);
   }
 }

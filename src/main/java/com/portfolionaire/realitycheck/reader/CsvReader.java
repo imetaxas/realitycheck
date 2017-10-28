@@ -1,6 +1,7 @@
 package com.portfolionaire.realitycheck.reader;
 
 import com.portfolionaire.realitycheck.exception.ReaderException;
+import com.portfolionaire.realitycheck.exception.ValidationException;
 import java.io.StringReader;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
@@ -23,5 +24,10 @@ public class CsvReader implements Reader<String, List<String>> {
     } catch (Exception ioe) {
       throw new ReaderException(ioe);
     }
+  }
+
+  @Override
+  public List<String> doAction() throws ValidationException {
+    return read();
   }
 }

@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,6 +15,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Created by imeta on 21-Sep-17.
@@ -34,11 +36,23 @@ public class IoUtil {
     return bufferedReader.readLine();
   }
 
-  @SuppressWarnings("ConstantConditions")
-  public static File loadResource(String filename) {
+  public static File loadResource(String filename) throws ValidationException {
     ClassLoader classLoader = IoUtil.class.getClassLoader();
     URL url = classLoader.getResource(filename);
-    return new File(url.getFile());
+    try {
+      return new File(url.getFile());
+    } catch (NullPointerException e){
+      throw new ValidationException(e);
+    }
+  }
+
+  public static byte[] readFile(File file, String encoding) throws ValidationException {
+    try {
+      File resource = loadResource(file.getName());
+      return IOUtils.toByteArray(new java.io.FileReader(resource), encoding);
+    } catch (Exception e) {
+      throw new ValidationException(e);
+    }
   }
 
   public static boolean areInputStreamsEqual(InputStream i1, InputStream i2) throws IOException {
