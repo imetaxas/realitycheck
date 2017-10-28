@@ -29,4 +29,9 @@ public class CsvFileReader implements Reader<String, List<String>> {
       throw new ReaderException(e);
     }
   }
+
+  @Override
+  public List<String> doAction() throws ValidationException {
+    return read();
+  }
 }

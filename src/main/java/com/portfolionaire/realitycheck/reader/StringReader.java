@@ -1,6 +1,8 @@
 package com.portfolionaire.realitycheck.reader;
 
 import com.portfolionaire.realitycheck.exception.ReaderException;
+import com.portfolionaire.realitycheck.exception.ValidationException;
+import java.util.List;
 
 /**
  * Created by imeta on 24-Sep-17.
@@ -16,5 +18,10 @@ public class StringReader implements Reader<String, byte[]> {
   @Override
   public byte[] read() throws ReaderException {
     return string.getBytes();
+  }
+
+  @Override
+  public byte[] doAction() throws ValidationException {
+    return read();
   }
 }

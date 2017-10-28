@@ -12,7 +12,7 @@ import java.io.FileInputStream;
 /**
  * @author yanimetaxas
  */
-public class FileMatcher<T, K> extends AbstractMatcher<File, byte[]> {
+public class FileMatcher<K> extends AbstractMatcher<File, byte[]> {
 
   public FileMatcher() {}
 
@@ -20,31 +20,36 @@ public class FileMatcher<T, K> extends AbstractMatcher<File, byte[]> {
     super(file, validator, reader);
   }
 
-  public CsvFileMatcher isCsv() throws Exception {
-    return CsvAssert.assertThatFileCsv(actual);
-  }
+  /*public CsvFileMatcher isCsv() throws Exception {
+    return new CsvAssert(actual); //.assertThatFileCsv(actual);
+  }*/
 
-  public FileMatcher isSameAs(String filename) throws Exception {
+  public FileMatcher isSameAs(String filename) throws AssertionError {
     return isSameAs(IoUtil.toFile(filename));
   }
 
-  private FileMatcher isSameAs(File file) throws Exception {
-    if(!IoUtil.areInputStreamsEqual(new ByteArrayInputStream(actualValue), new FileInputStream(file))){
-      throw new ValidationException("Not exactly the same");
+  private FileMatcher isSameAs(File file) throws AssertionError {
+    try {
+      if (!IoUtil
+          .areInputStreamsEqual(new ByteArrayInputStream(actualValue), new FileInputStream(file))) {
+        throw new AssertionError("Not exactly the same");
+      }
+    } catch (Exception e){
+      throw new AssertionError("Expected is not a file");
     }
     return this;
   }
 
-  public FileMatcher isNotSameAs(File file) throws Exception {
+  public FileMatcher isNotSameAs(File file) throws AssertionError {
     try {
       isSameAs(file);
     }catch (Exception e){
       return this;
     }
-    throw new Exception("Rows are exactly the same");
+    throw new AssertionError("Rows are exactly the same");
   }
 
-  public FileMatcher isNotSameAs(String filename) throws Exception {
+  public FileMatcher isNotSameAs(String filename) throws AssertionError {
     return isNotSameAs(IoUtil.toFile(filename));
   }
 }

@@ -1,36 +1,46 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import static com.portfolionaire.realitycheck.asserter.Assertable.asserts;
-
 import com.portfolionaire.realitycheck.exception.ValidationException;
-import com.portfolionaire.realitycheck.matcher.CsvFileMatcher;
-import com.portfolionaire.realitycheck.matcher.CsvStringMatcher;
-import com.sun.istack.internal.Nullable;
+import com.portfolionaire.realitycheck.strategy.validation.CsvValidationStrategy;
+import com.portfolionaire.realitycheck.util.IoUtil;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 
 /**
  * @author yanimetaxas
  */
-public final class CsvAssert extends AbstractAssert {
+public final class CsvAssert extends AbstractAssert<CsvAssert, String, byte[]> {
 
-  CsvAssert(Object csv) {
-    super(csv, CsvAssert.class);
+  public CsvAssert(String csv) throws ValidationException {
+    super(csv, CsvAssert.class, new CsvValidationStrategy(csv));
   }
 
-  public static CsvFileMatcher assertThatFileCsv(@Nullable File file) {
-    return (CsvFileMatcher) asserts(new CsvFileMatcher(file));
+  public CsvAssert isSameAs(String filename) throws AssertionError {
+    return isSameAs(IoUtil.toFile(filename));
   }
 
-  public static CsvFileMatcher assertThatFileCsv(@Nullable String filename)
-      throws ValidationException {
+  private CsvAssert isSameAs(File file) throws AssertionError {
     try {
-      return assertThatFileCsv(new File(filename));
-    } catch (Exception e) {
-      throw new ValidationException(e);
+      if (!IoUtil.areInputStreamsEqual(new ByteArrayInputStream(actualValue),
+          new ByteArrayInputStream(IoUtil.readFile(file, "ISO-8859-1")))) {
+        throw new AssertionError("Not exactly the same");
+      }
+    } catch (Exception ioe) {
+      throw new AssertionError("Expected is not a file", ioe);
     }
+    return this;
   }
 
-  public static CsvStringMatcher assertThatCsv(@Nullable String csv) {
-    return (CsvStringMatcher) asserts(new CsvStringMatcher(csv));
+  public CsvAssert isNotSameAs(File file) throws AssertionError {
+    try {
+      isSameAs(file);
+    } catch (AssertionError ae) {
+      return this;
+    }
+    throw new AssertionError("Rows are exactly the same");
+  }
+
+  public CsvAssert isNotSameAs(String filename) throws AssertionError {
+    return isNotSameAs(IoUtil.toFile(filename));
   }
 }

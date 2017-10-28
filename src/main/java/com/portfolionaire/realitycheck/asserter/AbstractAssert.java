@@ -1,38 +1,37 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import com.portfolionaire.realitycheck.matcher.Matchable;
+import com.portfolionaire.realitycheck.exception.ValidationException;
+import com.portfolionaire.realitycheck.strategy.validation.ValidationStrategy;
 
 /**
  * @author yanimetaxas
  */
-abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, ACTUAL> implements Assertable<SELF, ACTUAL> {
+abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL, ACTUAL_VALUE>, ACTUAL, ACTUAL_VALUE> implements
+    Assertable<SELF, ACTUAL, ACTUAL_VALUE> {
 
   final ACTUAL actual;
-  final SELF self;
-  Matchable matcher;
+  final ACTUAL_VALUE actualValue;
+  private final SELF self;
+  private final ValidationStrategy<ACTUAL, ACTUAL_VALUE> validationStrategy;
 
-  public AbstractAssert(ACTUAL actual, Class<?> selfType) {
+  public AbstractAssert(ACTUAL actual, Class<?> selfType,
+      ValidationStrategy<ACTUAL, ACTUAL_VALUE> validationStrategy) throws ValidationException {
     self = (SELF) selfType.cast(this);
     this.actual = actual;
+    this.validationStrategy = validationStrategy;
+    this.actualValue = validate();
   }
 
   @Override
   public SELF isNull() {
-    if(this.actual != null) {
+    if (this.actual != null) {
       throw new AssertionError();
     }
     return self;
   }
 
-  /*public Matchable asserts(Matchable matchable) {
-    try {
-      return matchable.match();
-    } catch (Exception e) {
-      throw new AssertionError(e);
-    }
-  }*/
-
-  public boolean isMatcherNull() {
-    return matcher == null;
+  @Override
+  public ACTUAL_VALUE validate() throws ValidationException {
+    return validationStrategy.validate();
   }
 }

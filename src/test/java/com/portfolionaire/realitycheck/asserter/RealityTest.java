@@ -16,7 +16,7 @@ public class RealityTest {
     Reality.assertThat(new File("sampleA.csv")).isNull();
   }
 
-  @Test
+  @Test(expected = ValidationException.class)
   public void assertThat_FileIsNull() throws Exception {
     File file = null;
     assertNotNull(Reality.assertThat(file).isNull());
@@ -35,7 +35,7 @@ public class RealityTest {
     assertNotNull(Reality.assertThat(file1).isNotSameAs(file2));
   }
 
-  @Test
+  @Test(expected = AssertionError.class)
   public void assertThat_FileIsSameAsAndNotSameAs_False() throws Exception {
     File file = new File("sampleA.csv");
     Reality.assertThat(file).isSameAs(file).isNotSameAs(file);
@@ -48,7 +48,7 @@ public class RealityTest {
     assertNotNull(Reality.assertThat(file1).isSameAs(file1).isNotSameAs(file2));
   }
 
-  @Test(expected = ValidationException.class)
+  @Test(expected = AssertionError.class)
   public void assertThat_FileMultipleIsSame_isFalse() throws Exception {
     File file1 = new File("sampleA.csv");
     File file2 = new File("sampleB.csv");

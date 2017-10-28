@@ -1,54 +1,45 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import static com.portfolionaire.realitycheck.asserter.Assertable.asserts;
-
-import com.portfolionaire.realitycheck.matcher.FileMatcher;
-import com.portfolionaire.realitycheck.matchervalidator.MatcherValidatorImpl;
-import com.portfolionaire.realitycheck.reader.FileReader;
+import com.portfolionaire.realitycheck.exception.ValidationException;
+import com.portfolionaire.realitycheck.strategy.validation.FileValidationStrategy;
 import com.portfolionaire.realitycheck.util.IoUtil;
-import com.portfolionaire.realitycheck.validator.FileValidator;
-import com.portfolionaire.realitycheck.validator.StringValidator;
-import com.sun.istack.internal.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 
 /**
  * @author yanimetaxas
  */
-public final class FileAssert extends AbstractAssert<FileAssert, File> {
+public final class FileAssert extends AbstractAssert<FileAssert, File, byte[]> {
 
-  FileAssert(File file) {
-    super(file, FileAssert.class);
+  public FileAssert(File file) throws ValidationException {
+    super(file, FileAssert.class, new FileValidationStrategy(file));
   }
 
-  @Deprecated
-  public static FileMatcher assertThat(@Nullable File file) {
-    return (FileMatcher) asserts(new FileMatcher(file, new MatcherValidatorImpl<>(new FileValidator(),
-        new StringValidator()), new FileReader(file)));
+  public FileAssert isSameAs(String filename) throws AssertionError {
+    return isSameAs(IoUtil.toFile(filename));
   }
 
-  public FileAssert isSameAs(File file) throws Exception {
-    if(isMatcherNull()) {
-      this.matcher = assertThat(file);
+  public FileAssert isSameAs(File file) throws AssertionError {
+    try {
+      if (!IoUtil.areInputStreamsEqual(new ByteArrayInputStream(actualValue), new ByteArrayInputStream(IoUtil.readFile(file, "ISO-8859-1")))) {
+        throw new AssertionError("Not exactly the same");
+      }
+    } catch (Exception ioe){
+      throw new AssertionError("Expected is not a file", ioe);
     }
-    ((FileMatcher)matcher).isSameAs(file.getName());
     return this;
   }
 
-  public FileAssert isSameAs(String filename) throws Exception {
-    if(isMatcherNull()) {
-      this.matcher = assertThat(IoUtil.toFile(filename));
+  public FileAssert isNotSameAs(File file) throws AssertionError {
+    try {
+      isSameAs(file);
+    }catch (AssertionError e){
+      return this;
     }
-    ((FileMatcher)matcher).isSameAs(filename);
-    return this;
+    throw new AssertionError("Rows are exactly the same");
   }
 
-  public FileAssert isNotSameAs(File file) throws Exception {
-    if(isMatcherNull()) {
-      this.matcher = assertThat(file);
-    }
-    ((FileMatcher)matcher).isNotSameAs(file);
-    return this;
+  public FileAssert isNotSameAs(String filename) throws AssertionError {
+    return isNotSameAs(IoUtil.toFile(filename));
   }
 }

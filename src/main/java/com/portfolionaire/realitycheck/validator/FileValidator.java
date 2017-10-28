@@ -7,7 +7,15 @@ import java.io.File;
 /**
  * Created by imeta on 08-Oct-17.
  */
-public class FileValidator extends AbstractValidator<File> {
+public class FileValidator<T, K> extends AbstractValidator<File, File> {
+
+  @Deprecated
+  public FileValidator() {
+  }
+
+  public FileValidator(File value) {
+    super(value);
+  }
 
   @Override
   public File validate(File file) throws ValidationException {
@@ -17,5 +25,10 @@ public class FileValidator extends AbstractValidator<File> {
       throw new ValidationException("File not found");
     }
     return file;
+  }
+
+  @Override
+  public File doAction() throws ValidationException {
+    return validate(value);
   }
 }

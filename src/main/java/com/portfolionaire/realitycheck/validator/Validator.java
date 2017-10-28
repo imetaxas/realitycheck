@@ -1,12 +1,12 @@
 package com.portfolionaire.realitycheck.validator;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
-import com.portfolionaire.realitycheck.reader.Reader;
+import com.portfolionaire.realitycheck.strategy.validation.Action;
 
 /**
  * Created by imeta on 07-Oct-17.
  */
-public interface Validator<T> {
+public interface Validator<T, K> extends Action<T, K> {
 
-  T validate(T value) throws ValidationException;
+  K validate(T value) throws ValidationException;
 }
