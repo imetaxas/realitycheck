@@ -12,33 +12,35 @@ public class CsvValidatorTest {
 
   @Test
   public void validate() throws Exception {
-    CsvValidator validator = new CsvValidator();
-
     String csv = "1,\"Eldon Base for stackable storage shelf, platinum\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8";
 
-    assertNotNull(validator.validate(csv.getBytes()));
+    CsvValidator validator = new CsvValidator(csv);
+
+    assertNotNull(validator.validate());
   }
 
   @Test(expected = ValidationException.class)
   public void validate_csvIsNull() throws Exception {
-    CsvValidator validator = new CsvValidator();
+    CsvValidator validator = new CsvValidator(null);
 
-    validator.validate(null);
+    validator.validate();
   }
 
   @Test(expected = ValidationException.class)
   public void validate_csvIsEmpty() throws Exception {
-    CsvValidator validator = new CsvValidator();
     String csv = "";
 
-    assertNotNull(validator.validate(csv.getBytes()));
+    CsvValidator validator = new CsvValidator(csv);
+
+    assertNotNull(validator.validate());
   }
 
   @Test(expected = ValidationException.class)
   public void validate_csvIsNotCsv() throws Exception {
-    CsvValidator validator = new CsvValidator();
     String csv = "aaa";
 
-    assertNotNull(validator.validate(csv.getBytes()));
+    CsvValidator validator = new CsvValidator(csv);
+
+    assertNotNull(validator.validate());
   }
 }

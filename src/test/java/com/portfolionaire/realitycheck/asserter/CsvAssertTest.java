@@ -1,6 +1,6 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import static com.portfolionaire.realitycheck.asserter.Reality.assertThatFileCsv;
+import static com.portfolionaire.realitycheck.asserter.Reality.assertThatCsv;
 import static org.junit.Assert.assertNotNull;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
@@ -8,6 +8,7 @@ import com.portfolionaire.realitycheck.tools.CoverageTool;
 import com.portfolionaire.realitycheck.tools.Files;
 import java.io.File;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -15,85 +16,25 @@ import org.junit.Test;
  */
 public class CsvAssertTest {
 
-  @Test(expected = ValidationException.class)
-  public void assertThatFileCsv_FilenameIsNull() throws Exception {
-    String filename = null;
+  @Test
+  public void assertThatCsv_WhenCsvIsNull() throws Exception {
+    String csv = null;
 
-    assertThatFileCsv(filename);
-  }
-
-  @Test(expected = ValidationException.class)
-  public void assertThatFileCsv_FilenameIsEmpty() throws Exception {
-    String filename = "";
-
-    assertThatFileCsv(filename);
+    assertNotNull(assertThatCsv(csv));
   }
 
   @Test
-  public void isSameAs_given_file() throws Exception {
-    File file = Files.toFile("sampleA.csv"); //ISO-8859-1
+  public void assertThatCsv_CsvIsNull() throws Exception {
+    String csv = null;
 
-    assertNotNull(assertThatFileCsv(file).isSameAs(file.getName()));
-  }
-
-  @Test
-  public void isSameAs_given_filename() throws Exception {
-    String filename = "sampleA.csv";
-
-    assertNotNull(assertThatFileCsv(filename).isSameAs(filename));
-  }
-
-  @Test(expected = ValidationException.class)
-  public void assertThatFileCsv_NoFileCsv() throws Exception {
-    File file = Files.toFile("test.txt");
-
-    assertNotNull(assertThatFileCsv(file.getName()));
-  }
-
-  @Test(expected = ValidationException.class)
-  public void assertThatFileCsv_FileIsEmpty() throws Exception {
-    File file = Files.toFile("empty.csv");
-
-    assertNotNull(assertThatFileCsv(file));
+    assertNotNull(assertThatCsv(csv).isNull());
   }
 
   @Test(expected = AssertionError.class)
-  public void isSameAs_given_csv_and_not_csv() throws Exception {
-    String filename1 = "sampleA.csv";
-    String filename2 = "test.txt";
+  public void assertThatCsv_CsvIsNull_AssertNotNull() throws Exception {
+    String csv = null;
 
-    assertNotNull(assertThatFileCsv(filename1).isSameAs(filename2));
-  }
-
-  @Test(expected = AssertionError.class)
-  public void isSameAs_given_csv_and_empty_csv() throws Exception {
-    String filename1 = "sampleA.csv";
-    String filename2 = "empty.csv";
-
-    assertNotNull(assertThatFileCsv(filename1).isSameAs(filename2));
-  }
-
-  @Test
-  public void isNotSameAs_given_file() throws Exception {
-    File file1 = Files.toFile("sampleA.csv");
-    File file2 = Files.toFile("sampleB.csv");
-
-    assertNotNull(assertThatFileCsv(file1).isNotSameAs(file2));
-  }
-
-  @Test(expected = AssertionError.class)
-  public void isNotSameAs_False() throws Exception {
-    File file = Files.toFile("sampleA.csv");
-
-    assertNotNull(assertThatFileCsv(file).isNotSameAs(file));
-  }
-
-  @Test
-  public void isNotSameAs_given_filename() throws Exception {
-    String filename1 = "sampleA.csv";
-    String filename2 = "sampleB.csv";
-
-    assertNotNull(assertThatFileCsv(filename1).isNotSameAs(filename2));
+    assertNotNull(assertThatCsv(csv).isNotNull());
   }
 
   /*@Test

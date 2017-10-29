@@ -16,7 +16,7 @@ public class FileValidationStrategy extends AbstractValidationStrategy<File, byt
 
   @Override
   public byte[] validate() throws ValidationException {
-    File file = new FileValidator<>(actual).doAction();
+    File file = new FileValidator(actual.orElseThrow(() -> new ValidationException("No value present"))).doAction();
     return new FileReader(file).doAction();
   }
 }
