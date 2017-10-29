@@ -7,7 +7,7 @@ public interface Assertable<SELF extends Assertable<SELF, ACTUAL, ACTUAL_VALUE>,
 
   SELF isNull();
   SELF isNotNull();
-  SELF isSameAs(Object obj);
-  SELF isNotSameAs(Object obj);
+  //SELF isSameAs(Object expected) throws AssertionError;
+  //SELF isNotSameAs(Object expected) throws AssertionError;
 
 }

@@ -10,16 +10,16 @@ import org.junit.Assert;
  */
 public class CoverageTool {
 
-  public static void testProtectedConstructor(Class<?> c) {
+  public static void testPrivateConstructor(Class<?> c) {
     Constructor<?>[] declaredConstructors = c.getDeclaredConstructors();
-    //Assert.assertEquals("Class does has have 1 declared constructor", 1, declaredConstructors.length);
+    Assert.assertEquals("Class does has have 1 declared constructor", 1, declaredConstructors.length);
     Constructor<?> declaredConstructor = declaredConstructors[0];
-    Assert.assertEquals("Constructor should be private", Modifier.PROTECTED, Modifier.PROTECTED);
-
-    declaredConstructor.setAccessible(true);
-
-    if(declaredConstructors.length > 1) {
-      declaredConstructors[1].setAccessible(true);
+    Assert.assertEquals("Constructor should be private", Modifier.PRIVATE,
+        declaredConstructor.getModifiers() | Modifier.PRIVATE);
+    try {
+      declaredConstructor.setAccessible(true);
+      declaredConstructor.newInstance();
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException ignored) {
     }
   }
 }

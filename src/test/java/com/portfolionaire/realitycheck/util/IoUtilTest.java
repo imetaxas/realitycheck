@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.portfolionaire.realitycheck.Reality;
 import com.portfolionaire.realitycheck.tools.CoverageTool;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -53,6 +54,6 @@ public class IoUtilTest {
 
   @After
   public void tearDown() throws Exception {
-    CoverageTool.testProtectedConstructor(IoUtil.class);
+    CoverageTool.testPrivateConstructor(IoUtil.class);
   }
 }

@@ -1,14 +1,10 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import static com.portfolionaire.realitycheck.asserter.Reality.assertThatCsv;
+import static com.portfolionaire.realitycheck.Reality.assertThatCsv;
 import static org.junit.Assert.assertNotNull;
 
-import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.tools.CoverageTool;
-import com.portfolionaire.realitycheck.tools.Files;
-import java.io.File;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -43,9 +39,4 @@ public class CsvAssertTest {
 
     assertNotNull(assertThatCsv(csv));
   }*/
-
-  @After
-  public void tearDown() throws Exception {
-    CoverageTool.testProtectedConstructor(CsvAssert.class);
-  }
 }

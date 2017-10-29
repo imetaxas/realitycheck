@@ -22,12 +22,6 @@ public class IoUtil {
   private IoUtil() {
   }
 
-  /*public static File toFile(String filename)  {
-    ClassLoader classLoader = IoUtil.class.getClassLoader();
-    URL url = classLoader.getResource(filename);
-    return new File(url.getFile());
-  }*/
-
   public static Optional<File> toFile(String filename)  {
     try {
     ClassLoader classLoader = IoUtil.class.getClassLoader();

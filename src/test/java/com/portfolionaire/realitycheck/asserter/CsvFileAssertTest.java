@@ -1,9 +1,9 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import static com.portfolionaire.realitycheck.asserter.Reality.assertThatFileCsv;
+import static com.portfolionaire.realitycheck.Reality.assertThatFileCsv;
 import static org.junit.Assert.assertNotNull;
 
-import com.portfolionaire.realitycheck.exception.ValidationException;
+import com.portfolionaire.realitycheck.Reality;
 import com.portfolionaire.realitycheck.tools.Files;
 import java.io.File;
 import org.junit.Test;

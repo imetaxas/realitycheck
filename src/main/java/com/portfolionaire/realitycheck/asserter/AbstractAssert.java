@@ -39,7 +39,7 @@ abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL, ACTUAL_V
     return self;
   }
 
-  @Override
+  /*@Override
   public SELF isSameAs(Object expected) throws AssertionError {
     if(!actual.equals(expected)) {
       throw new AssertionError();
@@ -53,7 +53,7 @@ abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL, ACTUAL_V
       throw new AssertionError();
     }
     return self;
-  }
+  }*/
 
   private ACTUAL_VALUE validate() throws ValidationException {
     try {
