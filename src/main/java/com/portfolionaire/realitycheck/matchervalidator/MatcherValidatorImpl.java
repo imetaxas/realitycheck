@@ -1,8 +1,6 @@
 package com.portfolionaire.realitycheck.matchervalidator;
 
-import com.portfolionaire.realitycheck.matchervalidator.AbstractMatcherValidator;
 import com.portfolionaire.realitycheck.validator.Validator;
-import java.util.List;
 
 /**
  * Created by imeta on 08-Oct-17.

@@ -1,7 +1,5 @@
 package com.portfolionaire.realitycheck.exception;
 
-import java.io.IOException;
-
 /**
  * Created by imeta on 21-Oct-17.
  */

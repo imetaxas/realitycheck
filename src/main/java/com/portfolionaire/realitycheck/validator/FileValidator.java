@@ -18,17 +18,17 @@ public class FileValidator<T, K> extends AbstractValidator<File, File> {
   }
 
   @Override
-  public File validate(File file) throws ValidationException {
-    super.validate(file);
-    File resource = IoUtil.loadResource(file.getName());
+  public File validate() throws ValidationException {
+    super.validate();
+    File resource = IoUtil.loadResource(value.get().getName());
     if (!resource.exists() || !resource.isFile()) {
       throw new ValidationException("File not found");
     }
-    return file;
+    return value.get();
   }
 
   @Override
   public File doAction() throws ValidationException {
-    return validate(value);
+    return validate();
   }
 }

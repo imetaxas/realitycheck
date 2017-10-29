@@ -1,9 +1,7 @@
 package com.portfolionaire.realitycheck.matcher;
 
 import com.portfolionaire.realitycheck.matchervalidator.MatcherValidator;
-import com.portfolionaire.realitycheck.reader.Reader;
 import com.portfolionaire.realitycheck.reader.StringReader;
-import com.portfolionaire.realitycheck.validator.StringValidator;
 
 /**
  * Created by imeta on 25-Sep-17.

@@ -4,7 +4,6 @@ import com.portfolionaire.realitycheck.exception.ReaderException;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.util.IoUtil;
 import java.io.File;
-import java.io.FileInputStream;
 import org.apache.commons.io.IOUtils;
 
 /**

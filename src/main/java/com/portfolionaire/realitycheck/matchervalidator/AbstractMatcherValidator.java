@@ -18,11 +18,11 @@ public abstract class AbstractMatcherValidator<T, K> implements MatcherValidator
 
   @Override
   public void preValidate(T value) throws ValidationException {
-    preValidator.validate(value);
+    preValidator.validate();
   }
 
   @Override
   public void postValidate(K value) throws ValidationException {
-    postValidator.validate(value);
+    postValidator.validate();
   }
 }

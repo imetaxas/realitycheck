@@ -4,8 +4,6 @@ import com.portfolionaire.realitycheck.exception.ValidationException;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,8 +11,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -25,10 +22,20 @@ public class IoUtil {
   private IoUtil() {
   }
 
-  public static File toFile(String filename)  {
+  /*public static File toFile(String filename)  {
     ClassLoader classLoader = IoUtil.class.getClassLoader();
     URL url = classLoader.getResource(filename);
     return new File(url.getFile());
+  }*/
+
+  public static Optional<File> toFile(String filename)  {
+    try {
+    ClassLoader classLoader = IoUtil.class.getClassLoader();
+    URL url = classLoader.getResource(filename);
+      return Optional.ofNullable(new File(url.getFile()));
+    } catch (NullPointerException e) {
+      return Optional.empty();
+    }
   }
 
   public static String readFirstLine(byte[] bytes) throws IOException {
@@ -46,10 +53,10 @@ public class IoUtil {
     }
   }
 
-  public static byte[] readFile(File file, String encoding) throws ValidationException {
+  public static byte[] readFile(String filename) throws ValidationException {
     try {
-      File resource = loadResource(file.getName());
-      return IOUtils.toByteArray(new java.io.FileReader(resource), encoding);
+      File resource = loadResource(filename);
+      return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
     } catch (Exception e) {
       throw new ValidationException(e);
     }

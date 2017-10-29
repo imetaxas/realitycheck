@@ -12,21 +12,21 @@ public class StringValidatorTest {
 
   @Test
   public void validate() throws Exception {
-    StringValidator validator = new StringValidator();
+    StringValidator validator = new StringValidator("string".getBytes());
 
-    assertNotNull(validator.validate("string".getBytes()));
+    assertNotNull(validator.validate());
   }
 
   @Test(expected = Exception.class)
   public void validate_isNull() throws Exception {
-    StringValidator validator = new StringValidator();
-    validator.validate(null);
+    StringValidator validator = new StringValidator(null);
+    validator.validate();
   }
 
   @Test(expected = Exception.class)
   public void validate_IsEmpty() throws Exception {
-    StringValidator validator = new StringValidator();
-    validator.validate("".getBytes());
+    StringValidator validator = new StringValidator("".getBytes());
+    validator.validate();
   }
 
 }

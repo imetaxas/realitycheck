@@ -1,9 +1,6 @@
 package com.portfolionaire.realitycheck.asserter;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
-import com.portfolionaire.realitycheck.matcher.CsvFileMatcher;
-import com.portfolionaire.realitycheck.util.IoUtil;
-import com.sun.istack.internal.Nullable;
 import java.io.File;
 
 /**
@@ -21,15 +18,12 @@ public class Reality {
   /*public static CsvAssert assertThat(String csv) {
     return new CsvAssert(csv);
   }*/
-  public static CsvFileAssert assertThatFileCsv(@Nullable String filename) throws ValidationException {
-    try {
-      return new CsvFileAssert(IoUtil.toFile(filename));
-    } catch (NullPointerException npe) {
-      throw new ValidationException(npe);
-    }
+
+  public static CsvFileAssert assertThatFileCsv(String filename) throws ValidationException {
+    return new CsvFileAssert(filename);
   }
 
-  public static CsvFileAssert assertThatFileCsv(@Nullable File file) throws ValidationException {
+  public static CsvFileAssert assertThatFileCsv(File file) throws ValidationException {
     return new CsvFileAssert(file);
   }
 
@@ -37,7 +31,7 @@ public class Reality {
     return new FileAssert(file);
   }
 
-  /*public CsvStringMatcher assertThatCsv(@Nullable String csv) {
-    return (CsvStringMatcher) validate(new CsvStringMatcher(csv));
-  }*/
+  public static CsvAssert assertThatCsv(String csv) throws ValidationException {
+    return new CsvAssert(csv);
+  }
 }

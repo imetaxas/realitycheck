@@ -32,9 +32,9 @@ public class CsvFileValidationStrategy<T, K> extends AbstractValidationStrategy<
 
   @Override
   public byte[] validate() throws ValidationException {
-    new FileValidator(actual).doAction();
-    byte[] csvBytes = new FileReader(actual).doAction();
-    new CsvValidator(csvBytes).doAction();
+    new FileValidator(actual.orElseThrow(() -> new ValidationException("No value present"))).doAction();
+    byte[] csvBytes = new FileReader(actual.get()).doAction();
+    new CsvValidator(new String(csvBytes)).doAction();
 
     return csvBytes;
   }

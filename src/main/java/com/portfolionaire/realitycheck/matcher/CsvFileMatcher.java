@@ -1,6 +1,5 @@
 package com.portfolionaire.realitycheck.matcher;
 
-import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.matchervalidator.MatcherValidatorImpl;
 import com.portfolionaire.realitycheck.reader.FileReader;
 import com.portfolionaire.realitycheck.util.IoUtil;

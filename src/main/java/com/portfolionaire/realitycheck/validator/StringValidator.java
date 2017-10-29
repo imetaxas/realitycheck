@@ -17,16 +17,16 @@ public class StringValidator extends AbstractValidator<byte[], byte[]> {
   }
 
   @Override
-  public byte[] validate(byte[] value) throws ValidationException {
-    super.validate(value);
-    if (new String(value).isEmpty()) {
+  public byte[] validate() throws ValidationException {
+    super.validate();
+    if (new String(value.get()).isEmpty()) {
       throw new ValidationException("Value is empty");
     }
-    return value;
+    return value.get();
   }
 
   @Override
   public byte[] doAction() throws ValidationException {
-    return validate(value);
+    return validate();
   }
 }

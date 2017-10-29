@@ -1,5 +1,6 @@
 package com.portfolionaire.realitycheck.validator;
 
+import com.portfolionaire.realitycheck.exception.ActualNullException;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -10,22 +11,22 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author yanimetaxas
  */
-public class CsvValidator extends AbstractValidator<byte[], byte[]> {
+public class CsvValidator extends AbstractValidator<String, byte[]> {
 
   @Deprecated
   public CsvValidator() {
 
   }
 
-  public CsvValidator(byte[] value) {
-    super(value);
+  public CsvValidator(String csv) {
+    super(csv);
   }
 
   @Override
-  public byte[] validate(byte[] csv) throws ValidationException {
-    super.validate(csv);
+  public byte[] validate() throws ValidationException, ActualNullException {
+    super.validate();
     try {
-      List lines = IOUtils.readLines(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(csv))));
+      List lines = IOUtils.readLines(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(value.get().getBytes()))));
 
       if (lines.isEmpty()) {
         throw new ValidationException("File is empty");
@@ -38,11 +39,11 @@ public class CsvValidator extends AbstractValidator<byte[], byte[]> {
     } catch (Exception e) {
       throw new ValidationException(e);
     }
-    return csv;
+    return value.get().getBytes();
   }
 
   @Override
-  public byte[] doAction() throws ValidationException {
-    return validate(value);
+  public byte[] doAction() throws ValidationException, ActualNullException {
+    return validate();
   }
 }

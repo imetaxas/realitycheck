@@ -1,32 +1,34 @@
 package com.portfolionaire.realitycheck.validator;
 
+import com.portfolionaire.realitycheck.exception.ActualNullException;
 import com.portfolionaire.realitycheck.exception.ValidationException;
+import java.util.Optional;
 
 /**
  * @author yanimetaxas
  */
 class AbstractValidator<T, K> implements Validator<T, K> {
 
-  T value;
+  Optional<T> value;
 
   @Deprecated
   public AbstractValidator() {}
 
 
   public AbstractValidator(T value) {
-    this.value = value;
+    this.value = Optional.ofNullable(value);
   }
 
   @Override
-  public K validate(T value) throws ValidationException {
-    if (value == null) {
-      throw new ValidationException("Value is NULL");
+  public K validate() throws ValidationException {
+    if (value == Optional.empty()) {
+      throw new ActualNullException("ACTUAL is NULL");
     }
     return (K) value;
   }
 
   @Override
   public K doAction() throws ValidationException {
-    return validate(value);
+    return validate();
   }
 }

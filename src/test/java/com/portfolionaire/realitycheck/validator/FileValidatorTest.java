@@ -13,32 +13,33 @@ public class FileValidatorTest {
 
   @Test
   public void validate() throws Exception {
-    FileValidator fileValidator = new FileValidator();
     File file = new File("sampleA.csv");
+    FileValidator fileValidator = new FileValidator(file);
 
-    assertNotNull(fileValidator.validate(file));
+
+    assertNotNull(fileValidator.validate());
   }
 
   @Test(expected = ValidationException.class)
   public void validate_FileIsNull() throws Exception {
-    FileValidator fileValidator = new FileValidator();
+    FileValidator fileValidator = new FileValidator(null);
 
-    assertNotNull(fileValidator.validate(null));
+    assertNotNull(fileValidator.validate());
   }
 
   @Test(expected = ValidationException.class)
   public void validate_FileIsEmpty() throws Exception {
-    FileValidator fileValidator = new FileValidator();
     File file = new File("");
+    FileValidator fileValidator = new FileValidator(file);
 
-    assertNotNull(fileValidator.validate(file));
+    assertNotNull(fileValidator.validate());
   }
 
   @Test(expected = ValidationException.class)
   public void validate_FileNotExists() throws Exception {
-    FileValidator fileValidator = new FileValidator();
     File file = new File("");
+    FileValidator fileValidator = new FileValidator(file);
 
-    assertNotNull(fileValidator.validate(file));
+    assertNotNull(fileValidator.validate());
   }
 }

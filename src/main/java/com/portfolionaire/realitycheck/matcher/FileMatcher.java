@@ -1,7 +1,5 @@
 package com.portfolionaire.realitycheck.matcher;
 
-import com.portfolionaire.realitycheck.asserter.CsvAssert;
-import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.matchervalidator.MatcherValidator;
 import com.portfolionaire.realitycheck.reader.Reader;
 import com.portfolionaire.realitycheck.util.IoUtil;
@@ -25,7 +23,7 @@ public class FileMatcher<K> extends AbstractMatcher<File, byte[]> {
   }*/
 
   public FileMatcher isSameAs(String filename) throws AssertionError {
-    return isSameAs(IoUtil.toFile(filename));
+    return isSameAs(IoUtil.toFile(filename).orElseThrow(() -> new AssertionError()));
   }
 
   private FileMatcher isSameAs(File file) throws AssertionError {
@@ -50,6 +48,6 @@ public class FileMatcher<K> extends AbstractMatcher<File, byte[]> {
   }
 
   public FileMatcher isNotSameAs(String filename) throws AssertionError {
-    return isNotSameAs(IoUtil.toFile(filename));
+    return isNotSameAs(IoUtil.toFile(filename).orElseThrow(() -> new AssertionError()));
   }
 }

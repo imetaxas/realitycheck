@@ -1,23 +1,17 @@
 package com.portfolionaire.realitycheck.strategy.validation;
 
+import java.util.Optional;
+
 /**
  * Created by imeta on 24-Oct-17.
  */
 public abstract class AbstractValidationStrategy<T, K> implements ValidationStrategy<T, K> {
 
-   T actual;
-   K actualValue;
+  Optional<T> actual;
+  K actualValue;
 
   public AbstractValidationStrategy(T actual) {
-    this.actual = actual;
-  }
-
-  public T getActual() {
-    return actual;
-  }
-
-  public K getActualValue() {
-    return actualValue;
+    this.actual = Optional.ofNullable(actual);
   }
 
   /*Action<T, K>[] validationActions;

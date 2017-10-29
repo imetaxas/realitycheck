@@ -2,7 +2,6 @@ package com.portfolionaire.realitycheck.reader;
 
 import com.portfolionaire.realitycheck.exception.ReaderException;
 import com.portfolionaire.realitycheck.exception.ValidationException;
-import java.util.List;
 
 /**
  * Created by imeta on 24-Sep-17.

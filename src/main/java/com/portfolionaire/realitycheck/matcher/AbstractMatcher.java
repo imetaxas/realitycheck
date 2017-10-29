@@ -1,8 +1,8 @@
 package com.portfolionaire.realitycheck.matcher;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
-import com.portfolionaire.realitycheck.reader.Reader;
 import com.portfolionaire.realitycheck.matchervalidator.MatcherValidator;
+import com.portfolionaire.realitycheck.reader.Reader;
 
 /**
  * Created by imeta on 25-Sep-17.
