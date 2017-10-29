@@ -1,9 +1,12 @@
-package com.portfolionaire.realitycheck.asserter;
+package com.portfolionaire.realitycheck;
 
 import static org.junit.Assert.*;
 
-import com.portfolionaire.realitycheck.exception.ValidationException;
+import com.portfolionaire.realitycheck.Reality;
+import com.portfolionaire.realitycheck.asserter.FileAssert;
+import com.portfolionaire.realitycheck.tools.CoverageTool;
 import java.io.File;
+import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -54,5 +57,10 @@ public class RealityTest {
     File file2 = new File("sampleB.csv");
 
     Reality.assertThat(file1).isSameAs(file1).isSameAs(file2);
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    CoverageTool.testPrivateConstructor(Reality.class);
   }
 }

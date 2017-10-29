@@ -1,5 +1,8 @@
-package com.portfolionaire.realitycheck.asserter;
+package com.portfolionaire.realitycheck;
 
+import com.portfolionaire.realitycheck.asserter.CsvAssert;
+import com.portfolionaire.realitycheck.asserter.CsvFileAssert;
+import com.portfolionaire.realitycheck.asserter.FileAssert;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import java.io.File;
 

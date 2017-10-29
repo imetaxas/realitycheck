@@ -4,11 +4,6 @@ package com.portfolionaire.realitycheck.matcher;
 //import static com.portfolionaire.realitycheck.asserter.FileAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 
-import com.portfolionaire.realitycheck.asserter.Reality;
-import com.portfolionaire.realitycheck.tools.Files;
-import java.io.File;
-import org.junit.Test;
-
 /**
  * @author yanimetaxas
  */

@@ -1,6 +1,6 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import static com.portfolionaire.realitycheck.asserter.Reality.assertThat;
+import static com.portfolionaire.realitycheck.Reality.assertThat;
 import static org.junit.Assert.assertNotNull;
 
 import com.portfolionaire.realitycheck.tools.CoverageTool;
@@ -47,10 +47,5 @@ public class FileAssertTest {
     File file = null;
 
     assertNotNull(assertThat(file));
-  }
-
-  @After
-  public void tearDown() throws Exception {
-    CoverageTool.testProtectedConstructor(FileAssert.class);
   }
 }
