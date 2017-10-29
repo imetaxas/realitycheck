@@ -16,7 +16,7 @@ public class RealityTest {
     Reality.assertThat(new File("sampleA.csv")).isNull();
   }
 
-  @Test(expected = ValidationException.class)
+  @Test
   public void assertThat_FileIsNull() throws Exception {
     File file = null;
     assertNotNull(Reality.assertThat(file).isNull());

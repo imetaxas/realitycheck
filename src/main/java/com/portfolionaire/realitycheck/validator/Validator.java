@@ -8,5 +8,5 @@ import com.portfolionaire.realitycheck.strategy.validation.Action;
  */
 public interface Validator<T, K> extends Action<T, K> {
 
-  K validate(T value) throws ValidationException;
+  K validate() throws ValidationException;
 }
