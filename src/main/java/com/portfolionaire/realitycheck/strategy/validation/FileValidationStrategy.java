@@ -8,7 +8,7 @@ import java.io.File;
 /**
  * Created by imeta on 28-Oct-17.
  */
-public class FileValidationStrategy extends AbstractValidationStrategy<File, byte[]> {
+public class FileValidationStrategy extends AbstractValidationStrategy<File> {
 
   public FileValidationStrategy(File actual) {
     super(actual);
@@ -16,7 +16,7 @@ public class FileValidationStrategy extends AbstractValidationStrategy<File, byt
 
   @Override
   public byte[] validate() throws ValidationException {
-    File file = new FileValidator(actual.orElseThrow(() -> new ValidationException("No value present"))).doAction();
+    File file = new FileValidator(getActualOrThrow(new ValidationException("No value present"))).doAction();
     return new FileReader(file).doAction();
   }
 }

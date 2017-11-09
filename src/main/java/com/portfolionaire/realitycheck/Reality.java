@@ -3,8 +3,10 @@ package com.portfolionaire.realitycheck;
 import com.portfolionaire.realitycheck.asserter.CsvAssert;
 import com.portfolionaire.realitycheck.asserter.CsvFileAssert;
 import com.portfolionaire.realitycheck.asserter.FileAssert;
+import com.portfolionaire.realitycheck.asserter.InputStreamAssert;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import java.io.File;
+import java.io.InputStream;
 
 /**
  * Created by imeta on 22-Oct-17.
@@ -36,5 +38,9 @@ public class Reality {
 
   public static CsvAssert assertThatCsv(String csv) throws ValidationException {
     return new CsvAssert(csv);
+  }
+
+  public static InputStreamAssert assertThat(InputStream inputStream) throws ValidationException {
+    return new InputStreamAssert(inputStream);
   }
 }

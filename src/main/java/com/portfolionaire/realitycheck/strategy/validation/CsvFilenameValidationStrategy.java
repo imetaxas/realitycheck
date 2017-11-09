@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * Created by imeta on 29-Oct-17.
  */
-public class CsvFilenameValidationStrategy extends AbstractValidationStrategy<String, byte[]> {
+public class CsvFilenameValidationStrategy extends AbstractValidationStrategy<String> {
 
   public CsvFilenameValidationStrategy(String filename) {
     super(filename);
@@ -18,7 +18,7 @@ public class CsvFilenameValidationStrategy extends AbstractValidationStrategy<St
 
   @Override
   public byte[] validate() throws ValidationException {
-    String filename = actual.orElseThrow(() -> new ValidationException("No value present"));
+    String filename = getActualOrThrow(new ValidationException("No value present"));
     File file = IoUtil.toFile(filename).orElseThrow(AssertionError::new);
     new FileValidator(file).doAction();
     byte[] csvBytes = new FileReader(file).doAction();

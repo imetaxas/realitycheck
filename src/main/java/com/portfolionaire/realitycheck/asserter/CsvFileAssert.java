@@ -8,17 +8,17 @@ import java.io.File;
 /**
  * Created by imeta on 23-Oct-17.
  */
-public class CsvFileAssert<SELF, ACTUAL, ACTUAL_VALUE> extends FileAssert<FileAssert<SELF, ACTUAL, ACTUAL_VALUE>, SELF, byte[]> {
+public class CsvFileAssert extends FileAssert {
 
   private CsvAssert csvAssert;
 
   public CsvFileAssert(String filename) throws ValidationException {
-    super(filename, CsvFileAssert.class, new CsvFilenameValidationStrategy(filename));
+    super(filename, new CsvFilenameValidationStrategy(filename));
   }
 
   public CsvFileAssert(File csvFile) throws ValidationException {
-    super(csvFile.getName(), CsvFileAssert.class, new CsvFileValidationStrategy(csvFile));
-    csvAssert = new CsvAssert(new String(actualValue.orElse(new byte[0])));
+    super(csvFile.getName(), new CsvFileValidationStrategy(csvFile));
+    csvAssert = new CsvAssert(new String(getActualContent()));
   }
 
   public CsvAssert headerHasNoDigits() throws AssertionError {

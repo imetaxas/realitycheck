@@ -1,38 +1,63 @@
 package com.portfolionaire.realitycheck.asserter;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
+import com.portfolionaire.realitycheck.strategy.validation.InputStreamValidationStrategy;
 import com.portfolionaire.realitycheck.strategy.validation.ValidationStrategy;
-import com.portfolionaire.realitycheck.util.IoUtil;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
 
 /**
- * Created by imeta on 28-Oct-17.
+ * @author yanimetaxas
  */
-public class InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE> extends AbstractAssert<InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE>, ACTUAL, byte[]> {
+public class InputStreamAssert<SELF, ACTUAL> extends
+    AbstractReadableAssert<InputStreamAssert<SELF, ACTUAL>, ACTUAL> {
 
-  public InputStreamAssert(ACTUAL inputStream, Class<?> selfType, ValidationStrategy<ACTUAL, byte[]> validationStrategy) throws ValidationException {
-    super(inputStream, selfType, validationStrategy);
+  public InputStreamAssert(InputStream inputStream) throws ValidationException {
+    super((ACTUAL) inputStream, new InputStreamValidationStrategy(inputStream));
   }
 
+  public InputStreamAssert(ACTUAL inputStream, ValidationStrategy validationStrategy) throws ValidationException {
+    super(inputStream, validationStrategy);
+  }
 
-  InputStreamAssert isSameAs(byte[] expected) throws AssertionError {
+  InputStreamAssert hasSameContentAs(byte[] expected) throws AssertionError {
     try {
-      if (!IoUtil.areInputStreamsEqual(new ByteArrayInputStream(actualValue.orElse(new byte[0])), new ByteArrayInputStream(expected))) {
+      if (!IOUtils.contentEquals(new ByteArrayInputStream(getActualContent()), new ByteArrayInputStream(expected))) {
         throw new AssertionError("Not exactly the same");
       }
     } catch (Exception ioe) {
-      throw new AssertionError("Expected is not a file", ioe);
+      throw new AssertionError("Expected is not readable", ioe);
     }
     return self;
   }
 
-  InputStreamAssert isNotSameAs(byte[] expected) throws AssertionError {
+  InputStreamAssert hasNotSameContentAs(byte[] expected) throws AssertionError {
     try {
-      isSameAs(expected);
+      hasSameContentAs(expected);
     } catch (AssertionError ae) {
       return self;
     }
     throw new AssertionError("Rows are exactly the same");
+  }
+
+  InputStreamAssert hasSameContentAs(InputStream expected) throws AssertionError {
+    try {
+      if(!IOUtils.contentEquals(new ByteArrayInputStream(getActualContent()), expected)) {
+        throw new AssertionError("Not exactly the same");
+      }
+    } catch (Exception ioe) {
+      throw new AssertionError("Expected is not an InputStream", ioe);
+    }
+    return self;
+  }
+
+  InputStreamAssert hasNotSameContentAs(InputStream expected) throws AssertionError {
+    try {
+      hasSameContentAs(expected);
+    } catch (AssertionError ae) {
+      return self;
+    }
+    throw new AssertionError("InputStreams are exactly the same");
   }
 }

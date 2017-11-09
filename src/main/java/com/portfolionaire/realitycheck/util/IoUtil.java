@@ -56,7 +56,7 @@ public class IoUtil {
     }
   }
 
-  public static boolean areInputStreamsEqual(InputStream i1, InputStream i2) throws IOException {
+  /*public static boolean areInputStreamsEqual(InputStream i1, InputStream i2) throws IOException {
     ReadableByteChannel ch1 = Channels.newChannel(i1);
     ReadableByteChannel ch2 = Channels.newChannel(i2);
     ByteBuffer buf1 = ByteBuffer.allocateDirect(1024);
@@ -90,5 +90,5 @@ public class IoUtil {
       ch1.close();
       ch2.close();
     }
-  }
+  }*/
 }
