@@ -5,14 +5,14 @@ import com.portfolionaire.realitycheck.exception.ValidationException;
 /**
  * Created by imeta on 29-Oct-17.
  */
-public class DefaultValidationStrategy extends AbstractValidationStrategy<byte[], byte[]> {
+public class DefaultValidationStrategy<T, K> extends AbstractValidationStrategy<T, T> {
 
-  public DefaultValidationStrategy(byte[] actual) {
+  public DefaultValidationStrategy(T actual) {
     super(actual);
   }
 
   @Override
-  public byte[] validate() throws ValidationException {
+  public T validate() throws ValidationException {
     return actual.orElseThrow(() -> new ValidationException("No value present"));
   }
 }

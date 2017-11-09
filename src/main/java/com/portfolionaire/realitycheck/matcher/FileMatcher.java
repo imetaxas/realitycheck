@@ -6,6 +6,7 @@ import com.portfolionaire.realitycheck.util.IoUtil;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import org.apache.commons.io.IOUtils;
 
 /**
  * @author yanimetaxas
@@ -28,8 +29,7 @@ public class FileMatcher<K> extends AbstractMatcher<File, byte[]> {
 
   private FileMatcher isSameAs(File file) throws AssertionError {
     try {
-      if (!IoUtil
-          .areInputStreamsEqual(new ByteArrayInputStream(actualValue), new FileInputStream(file))) {
+      if (!IOUtils.contentEquals(new ByteArrayInputStream(actualValue), new FileInputStream(file))) {
         throw new AssertionError("Not exactly the same");
       }
     } catch (Exception e){

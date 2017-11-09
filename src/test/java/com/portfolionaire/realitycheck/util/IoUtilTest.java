@@ -32,7 +32,7 @@ public class IoUtilTest {
     FileInputStream fis1 = new FileInputStream(IoUtil.toFile("test.txt").get());
     FileInputStream fis2 = new FileInputStream(IoUtil.toFile("test.txt").get());
 
-    assertTrue(IoUtil.areInputStreamsEqual(fis1, fis2));
+    assertTrue(IOUtils.contentEquals(fis1, fis2));
   }
 
   @Test
@@ -41,7 +41,7 @@ public class IoUtilTest {
     FileInputStream fis2 = new FileInputStream(IoUtil.toFile("test.txt").get());
 
     byte[] bytes = IOUtils.toByteArray(new java.io.FileReader(resource));
-    assertTrue(IoUtil.areInputStreamsEqual(new ByteArrayInputStream(new String(bytes).getBytes()), fis2));
+    assertTrue(IOUtils.contentEquals(new ByteArrayInputStream(new String(bytes).getBytes()), fis2));
   }
 
   @Test
@@ -49,7 +49,7 @@ public class IoUtilTest {
     FileInputStream fis1 = new FileInputStream(IoUtil.toFile("test.txt").get());
     FileInputStream fis2 = new FileInputStream(IoUtil.toFile("empty.csv").get());
 
-    assertFalse(IoUtil.areInputStreamsEqual(fis1, fis2));
+    assertFalse(IOUtils.contentEquals(fis1, fis2));
   }
 
   @After

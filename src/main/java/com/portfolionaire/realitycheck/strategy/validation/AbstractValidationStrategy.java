@@ -8,7 +8,7 @@ import java.util.Optional;
 public abstract class AbstractValidationStrategy<T, K> implements ValidationStrategy<T, K> {
 
   Optional<T> actual;
-  K actualValue;
+  Optional<K> actualValue;
 
   public AbstractValidationStrategy(T actual) {
     this.actual = Optional.ofNullable(actual);
