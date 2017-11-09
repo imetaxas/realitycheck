@@ -7,7 +7,7 @@ import com.portfolionaire.realitycheck.util.IoUtil;
 /**
  * @author yanimetaxas
  */
-public class CsvAssert<SELF, ACTUAL, ACTUAL_VALUE> extends InputStreamAssert<CsvAssert<SELF, ACTUAL, ACTUAL_VALUE>, String, byte[]> {
+public class CsvAssert extends InputStreamAssert<CsvAssert, String> {
 
   public CsvAssert(String csv) throws ValidationException {
     super(csv, new CsvValidationStrategy(csv));

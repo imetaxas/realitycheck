@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * @author yanimetaxas
  */
-public class FileAssert<SELF, ACTUAL, ACTUAL_VALUE> extends InputStreamAssert<FileAssert<SELF, ACTUAL, ACTUAL_VALUE>, File, byte[]> {
+public class FileAssert extends InputStreamAssert<FileAssert, File> {
 
   public FileAssert(String filename, ValidationStrategy strategy) throws ValidationException {
     super(IoUtil.toFile(filename).orElse(new File("")), strategy);

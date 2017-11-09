@@ -10,8 +10,8 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author yanimetaxas
  */
-public class InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE> extends
-    AbstractReadableAssert<InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE>, ACTUAL> {
+public class InputStreamAssert<SELF, ACTUAL> extends
+    AbstractReadableAssert<InputStreamAssert<SELF, ACTUAL>, ACTUAL> {
 
   public InputStreamAssert(InputStream inputStream) throws ValidationException {
     super((ACTUAL) inputStream, new InputStreamValidationStrategy(inputStream));

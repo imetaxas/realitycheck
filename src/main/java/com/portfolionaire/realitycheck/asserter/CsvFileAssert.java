@@ -4,12 +4,11 @@ import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.strategy.validation.CsvFileValidationStrategy;
 import com.portfolionaire.realitycheck.strategy.validation.CsvFilenameValidationStrategy;
 import java.io.File;
-import java.util.Optional;
 
 /**
  * Created by imeta on 23-Oct-17.
  */
-public class CsvFileAssert<SELF, ACTUAL, ACTUAL_VALUE> extends FileAssert<FileAssert<SELF, ACTUAL, ACTUAL_VALUE>, SELF, byte[]> {
+public class CsvFileAssert extends FileAssert {
 
   private CsvAssert csvAssert;
 
