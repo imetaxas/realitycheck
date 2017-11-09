@@ -11,12 +11,12 @@ import java.io.File;
  */
 public class FileAssert<SELF, ACTUAL, ACTUAL_VALUE> extends InputStreamAssert<FileAssert<SELF, ACTUAL, ACTUAL_VALUE>, File, byte[]> {
 
-  public FileAssert(String filename, Class cls, ValidationStrategy strategy) throws ValidationException {
-    super(IoUtil.toFile(filename).orElse(new File("")), cls, strategy);
+  public FileAssert(String filename, ValidationStrategy strategy) throws ValidationException {
+    super(IoUtil.toFile(filename).orElse(new File("")), strategy);
   }
 
   public FileAssert(File file) throws ValidationException {
-    super(file, FileAssert.class, new FileValidationStrategy(file));
+    super(file, new FileValidationStrategy(file));
   }
 
   public FileAssert hasSameContentAs(String filename) throws AssertionError, ValidationException {

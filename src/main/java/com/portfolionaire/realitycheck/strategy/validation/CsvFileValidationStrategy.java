@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Created by imeta on 24-Oct-17.
  */
-public class CsvFileValidationStrategy<T, K> extends AbstractValidationStrategy<File, byte[]> {
+public class CsvFileValidationStrategy<T, K> extends AbstractValidationStrategy<File> {
 
   /*private FileValidator fileValidator;
   private FileReader fileReader;
@@ -32,8 +32,8 @@ public class CsvFileValidationStrategy<T, K> extends AbstractValidationStrategy<
 
   @Override
   public byte[] validate() throws ValidationException {
-    new FileValidator(actual.orElseThrow(() -> new ValidationException("No value present"))).doAction();
-    byte[] csvBytes = new FileReader(actual.get()).doAction();
+    new FileValidator(getActualOrThrow(new ValidationException("No value present"))).doAction();
+    byte[] csvBytes = new FileReader(getActualOrElse(null)).doAction();
     new CsvValidator(new String(csvBytes)).doAction();
 
     return csvBytes;

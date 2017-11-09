@@ -5,7 +5,7 @@ import com.portfolionaire.realitycheck.exception.ValidationException;
 /**
  * Created by imeta on 24-Oct-17.
  */
-public interface ValidationStrategy<T, K> {
+public interface ValidationStrategy {
 
-  K validate() throws ValidationException;
+  byte[] validate() throws ValidationException;
 }

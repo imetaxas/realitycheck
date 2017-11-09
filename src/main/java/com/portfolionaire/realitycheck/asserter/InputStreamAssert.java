@@ -10,19 +10,20 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author yanimetaxas
  */
-public class InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE> extends AbstractAssert<InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE>, ACTUAL, byte[]> {
+public class InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE> extends
+    AbstractReadableAssert<InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE>, ACTUAL> {
 
   public InputStreamAssert(InputStream inputStream) throws ValidationException {
-    super((ACTUAL) inputStream, InputStreamAssert.class, new InputStreamValidationStrategy((InputStream) inputStream));
+    super((ACTUAL) inputStream, new InputStreamValidationStrategy(inputStream));
   }
 
-  public InputStreamAssert(ACTUAL inputStream, Class<?> selfType, ValidationStrategy validationStrategy) throws ValidationException {
-    super(inputStream, selfType, validationStrategy);
+  public InputStreamAssert(ACTUAL inputStream, ValidationStrategy validationStrategy) throws ValidationException {
+    super(inputStream, validationStrategy);
   }
 
   InputStreamAssert hasSameContentAs(byte[] expected) throws AssertionError {
     try {
-      if (!IOUtils.contentEquals(new ByteArrayInputStream(actualValue.orElse(new byte[0])), new ByteArrayInputStream(expected))) {
+      if (!IOUtils.contentEquals(new ByteArrayInputStream(getActualContent()), new ByteArrayInputStream(expected))) {
         throw new AssertionError("Not exactly the same");
       }
     } catch (Exception ioe) {
@@ -42,7 +43,7 @@ public class InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE> extends AbstractAsser
 
   InputStreamAssert hasSameContentAs(InputStream expected) throws AssertionError {
     try {
-      if(!IOUtils.contentEquals(new ByteArrayInputStream(actualValue.orElse(new byte[0])), expected)) {
+      if(!IOUtils.contentEquals(new ByteArrayInputStream(getActualContent()), expected)) {
         throw new AssertionError("Not exactly the same");
       }
     } catch (Exception ioe) {

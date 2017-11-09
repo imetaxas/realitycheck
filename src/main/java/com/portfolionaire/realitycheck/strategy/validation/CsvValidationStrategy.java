@@ -6,7 +6,7 @@ import com.portfolionaire.realitycheck.validator.CsvValidator;
 /**
  * Created by imeta on 28-Oct-17.
  */
-public class CsvValidationStrategy extends AbstractValidationStrategy<String, byte[]> {
+public class CsvValidationStrategy extends AbstractValidationStrategy<String> {
 
   public CsvValidationStrategy(String actual) {
     super(actual);
@@ -14,6 +14,6 @@ public class CsvValidationStrategy extends AbstractValidationStrategy<String, by
 
   @Override
   public byte[] validate() throws ValidationException {
-    return new CsvValidator(actual.orElseThrow(() -> new ValidationException("No value present"))).doAction();
+    return new CsvValidator(getActualOrThrow(new ValidationException("No value present"))).doAction();
   }
 }

@@ -10,12 +10,12 @@ import com.portfolionaire.realitycheck.util.IoUtil;
 public class CsvAssert<SELF, ACTUAL, ACTUAL_VALUE> extends InputStreamAssert<CsvAssert<SELF, ACTUAL, ACTUAL_VALUE>, String, byte[]> {
 
   public CsvAssert(String csv) throws ValidationException {
-    super(csv, CsvAssert.class, new CsvValidationStrategy(csv));
+    super(csv, new CsvValidationStrategy(csv));
   }
 
   public CsvAssert headerHasNoDigits() throws AssertionError {
     try {
-      String headers = IoUtil.readFirstLine(actualValue.orElseThrow(() -> new ValidationException("No such element")));
+      String headers = IoUtil.readFirstLine(getActualContent());
       for(String header: headers.split(",")) {
         if (header.matches("[0-9]+")) {
           throw new Exception();

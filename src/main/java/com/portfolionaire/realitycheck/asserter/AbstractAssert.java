@@ -1,31 +1,25 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import com.portfolionaire.realitycheck.exception.ValidationException;
-import com.portfolionaire.realitycheck.strategy.validation.ValidationStrategy;
-import java.util.Optional;
+import com.portfolionaire.realitycheck.util.GenericClass;
 
 /**
  * @author yanimetaxas
  */
-abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL, ACTUAL_VALUE>, ACTUAL, ACTUAL_VALUE> implements
-    Assertable<SELF, ACTUAL, ACTUAL_VALUE> {
+public abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, ACTUAL> implements
+    Assertable<SELF, ACTUAL> {
 
-  final Optional<ACTUAL> actual;
-  final Optional<ACTUAL_VALUE> actualValue;
+  private final ACTUAL actual;
   final SELF self;
-  private final ValidationStrategy<ACTUAL, ACTUAL_VALUE> validationStrategy;
 
-  public AbstractAssert(ACTUAL actual, Class<?> selfType,
-      ValidationStrategy<ACTUAL, ACTUAL_VALUE> validationStrategy) throws ValidationException {
-    self = (SELF) selfType.cast(this);
-    this.actual = Optional.ofNullable(actual);
-    this.validationStrategy = validationStrategy;
-    this.actualValue = Optional.ofNullable(validate());
+  public AbstractAssert(ACTUAL actual) {
+    GenericClass<SELF> genericClass = new GenericClass(getClass());
+    self = genericClass.getType().cast(this);
+    this.actual = actual;
   }
 
   @Override
   public SELF isNull() {
-    if (this.actual != Optional.empty()) {
+    if (this.actual != null) {
       throw new AssertionError();
     }
     return self;
@@ -33,7 +27,7 @@ abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL, ACTUAL_V
 
   @Override
   public SELF isNotNull() {
-    if (this.actual == Optional.empty()) {
+    if (this.actual == null) {
       throw new AssertionError();
     }
     return self;
@@ -54,12 +48,4 @@ abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL, ACTUAL_V
     }
     return self;
   }*/
-
-  private ACTUAL_VALUE validate() throws ValidationException {
-    try {
-      return validationStrategy.validate();
-    } catch (ValidationException e) {
-      return null;
-    }
-  }
 }
