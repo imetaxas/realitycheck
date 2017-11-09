@@ -28,27 +28,27 @@ public class RealityTest {
   @Test
   public void assertThat_FileIsSameAs() throws Exception {
     File file = new File("sampleA.csv");
-    assertNotNull(assertThat(file).isSameAs(file));
+    assertNotNull(assertThat(file).hasSameContentAs(file));
   }
 
   @Test
   public void assertThat_FileIsNotSameAs() throws Exception {
     File file1 = new File("sampleA.csv");
     File file2 = new File("sampleB.csv");
-    assertNotNull(assertThat(file1).isNotSameAs(file2));
+    assertNotNull(assertThat(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
   public void assertThat_FileIsSameAsAndNotSameAs_False() throws Exception {
     File file = new File("sampleA.csv");
-    assertThat(file).isSameAs(file).isNotSameAs(file);
+    assertThat(file).hasSameContentAs(file).hasNotSameContentAs(file);
   }
 
   @Test
   public void assertThat_FileIsSameAsAndNotSameAs_True() throws Exception {
     File file1 = new File("sampleA.csv");
     File file2 = new File("sampleB.csv");
-    assertNotNull(assertThat(file1).isSameAs(file1).isNotSameAs(file2));
+    assertNotNull(assertThat(file1).hasSameContentAs(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
@@ -56,7 +56,7 @@ public class RealityTest {
     File file1 = new File("sampleA.csv");
     File file2 = new File("sampleB.csv");
 
-    assertThat(file1).isSameAs(file1).isSameAs(file2);
+    assertThat(file1).hasSameContentAs(file1).hasSameContentAs(file2);
   }
 
   @Test

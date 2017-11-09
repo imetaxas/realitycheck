@@ -31,14 +31,14 @@ public class CsvFileAssertTest {
   public void isSameAs_given_file() throws Exception {
     File file = Files.toFile("sampleA.csv"); //ISO-8859-1
 
-    assertNotNull(assertThatFileCsv(file).isSameAs(file.getName()));
+    assertNotNull(assertThatFileCsv(file).hasSameContentAs(file.getName()));
   }
 
   @Test
   public void isSameAs_given_filename() throws Exception {
     String filename = "sampleA.csv";
 
-    assertNotNull(assertThatFileCsv(filename).isSameAs(filename));
+    assertNotNull(assertThatFileCsv(filename).hasSameContentAs(filename));
   }
 
   @Test
@@ -60,7 +60,7 @@ public class CsvFileAssertTest {
     String filename1 = "sampleA.csv";
     String filename2 = "test.txt";
 
-    assertNotNull(assertThatFileCsv(filename1).isSameAs(filename2));
+    assertNotNull(assertThatFileCsv(filename1).hasSameContentAs(filename2));
   }
 
   @Test(expected = AssertionError.class)
@@ -68,7 +68,7 @@ public class CsvFileAssertTest {
     String filename1 = "sampleA.csv";
     String filename2 = "empty.csv";
 
-    assertNotNull(assertThatFileCsv(filename1).isSameAs(filename2));
+    assertNotNull(assertThatFileCsv(filename1).hasSameContentAs(filename2));
   }
 
   @Test
@@ -76,14 +76,14 @@ public class CsvFileAssertTest {
     File file1 = Files.toFile("sampleA.csv");
     File file2 = Files.toFile("sampleB.csv");
 
-    assertNotNull(assertThatFileCsv(file1).isNotSameAs(file2));
+    assertNotNull(assertThatFileCsv(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
   public void isNotSameAs_False() throws Exception {
     File file = Files.toFile("sampleA.csv");
 
-    assertNotNull(assertThatFileCsv(file).isNotSameAs(file));
+    assertNotNull(assertThatFileCsv(file).hasNotSameContentAs(file));
   }
 
   @Test
@@ -91,7 +91,7 @@ public class CsvFileAssertTest {
     String filename1 = "sampleA.csv";
     String filename2 = "sampleB.csv";
 
-    assertNotNull(assertThatFileCsv(filename1).isNotSameAs(filename2));
+    assertNotNull(assertThatFileCsv(filename1).hasNotSameContentAs(filename2));
   }
 
   @Test

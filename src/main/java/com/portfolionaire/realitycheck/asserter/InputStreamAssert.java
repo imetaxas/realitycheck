@@ -3,13 +3,12 @@ package com.portfolionaire.realitycheck.asserter;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.strategy.validation.InputStreamValidationStrategy;
 import com.portfolionaire.realitycheck.strategy.validation.ValidationStrategy;
-import com.portfolionaire.realitycheck.util.IoUtil;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 
 /**
- * Created by imeta on 28-Oct-17.
+ * @author yanimetaxas
  */
 public class InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE> extends AbstractAssert<InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE>, ACTUAL, byte[]> {
 
@@ -21,7 +20,7 @@ public class InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE> extends AbstractAsser
     super(inputStream, selfType, validationStrategy);
   }
 
-  InputStreamAssert isSameAs(byte[] expected) throws AssertionError {
+  InputStreamAssert hasSameContentAs(byte[] expected) throws AssertionError {
     try {
       if (!IOUtils.contentEquals(new ByteArrayInputStream(actualValue.orElse(new byte[0])), new ByteArrayInputStream(expected))) {
         throw new AssertionError("Not exactly the same");
@@ -32,16 +31,16 @@ public class InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE> extends AbstractAsser
     return self;
   }
 
-  InputStreamAssert isNotSameAs(byte[] expected) throws AssertionError {
+  InputStreamAssert hasNotSameContentAs(byte[] expected) throws AssertionError {
     try {
-      isSameAs(expected);
+      hasSameContentAs(expected);
     } catch (AssertionError ae) {
       return self;
     }
     throw new AssertionError("Rows are exactly the same");
   }
 
-  InputStreamAssert isSameAs(InputStream expected) throws AssertionError {
+  InputStreamAssert hasSameContentAs(InputStream expected) throws AssertionError {
     try {
       if(!IOUtils.contentEquals(new ByteArrayInputStream(actualValue.orElse(new byte[0])), expected)) {
         throw new AssertionError("Not exactly the same");
@@ -52,9 +51,9 @@ public class InputStreamAssert<SELF, ACTUAL, ACTUAL_VALUE> extends AbstractAsser
     return self;
   }
 
-  InputStreamAssert isNotSameAs(InputStream expected) throws AssertionError {
+  InputStreamAssert hasNotSameContentAs(InputStream expected) throws AssertionError {
     try {
-      isSameAs(expected);
+      hasSameContentAs(expected);
     } catch (AssertionError ae) {
       return self;
     }

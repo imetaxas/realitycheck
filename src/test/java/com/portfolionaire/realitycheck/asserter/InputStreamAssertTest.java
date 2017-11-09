@@ -14,14 +14,14 @@ public class InputStreamAssertTest {
   @Test
   public void isSameAs() throws Exception {
     byte[] bytes = "RandomString".getBytes();
-    assertNotNull(assertThat(new ByteArrayInputStream(bytes)).isSameAs(new ByteArrayInputStream(bytes)));
+    assertNotNull(assertThat(new ByteArrayInputStream(bytes)).hasSameContentAs(new ByteArrayInputStream(bytes)));
   }
 
   @Test
   public void isNotSameAs() throws Exception {
     byte[] bytes1 = "RandomString".getBytes();
     byte[] bytes2 = "DifferentRandomString".getBytes();
-    assertNotNull(assertThat(new ByteArrayInputStream(bytes1)).isNotSameAs(new ByteArrayInputStream(bytes2)));
+    assertNotNull(assertThat(new ByteArrayInputStream(bytes1)).hasNotSameContentAs(new ByteArrayInputStream(bytes2)));
   }
 
 }
