@@ -12,11 +12,6 @@ import org.apache.commons.io.IOUtils;
  */
 public class CsvValidator extends AbstractValidator<String, byte[]> {
 
-  @Deprecated
-  public CsvValidator() {
-
-  }
-
   public CsvValidator(String csv) {
     super(csv);
   }

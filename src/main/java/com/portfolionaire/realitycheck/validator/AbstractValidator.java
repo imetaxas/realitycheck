@@ -10,10 +10,6 @@ class AbstractValidator<T, K> implements Validator<T, K> {
 
   Optional<T> value;
 
-  @Deprecated
-  public AbstractValidator() {}
-
-
   public AbstractValidator(T value) {
     this.value = Optional.ofNullable(value);
   }
