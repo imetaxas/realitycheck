@@ -19,7 +19,7 @@ public class CsvFilenameValidationStrategy extends AbstractValidationStrategy<St
   @Override
   public byte[] validate() throws ValidationException {
     String filename = getActualOrThrow(new ValidationException("No value present"));
-    File file = IoUtil.toFile(filename).orElseThrow(AssertionError::new);
+    File file = IoUtil.toFileOrThrow(filename);
     new FileValidator(file).doAction();
     byte[] csvBytes = new FileReader(file).doAction();
     new CsvValidator(new String(csvBytes)).doAction();

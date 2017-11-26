@@ -22,23 +22,23 @@ public class IoUtilTest {
 
   @Test
   public void read() throws Exception {
-    Optional<File> file = IoUtil.toFile("test.txt");
+    File file = IoUtil.toFileOrNull("test.txt");
 
     assertNotNull(file);
   }
 
   @Test
   public void areInputStreamsEqual_True() throws Exception {
-    FileInputStream fis1 = new FileInputStream(IoUtil.toFile("test.txt").get());
-    FileInputStream fis2 = new FileInputStream(IoUtil.toFile("test.txt").get());
+    FileInputStream fis1 = new FileInputStream(IoUtil.toFileOrNull("test.txt"));
+    FileInputStream fis2 = new FileInputStream(IoUtil.toFileOrNull("test.txt"));
 
     assertTrue(IOUtils.contentEquals(fis1, fis2));
   }
 
   @Test
   public void areByteArrayInputStreamAndInputStreamsEqual_True() throws Exception {
-    File resource = IoUtil.loadResource(IoUtil.toFile("test.txt").get().getName());
-    FileInputStream fis2 = new FileInputStream(IoUtil.toFile("test.txt").get());
+    File resource = IoUtil.loadResource(IoUtil.toFileOrNull("test.txt").getName());
+    FileInputStream fis2 = new FileInputStream(IoUtil.toFileOrNull("test.txt"));
 
     byte[] bytes = IOUtils.toByteArray(new java.io.FileReader(resource));
     assertTrue(IOUtils.contentEquals(new ByteArrayInputStream(new String(bytes).getBytes()), fis2));
@@ -46,8 +46,8 @@ public class IoUtilTest {
 
   @Test
   public void areInputStreamsEqual_False() throws Exception {
-    FileInputStream fis1 = new FileInputStream(IoUtil.toFile("test.txt").get());
-    FileInputStream fis2 = new FileInputStream(IoUtil.toFile("empty.csv").get());
+    FileInputStream fis1 = new FileInputStream(IoUtil.toFileOrNull("test.txt"));
+    FileInputStream fis2 = new FileInputStream(IoUtil.toFileOrNull("empty.csv"));
 
     assertFalse(IOUtils.contentEquals(fis1, fis2));
   }

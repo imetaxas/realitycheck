@@ -1,6 +1,5 @@
 package com.portfolionaire.realitycheck.validator;
 
-import com.portfolionaire.realitycheck.exception.ActualNullException;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import java.util.Optional;
 
@@ -22,7 +21,7 @@ class AbstractValidator<T, K> implements Validator<T, K> {
   @Override
   public K validate() throws ValidationException {
     if (value == Optional.empty()) {
-      throw new ActualNullException("ACTUAL is NULL");
+      throw new ValidationException("ACTUAL is NULL");
     }
     return (K) value;
   }

@@ -3,6 +3,7 @@ package com.portfolionaire.realitycheck.asserter;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.strategy.validation.CsvFileValidationStrategy;
 import com.portfolionaire.realitycheck.strategy.validation.CsvFilenameValidationStrategy;
+import com.portfolionaire.realitycheck.util.IoUtil;
 import java.io.File;
 
 /**
@@ -12,12 +13,12 @@ public class CsvFileAssert extends FileAssert {
 
   private CsvAssert csvAssert;
 
-  public CsvFileAssert(String filename) throws ValidationException {
-    super(filename, new CsvFilenameValidationStrategy(filename));
+  public CsvFileAssert(String filename) throws AssertionError {
+    super(IoUtil.toFileOrNull(filename), new CsvFilenameValidationStrategy(filename));
   }
 
-  public CsvFileAssert(File csvFile) throws ValidationException {
-    super(csvFile.getName(), new CsvFileValidationStrategy(csvFile));
+  public CsvFileAssert(File csvFile) throws AssertionError {
+    super(csvFile, new CsvFileValidationStrategy(csvFile));
     csvAssert = new CsvAssert(new String(getActualContent()));
   }
 

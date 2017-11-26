@@ -10,15 +10,15 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author yanimetaxas
  */
-public class InputStreamAssert<SELF, ACTUAL> extends
-    AbstractReadableAssert<InputStreamAssert<SELF, ACTUAL>, ACTUAL> {
+public abstract class InputStreamAssert<SELF, ACTUAL, STRATEGY> extends
+    AbstractReadableAssert<InputStreamAssert<SELF, ACTUAL, STRATEGY>, ACTUAL, STRATEGY> {
 
-  public InputStreamAssert(InputStream inputStream) throws ValidationException {
-    super((ACTUAL) inputStream, new InputStreamValidationStrategy(inputStream));
+  public InputStreamAssert(ACTUAL inputStream) throws AssertionError {
+    super(inputStream);
   }
 
-  public InputStreamAssert(ACTUAL inputStream, ValidationStrategy validationStrategy) throws ValidationException {
-    super(inputStream, validationStrategy);
+  public InputStreamAssert(ACTUAL inputStream, ValidationStrategy strategy) throws AssertionError {
+    super(inputStream, strategy);
   }
 
   InputStreamAssert hasSameContentAs(byte[] expected) throws AssertionError {

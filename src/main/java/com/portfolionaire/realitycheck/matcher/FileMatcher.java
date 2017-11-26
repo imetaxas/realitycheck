@@ -24,7 +24,7 @@ public class FileMatcher<K> extends AbstractMatcher<File, byte[]> {
   }*/
 
   public FileMatcher isSameAs(String filename) throws AssertionError {
-    return isSameAs(IoUtil.toFile(filename).orElseThrow(() -> new AssertionError()));
+    return isSameAs(IoUtil.toFileOrThrow(filename));
   }
 
   private FileMatcher isSameAs(File file) throws AssertionError {
@@ -48,6 +48,6 @@ public class FileMatcher<K> extends AbstractMatcher<File, byte[]> {
   }
 
   public FileMatcher isNotSameAs(String filename) throws AssertionError {
-    return isNotSameAs(IoUtil.toFile(filename).orElseThrow(() -> new AssertionError()));
+    return isNotSameAs(IoUtil.toFileOrThrow(filename));
   }
 }

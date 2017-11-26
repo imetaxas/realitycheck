@@ -5,12 +5,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.Optional;
 import org.apache.commons.io.IOUtils;
 
@@ -22,18 +18,39 @@ public class IoUtil {
   private IoUtil() {
   }
 
-  public static Optional<File> toFile(String filename)  {
+  /*public static Optional<File> toFile(String filename)  {
     try {
-    ClassLoader classLoader = IoUtil.class.getClassLoader();
-    URL url = classLoader.getResource(filename);
+      ClassLoader classLoader = IoUtil.class.getClassLoader();
+      URL url = classLoader.getResource(filename);
       return Optional.ofNullable(new File(url.getFile()));
     } catch (NullPointerException e) {
       return Optional.empty();
     }
+  }*/
+
+  public static File toFileOrNull(String filename) {
+    try {
+      ClassLoader classLoader = IoUtil.class.getClassLoader();
+      URL url = classLoader.getResource(filename);
+      return new File(url.getFile());
+    } catch (NullPointerException e) {
+      return null;
+    }
+  }
+
+  public static File toFileOrThrow(String filename) {
+    try {
+      ClassLoader classLoader = IoUtil.class.getClassLoader();
+      URL url = classLoader.getResource(filename);
+      return new File(url.getFile());
+    } catch (NullPointerException e) {
+      throw new AssertionError();
+    }
   }
 
   public static String readFirstLine(byte[] bytes) throws IOException {
-    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
+    BufferedReader bufferedReader = new BufferedReader(
+        new InputStreamReader(new ByteArrayInputStream(bytes)));
     return bufferedReader.readLine();
   }
 
@@ -42,17 +59,17 @@ public class IoUtil {
     URL url = classLoader.getResource(filename);
     try {
       return new File(url.getFile());
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       throw new ValidationException(e);
     }
   }
 
-  public static byte[] readFile(String filename) throws ValidationException {
+  public static byte[] readFile(String filename) throws AssertionError {
     try {
       File resource = loadResource(filename);
       return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
     } catch (Exception e) {
-      throw new ValidationException(e);
+      throw new AssertionError(e);
     }
   }
 
