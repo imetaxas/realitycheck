@@ -8,7 +8,7 @@ import com.portfolionaire.realitycheck.util.GenericClass;
 public abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, ACTUAL> implements
     Assertable<SELF, ACTUAL> {
 
-  private final ACTUAL actual;
+  final ACTUAL actual;
   final SELF self;
 
   public AbstractAssert(ACTUAL actual) {

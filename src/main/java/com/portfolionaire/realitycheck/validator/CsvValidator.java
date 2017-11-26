@@ -1,6 +1,5 @@
 package com.portfolionaire.realitycheck.validator;
 
-import com.portfolionaire.realitycheck.exception.ActualNullException;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -13,17 +12,12 @@ import org.apache.commons.io.IOUtils;
  */
 public class CsvValidator extends AbstractValidator<String, byte[]> {
 
-  @Deprecated
-  public CsvValidator() {
-
-  }
-
   public CsvValidator(String csv) {
     super(csv);
   }
 
   @Override
-  public byte[] validate() throws ValidationException, ActualNullException {
+  public byte[] validate() throws ValidationException {
     super.validate();
     try {
       List lines = IOUtils.readLines(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(value.get().getBytes()))));
@@ -43,7 +37,7 @@ public class CsvValidator extends AbstractValidator<String, byte[]> {
   }
 
   @Override
-  public byte[] doAction() throws ValidationException, ActualNullException {
+  public byte[] doAction() throws ValidationException {
     return validate();
   }
 }

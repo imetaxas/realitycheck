@@ -6,8 +6,7 @@ package com.portfolionaire.realitycheck.asserter;
 public interface Assertable<SELF extends Assertable<SELF, ACTUAL>, ACTUAL> {
 
   SELF isNull();
+
   SELF isNotNull();
-  //SELF isSameAs(Object expected) throws AssertionError;
-  //SELF isNotSameAs(Object expected) throws AssertionError;
 
 }

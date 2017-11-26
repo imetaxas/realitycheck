@@ -9,10 +9,6 @@ import java.io.File;
  */
 public class FileValidator<T, K> extends AbstractValidator<File, File> {
 
-  @Deprecated
-  public FileValidator() {
-  }
-
   public FileValidator(File value) {
     super(value);
   }

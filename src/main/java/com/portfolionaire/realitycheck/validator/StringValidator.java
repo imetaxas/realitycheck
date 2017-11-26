@@ -7,11 +7,6 @@ import com.portfolionaire.realitycheck.exception.ValidationException;
  */
 public class StringValidator extends AbstractValidator<byte[], byte[]> {
 
-  @Deprecated
-  public StringValidator() {
-
-  }
-
   public StringValidator(byte[] value) {
     super(value);
   }
