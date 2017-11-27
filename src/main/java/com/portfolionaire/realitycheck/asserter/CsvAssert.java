@@ -8,13 +8,18 @@ import java.io.ByteArrayInputStream;
 /**
  * @author yanimetaxas
  */
-public class CsvAssert extends InputStreamAssert<CsvAssert, String, CsvValidationStrategy> {
+public class CsvAssert extends AbstractReadableAssert<CsvAssert, String, CsvValidationStrategy> {
 
-  /*public CsvAssert(String csv) throws ValidationException {
-    super(new ByteArrayInputStream(csv.getBytes()));
-  }*/
   public CsvAssert(String csv) throws AssertionError {
     super(csv);
+  }
+
+  public CsvAssert hasSameContentAs(String expected) throws AssertionError {
+    return (CsvAssert) super.hasSameContentAs(new ByteArrayInputStream(expected.getBytes()));
+  }
+
+  public CsvAssert hasNotSameContentAs(String expected) throws AssertionError {
+    return (CsvAssert) super.hasNotSameContentAs(new ByteArrayInputStream(expected.getBytes()));
   }
 
   public CsvAssert headerHasNoDigits() throws AssertionError {
@@ -22,7 +27,7 @@ public class CsvAssert extends InputStreamAssert<CsvAssert, String, CsvValidatio
       String headers = IoUtil.readFirstLine(getActualContent());
       for(String header: headers.split(",")) {
         if (header.matches("[0-9]+")) {
-          throw new Exception();
+          throw new ValidationException("Header has digits");
         }
       }
     } catch (Exception e) {

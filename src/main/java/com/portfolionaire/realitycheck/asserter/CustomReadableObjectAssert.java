@@ -5,7 +5,7 @@ import com.portfolionaire.realitycheck.strategy.validation.CustomObjectValidatio
 import com.portfolionaire.realitycheck.util.CustomObject;
 
 /**
- * Created by imeta on 09-Nov-17.
+ * @author yanimetaxas
  */
 public class CustomReadableObjectAssert extends AbstractReadableAssert<CustomReadableObjectAssert, CustomObject, CustomObjectValidationStrategy> {
 

@@ -1,9 +1,7 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import com.portfolionaire.realitycheck.exception.ValidationException;
-
 /**
- * Created by imeta on 09-Nov-17.
+ * @author yanimetaxas
  */
 public class StringAssert extends AbstractAssert<StringAssert, String> {
 
@@ -11,9 +9,9 @@ public class StringAssert extends AbstractAssert<StringAssert, String> {
     super(s);
   }
 
-  public StringAssert hasLength(int size) throws ValidationException {
+  public StringAssert hasLength(int size) throws AssertionError {
     if(actual.length() != size) {
-      throw new ValidationException("");
+      throw new AssertionError("Wrong length");
     }
     return self;
   }

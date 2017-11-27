@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
- * Created by imeta on 22-Oct-17.
+ * @author yanimetaxas
  */
 public class RealityTest {
 

@@ -9,7 +9,7 @@ import java.io.File;
 import org.junit.Test;
 
 /**
- * Created by imeta on 28-Oct-17.
+ * @author yanimetaxas
  */
 public class CsvFileAssertTest {
 
@@ -60,7 +60,7 @@ public class CsvFileAssertTest {
     String filename1 = "sampleA.csv";
     String filename2 = "test.txt";
 
-    assertNotNull(assertThatFileCsv(filename1).hasSameContentAs(filename2));
+    assertThatFileCsv(filename1).hasSameContentAs(filename2);
   }
 
   @Test(expected = AssertionError.class)
@@ -68,7 +68,7 @@ public class CsvFileAssertTest {
     String filename1 = "sampleA.csv";
     String filename2 = "empty.csv";
 
-    assertNotNull(assertThatFileCsv(filename1).hasSameContentAs(filename2));
+    assertThatFileCsv(filename1).hasSameContentAs(filename2);
   }
 
   @Test
@@ -83,7 +83,7 @@ public class CsvFileAssertTest {
   public void isNotSameAs_False() throws Exception {
     File file = Files.toFile("sampleA.csv");
 
-    assertNotNull(assertThatFileCsv(file).hasNotSameContentAs(file));
+    assertThatFileCsv(file).hasNotSameContentAs(file);
   }
 
   @Test

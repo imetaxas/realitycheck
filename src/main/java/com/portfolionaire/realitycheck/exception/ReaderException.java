@@ -1,7 +1,7 @@
 package com.portfolionaire.realitycheck.exception;
 
 /**
- * Created by imeta on 21-Oct-17.
+ * @author yanimetaxas
  */
 public class ReaderException extends ValidationException {
 

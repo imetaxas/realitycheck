@@ -1,18 +1,16 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.strategy.validation.FileValidationStrategy;
 import com.portfolionaire.realitycheck.strategy.validation.ValidationStrategy;
 import com.portfolionaire.realitycheck.util.IoUtil;
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 /**
  * @author yanimetaxas
  */
-public class FileAssert extends InputStreamAssert<FileAssert, File, FileValidationStrategy> {
+public class FileAssert extends AbstractReadableAssert<FileAssert, File, FileValidationStrategy> {
 
   public FileAssert(File file) throws FileNotFoundException, AssertionError {
     super(file);
@@ -27,11 +25,11 @@ public class FileAssert extends InputStreamAssert<FileAssert, File, FileValidati
   }
 
   public FileAssert hasSameContentAs(File file) throws AssertionError {
-    return (FileAssert) super.hasSameContentAs(IoUtil.readFile(file.getName()));
+    return (FileAssert) super.hasSameContentAs(new ByteArrayInputStream(IoUtil.readFile(file.getName())));
   }
 
   public FileAssert hasNotSameContentAs(File file) throws AssertionError {
-    return (FileAssert) super.hasNotSameContentAs(IoUtil.readFile(file.getName()));
+    return (FileAssert) super.hasNotSameContentAs(new ByteArrayInputStream(IoUtil.readFile(file.getName())));
   }
 
   public FileAssert hasNotSameContentAs(String filename) throws AssertionError {

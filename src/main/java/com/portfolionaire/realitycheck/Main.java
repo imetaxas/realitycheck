@@ -1,7 +1,7 @@
 package com.portfolionaire.realitycheck;
 
 /**
- * Created by imeta on 29-Oct-17.
+ * @author yanimetaxas
  */
 public class Main {
 
