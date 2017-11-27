@@ -1,13 +1,12 @@
 package com.portfolionaire.realitycheck.asserter;
 
-import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.strategy.validation.CsvFileValidationStrategy;
 import com.portfolionaire.realitycheck.strategy.validation.CsvFilenameValidationStrategy;
 import com.portfolionaire.realitycheck.util.IoUtil;
 import java.io.File;
 
 /**
- * Created by imeta on 23-Oct-17.
+ * @author yanimetaxas
  */
 public class CsvFileAssert extends FileAssert {
 

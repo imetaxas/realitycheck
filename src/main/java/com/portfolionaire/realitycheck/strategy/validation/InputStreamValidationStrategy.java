@@ -9,7 +9,7 @@ import org.apache.commons.io.IOUtils;
 /**
  * Created by imeta on 09-Nov-17.
  */
-public class InputStreamValidationStrategy<ACTUAL> extends AbstractValidationStrategy<InputStream> {
+public class InputStreamValidationStrategy extends AbstractValidationStrategy<InputStream> {
 
   public InputStreamValidationStrategy(InputStream actual) {
     super(actual);

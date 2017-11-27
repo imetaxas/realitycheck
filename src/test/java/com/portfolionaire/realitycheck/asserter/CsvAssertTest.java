@@ -30,7 +30,21 @@ public class CsvAssertTest {
   public void assertThatCsv_CsvIsNull_AssertNotNull() throws Exception {
     String csv = null;
 
-    assertNotNull(assertThatCsv(csv).isNotNull());
+    assertThatCsv(csv).isNotNull();
+  }
+
+  @Test
+  public void assertThatCsv_hasSameContentAs() throws Exception {
+    String csv = "1,\"Eldon Base for stackable storage shelf, platinum\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8";
+
+    assertNotNull(assertThatCsv(csv).hasSameContentAs(csv));
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertThatCsv_hasNotSameContentAs() throws Exception {
+    String csv = "1,\"Eldon Base for stackable storage shelf, platinum\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8";
+
+    assertThatCsv(csv).hasNotSameContentAs(csv);
   }
 
   /*@Test
