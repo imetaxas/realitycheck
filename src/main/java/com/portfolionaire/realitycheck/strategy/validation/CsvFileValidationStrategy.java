@@ -9,22 +9,7 @@ import java.io.File;
 /**
  * Created by imeta on 24-Oct-17.
  */
-public class CsvFileValidationStrategy<T, K> extends AbstractValidationStrategy<File> {
-
-  /*private FileValidator fileValidator;
-  private FileReader fileReader;
-  private CsvValidator csvValidator;*/
-
-
-  /*public CsvFileValidationStrategy(Action<T, K>... actions) {
-    super(actions);
-  }*/
-
-  /*public CsvFileValidationStrategy(FileValidator fileValidator, FileReader fileReader, CsvValidator csvValidator) {
-    this.fileValidator = fileValidator;
-    this.fileReader = fileReader;
-    this.csvValidator = csvValidator;
-  }*/
+public class CsvFileValidationStrategy extends AbstractValidationStrategy<File> {
 
   public CsvFileValidationStrategy(File fileCsv) {
     super(fileCsv);

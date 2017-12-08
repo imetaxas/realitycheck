@@ -37,7 +37,7 @@ public class IoUtilTest {
 
   @Test
   public void areByteArrayInputStreamAndInputStreamsEqual_True() throws Exception {
-    File resource = IoUtil.loadResource(IoUtil.toFileOrNull("test.txt").getName());
+    File resource = IoUtil.loadFileOrThrow(IoUtil.toFileOrNull("test.txt").getName());
     FileInputStream fis2 = new FileInputStream(IoUtil.toFileOrNull("test.txt"));
 
     byte[] bytes = IOUtils.toByteArray(new java.io.FileReader(resource));

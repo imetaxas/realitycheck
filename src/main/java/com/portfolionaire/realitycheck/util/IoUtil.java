@@ -1,6 +1,6 @@
 package com.portfolionaire.realitycheck.util;
 
-import com.portfolionaire.realitycheck.exception.ValidationException;
+import com.portfolionaire.realitycheck.exception.ReaderException;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -37,13 +37,13 @@ public class IoUtil {
     }
   }
 
-  public static File toFileOrThrow(String filename) {
+  public static File loadFileOrThrow(String filename) {
     try {
       ClassLoader classLoader = IoUtil.class.getClassLoader();
       URL url = classLoader.getResource(filename);
       return new File(url.getFile());
     } catch (NullPointerException e) {
-      throw new AssertionError();
+      throw new ReaderException(e);
     }
   }
 
@@ -53,19 +53,9 @@ public class IoUtil {
     return bufferedReader.readLine();
   }
 
-  public static File loadResource(String filename) throws ValidationException {
-    ClassLoader classLoader = IoUtil.class.getClassLoader();
-    URL url = classLoader.getResource(filename);
-    try {
-      return new File(url.getFile());
-    } catch (NullPointerException e) {
-      throw new ValidationException(e);
-    }
-  }
-
   public static byte[] readFile(String filename) throws AssertionError {
     try {
-      File resource = loadResource(filename);
+      File resource = loadFileOrThrow(filename);
       return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
     } catch (Exception e) {
       throw new AssertionError(e);

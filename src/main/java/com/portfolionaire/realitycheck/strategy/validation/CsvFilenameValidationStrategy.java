@@ -1,7 +1,6 @@
 package com.portfolionaire.realitycheck.strategy.validation;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
-import com.portfolionaire.realitycheck.reader.FileReader;
 import com.portfolionaire.realitycheck.util.IoUtil;
 import com.portfolionaire.realitycheck.validator.CsvValidator;
 import com.portfolionaire.realitycheck.validator.FileValidator;
@@ -17,13 +16,13 @@ public class CsvFilenameValidationStrategy extends AbstractValidationStrategy<St
   }
 
   @Override
-  public byte[] validate() throws ValidationException {
+  public byte[] validate() {
     String filename = getActualOrThrow(new ValidationException("No value present"));
-    File file = IoUtil.toFileOrThrow(filename);
-    new FileValidator(file).doAction();
-    byte[] csvBytes = new FileReader(file).doAction();
-    new CsvValidator(new String(csvBytes)).doAction();
+    File file = IoUtil.loadFileOrThrow(filename);
 
-    return csvBytes;
+    add(new FileValidator(file));
+    add(new CsvValidator(file));
+
+    return super.validate();
   }
 }

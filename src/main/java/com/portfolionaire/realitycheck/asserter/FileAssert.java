@@ -21,7 +21,7 @@ public class FileAssert extends AbstractReadableAssert<FileAssert, File, FileVal
   }
 
   public FileAssert hasSameContentAs(String filename) throws AssertionError {
-    return hasSameContentAs(IoUtil.toFileOrThrow(filename));
+    return hasSameContentAs(IoUtil.loadFileOrThrow(filename));
   }
 
   public FileAssert hasSameContentAs(File file) throws AssertionError {
@@ -33,6 +33,6 @@ public class FileAssert extends AbstractReadableAssert<FileAssert, File, FileVal
   }
 
   public FileAssert hasNotSameContentAs(String filename) throws AssertionError {
-    return hasNotSameContentAs(IoUtil.toFileOrThrow(filename));
+    return hasNotSameContentAs(IoUtil.loadFileOrThrow(filename));
   }
 }

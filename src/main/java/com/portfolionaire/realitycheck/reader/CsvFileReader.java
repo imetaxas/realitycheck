@@ -23,7 +23,7 @@ public class CsvFileReader implements Reader<String, List<String>> {
   @Override
   public List<String> read() throws ReaderException {
     try {
-      File file = IoUtil.loadResource(filename);
+      File file = IoUtil.loadFileOrThrow(filename);
       return IOUtils.readLines(new FileInputStream(file));
     } catch (Exception e) {
       throw new ReaderException(e);

@@ -1,15 +1,17 @@
 package com.portfolionaire.realitycheck.strategy.validation;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Created by imeta on 24-Oct-17.
  */
-public abstract class AbstractValidationStrategy<T> implements ValidationStrategy {
+public abstract class AbstractValidationStrategy<T> extends ArrayList<Action> implements ValidationStrategy<T> {
 
-  private T actual;
-  //Optional<K> actualValue;
+  private transient T actual;
 
   public AbstractValidationStrategy(T actual) {
     this.actual = actual;
@@ -23,46 +25,25 @@ public abstract class AbstractValidationStrategy<T> implements ValidationStrateg
     return Optional.ofNullable(actual).orElseThrow(() -> e);
   }
 
-  /*Action<T, K>[] validationActions;
+  private Function<Void, T> toFunction(Action<Void, T> action) {
+    return x -> action.doAction();
+  }
 
-  List<Function<T, K>> functions;
-
-  public AbstractValidationStrategy(Action<T, K>... validationActions) {
-    for(Action action: validationActions) {
-      functions.add((x) -> {
-        try {
-          return (K) action.doAction();
-        } catch (ValidationException e) {
-          throw new RuntimeException(e);
-        }
-      });
-    }
-  }*/
-
-  /*public AbstractValidationStrategy(Function[] functions) {
-    this.functions = functions;
-  }*/
-
-  /*@Override
-  public K validate() throws ValidationException {
-    /*for (Action action: validationActions) {
-      action.doAction();
-    }*/
-
-    /*Function<File, byte[]> c = (x) -> {
-      try {
-        return new FileReader(x).doAction();
-      } catch (ValidationException e) {
-        throw new RuntimeException(e);
+  @Override
+  public byte[] validate() throws ValidationException {
+    Iterator<Action> iterator = iterator();
+    Function<Void, byte[]> function = null;
+    while (iterator.hasNext()) {
+      function = toFunction(iterator.next());
+      if(iterator.hasNext()){
+        function.apply(null);
+      } else {
+        break;
       }
-    };*/
-
-    //Function<Action<File, byte[]>, byte[]> cc = null;
-    //for (Action<File, byte[]> action : validationActions) {
-
-    /*Function f = functions.get(0);
-    for (int i = 1; i < functions.size(); i++) {
-      f.andThen(functions.get(i));
     }
-  }*/
+    if(function == null) {
+      return new byte[0];
+    }
+    return function.apply(null);
+  }
 }

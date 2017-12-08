@@ -1,8 +1,10 @@
 package com.portfolionaire.realitycheck.validator;
 
 import com.portfolionaire.realitycheck.exception.ValidationException;
+import com.portfolionaire.realitycheck.reader.FileReader;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
@@ -16,12 +18,15 @@ public class CsvValidator extends AbstractValidator<String, byte[]> {
     super(csv);
   }
 
+  public CsvValidator(File file) throws ValidationException {
+    super(new String(new FileReader(file).read()));
+  }
+
   @Override
   public byte[] validate() throws ValidationException {
     super.validate();
     try {
       List lines = IOUtils.readLines(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(value.get().getBytes()))));
-
       if (lines.isEmpty()) {
         throw new ValidationException("File is empty");
       }

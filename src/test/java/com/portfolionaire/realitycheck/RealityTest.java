@@ -62,13 +62,13 @@ public class RealityTest {
   @Test
   public void assertThat_InputStream_IsNotNull() throws Exception {
     byte[] bytes = "RandomString".getBytes();
-    //assertNotNull(assertThat(new ByteArrayInputStream(bytes)).isNotNull());
+    assertNotNull(assertThat(new ByteArrayInputStream(bytes)).isNotNull());
   }
 
   @Test
   public void assertThat_InputStream_IsNull() throws Exception {
     ByteArrayInputStream inputStream = null;
-    //assertNotNull(assertThat(inputStream).isNull());
+    assertNotNull(assertThat(inputStream).isNull());
   }
 
   @After
