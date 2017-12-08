@@ -3,7 +3,7 @@ package com.portfolionaire.realitycheck.exception;
 /**
  * @author yanimetaxas
  */
-public class ValidationException extends Exception {
+public class ValidationException extends AssertionError {
 
   public ValidationException(Throwable cause) {
     super(cause);

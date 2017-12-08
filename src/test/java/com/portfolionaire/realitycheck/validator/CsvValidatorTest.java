@@ -21,7 +21,8 @@ public class CsvValidatorTest {
 
   @Test(expected = ValidationException.class)
   public void validate_csvIsNull() throws Exception {
-    CsvValidator validator = new CsvValidator(null);
+    String csv = null;
+    CsvValidator validator = new CsvValidator(csv);
 
     validator.validate();
   }

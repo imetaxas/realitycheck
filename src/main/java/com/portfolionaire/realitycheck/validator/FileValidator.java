@@ -7,7 +7,7 @@ import java.io.File;
 /**
  * Created by imeta on 08-Oct-17.
  */
-public class FileValidator<T, K> extends AbstractValidator<File, File> {
+public class FileValidator extends AbstractValidator<File, File> {
 
   public FileValidator(File value) {
     super(value);
@@ -16,7 +16,7 @@ public class FileValidator<T, K> extends AbstractValidator<File, File> {
   @Override
   public File validate() throws ValidationException {
     super.validate();
-    File resource = IoUtil.loadResource(value.get().getName());
+    File resource = IoUtil.loadFileOrThrow(value.get().getName());
     if (!resource.exists() || !resource.isFile()) {
       throw new ValidationException("File not found");
     }

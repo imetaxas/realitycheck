@@ -77,7 +77,7 @@ abstract class AbstractReadableAssert<SELF extends AbstractReadableAssert<SELF, 
     try {
       return validationStrategy.validate();
     } catch (ValidationException e) {
-      return new byte[0];
+      return null;
     }
   }
 }
