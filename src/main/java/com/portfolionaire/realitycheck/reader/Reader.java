@@ -6,7 +6,7 @@ import com.portfolionaire.realitycheck.strategy.validation.Action;
 /**
  * Created by imeta on 25-Sep-17.
  */
-public interface Reader<T, K> extends Action<T, K> {
+public interface Reader<T, K> extends Action<K> {
 
   K read() throws ReaderException;
 }

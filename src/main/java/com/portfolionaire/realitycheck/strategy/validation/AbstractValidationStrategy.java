@@ -25,7 +25,7 @@ public abstract class AbstractValidationStrategy<T> extends ArrayList<Action> im
     return Optional.ofNullable(actual).orElseThrow(() -> e);
   }
 
-  private Function<Void, T> toFunction(Action<Void, T> action) {
+  private Function<Void, T> toFunction(Action<T> action) {
     return x -> action.doAction();
   }
 
