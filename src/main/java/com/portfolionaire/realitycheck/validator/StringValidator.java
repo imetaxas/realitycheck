@@ -3,9 +3,9 @@ package com.portfolionaire.realitycheck.validator;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 
 /**
- * Created by imeta on 08-Oct-17.
+ * @author yanimetaxas
  */
-public class StringValidator extends AbstractValidator<byte[], byte[]> {
+class StringValidator extends AbstractValidator<byte[], byte[]> {
 
   public StringValidator(byte[] value) {
     super(value);
@@ -14,10 +14,10 @@ public class StringValidator extends AbstractValidator<byte[], byte[]> {
   @Override
   public byte[] validate() throws ValidationException {
     super.validate();
-    if (new String(value.get()).isEmpty()) {
+    if (new String(getActualOrThrow(new ValidationException("Value is empty"))).isEmpty()) {
       throw new ValidationException("Value is empty");
     }
-    return value.get();
+    return getActualOrElseNull();
   }
 
   @Override

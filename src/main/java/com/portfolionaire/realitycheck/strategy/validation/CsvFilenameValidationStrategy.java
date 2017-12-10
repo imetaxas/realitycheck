@@ -7,7 +7,7 @@ import com.portfolionaire.realitycheck.validator.FileValidator;
 import java.io.File;
 
 /**
- * Created by imeta on 29-Oct-17.
+ * @author yanimetaxas
  */
 public class CsvFilenameValidationStrategy extends AbstractValidationStrategy<String> {
 

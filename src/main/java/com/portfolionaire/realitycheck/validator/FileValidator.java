@@ -5,7 +5,7 @@ import com.portfolionaire.realitycheck.util.IoUtil;
 import java.io.File;
 
 /**
- * Created by imeta on 08-Oct-17.
+ * @author yanimetaxas
  */
 public class FileValidator extends AbstractValidator<File, File> {
 
@@ -16,11 +16,11 @@ public class FileValidator extends AbstractValidator<File, File> {
   @Override
   public File validate() throws ValidationException {
     super.validate();
-    File resource = IoUtil.loadFileOrThrow(value.get().getName());
+    File resource = IoUtil.loadFileOrThrow(getActualOrThrow(new ValidationException("No value present")).getName());
     if (!resource.exists() || !resource.isFile()) {
       throw new ValidationException("File not found");
     }
-    return value.get();
+    return getActualOrElseNull();
   }
 
   @Override
