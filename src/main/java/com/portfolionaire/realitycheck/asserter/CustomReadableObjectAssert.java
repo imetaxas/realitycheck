@@ -7,7 +7,7 @@ import com.portfolionaire.realitycheck.util.CustomObject;
 /**
  * @author yanimetaxas
  */
-public class CustomReadableObjectAssert extends AbstractReadableAssert<CustomReadableObjectAssert, CustomObject, CustomObjectValidationStrategy> {
+class CustomReadableObjectAssert extends AbstractReadableAssert<CustomReadableObjectAssert, CustomObject, CustomObjectValidationStrategy> {
 
 
   CustomReadableObjectAssert(CustomObject customObject) throws ValidationException {
@@ -20,4 +20,12 @@ public class CustomReadableObjectAssert extends AbstractReadableAssert<CustomRea
     }
     return self;
   }
+
+  CustomReadableObjectAssert isIntegerGreaterThanZero() throws ValidationException {
+    if (actual.getInteger() <= 0) {
+      throw new ValidationException("");
+    }
+    return self;
+  }
+
 }

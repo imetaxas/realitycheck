@@ -8,19 +8,20 @@ import org.apache.commons.io.IOUtils;
 
 /**
  * @author yanimetaxas
+ * @since 10-Dec-17
  */
-public class FileReader implements Reader<File, byte[]> {
+public class FilepathReader implements Reader<String, byte[]> {
 
-  private File file;
+  private String filepath;
 
-  public FileReader(File file) {
-    this.file = file;
+  public FilepathReader(String filepath) {
+    this.filepath = filepath;
   }
 
   @Override
   public byte[] read() throws ReaderException {
     try {
-      File resource = IoUtil.loadResourceOrThrow(file.getName());
+      File resource = IoUtil.toFileOrNull(filepath);
       return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
     } catch (Exception e){
       throw new ReaderException(e);

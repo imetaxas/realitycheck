@@ -10,20 +10,20 @@ import org.apache.commons.io.IOUtils;
 
 
 /**
- * Created by imeta on 24-Sep-17.
+ * @author yanimetaxas
  */
 public class CsvFileReader implements Reader<String, List<String>> {
 
   private String filename;
 
-  public CsvFileReader(String filename) {
+  CsvFileReader(String filename) {
     this.filename = filename;
   }
 
   @Override
   public List<String> read() throws ReaderException {
     try {
-      File file = IoUtil.loadFileOrThrow(filename);
+      File file = IoUtil.loadResourceOrThrow(filename);
       return IOUtils.readLines(new FileInputStream(file));
     } catch (Exception e) {
       throw new ReaderException(e);

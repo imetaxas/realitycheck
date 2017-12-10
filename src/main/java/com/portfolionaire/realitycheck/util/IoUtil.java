@@ -10,24 +10,14 @@ import java.net.URL;
 import org.apache.commons.io.IOUtils;
 
 /**
- * Created by imeta on 21-Sep-17.
+ * @author yanimetaxas
  */
 public class IoUtil {
 
   private IoUtil() {
   }
 
-  /*public static Optional<File> toFile(String filename)  {
-    try {
-      ClassLoader classLoader = IoUtil.class.getClassLoader();
-      URL url = classLoader.getResource(filename);
-      return Optional.ofNullable(new File(url.getFile()));
-    } catch (NullPointerException e) {
-      return Optional.empty();
-    }
-  }*/
-
-  public static File toFileOrNull(String filename) {
+  public static File loadResourceOrNull(String filename) {
     try {
       ClassLoader classLoader = IoUtil.class.getClassLoader();
       URL url = classLoader.getResource(filename);
@@ -37,13 +27,21 @@ public class IoUtil {
     }
   }
 
-  public static File loadFileOrThrow(String filename) {
+  public static File loadResourceOrThrow(String filename) {
     try {
       ClassLoader classLoader = IoUtil.class.getClassLoader();
       URL url = classLoader.getResource(filename);
       return new File(url.getFile());
     } catch (NullPointerException e) {
       throw new ReaderException(e);
+    }
+  }
+
+  public static File toFileOrNull(String filepath) {
+    try {
+      return new File(filepath);
+    } catch (NullPointerException e) {
+      return null;
     }
   }
 
@@ -55,7 +53,7 @@ public class IoUtil {
 
   public static byte[] readFile(String filename) throws AssertionError {
     try {
-      File resource = loadFileOrThrow(filename);
+      File resource = loadResourceOrThrow(filename);
       return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
     } catch (Exception e) {
       throw new AssertionError(e);

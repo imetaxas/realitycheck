@@ -6,24 +6,27 @@ import java.util.Optional;
 /**
  * @author yanimetaxas
  */
-class AbstractValidator<T, K> implements Validator<T, K> {
+abstract class AbstractValidator<T, K> implements Validator<K> {
 
-  Optional<T> value;
+  private T actual;
 
-  public AbstractValidator(T value) {
-    this.value = Optional.ofNullable(value);
+  AbstractValidator(T actual) {
+    this.actual = actual;
+  }
+
+  T getActualOrElseNull() {
+    return Optional.ofNullable(actual).orElse(null);
+  }
+
+  T getActualOrThrow(ValidationException e) throws ValidationException {
+    return Optional.ofNullable(actual).orElseThrow(() -> e);
   }
 
   @Override
   public K validate() throws ValidationException {
-    if (value == Optional.empty()) {
+    if (actual == Optional.empty()) {
       throw new ValidationException("ACTUAL is NULL");
     }
-    return (K) value;
-  }
-
-  @Override
-  public K doAction() throws ValidationException {
-    return validate();
+    return null;
   }
 }

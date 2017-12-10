@@ -4,9 +4,9 @@ import com.portfolionaire.realitycheck.exception.ValidationException;
 import com.portfolionaire.realitycheck.strategy.validation.Action;
 
 /**
- * Created by imeta on 07-Oct-17.
+ * @author yanimetaxas
  */
-public interface Validator<T, K> extends Action<T, K> {
+interface Validator<K> extends Action<K> {
 
   K validate() throws ValidationException;
 }

@@ -26,7 +26,7 @@ public class CsvValidator extends AbstractValidator<String, byte[]> {
   public byte[] validate() throws ValidationException {
     super.validate();
     try {
-      List lines = IOUtils.readLines(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(value.get().getBytes()))));
+      List lines = IOUtils.readLines(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(getActualOrElseNull().getBytes()))));
       if (lines.isEmpty()) {
         throw new ValidationException("File is empty");
       }
@@ -38,7 +38,7 @@ public class CsvValidator extends AbstractValidator<String, byte[]> {
     } catch (Exception e) {
       throw new ValidationException(e);
     }
-    return value.get().getBytes();
+    return getActualOrElseNull().getBytes();
   }
 
   @Override

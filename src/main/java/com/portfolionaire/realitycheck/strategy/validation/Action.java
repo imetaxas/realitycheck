@@ -3,8 +3,9 @@ package com.portfolionaire.realitycheck.strategy.validation;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 
 /**
- * Created by imeta on 24-Oct-17.
+ * @author yanimetaxas
  */
-public interface Action<T, K> {
+@FunctionalInterface
+public interface Action<K> {
   K doAction() throws ValidationException;
 }

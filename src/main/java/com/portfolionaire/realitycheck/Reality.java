@@ -18,6 +18,14 @@ public class Reality {
   private Reality() {
   }
 
+  public static FileAssert assertThatFile(String filepath) throws AssertionError {
+    try {
+      return new FileAssert(filepath);
+    } catch (FileNotFoundException e) {
+      throw new AssertionError(e);
+    }
+  }
+
   public static CsvFileAssert assertThatFileCsv(String filename) throws AssertionError {
     return new CsvFileAssert(filename);
   }

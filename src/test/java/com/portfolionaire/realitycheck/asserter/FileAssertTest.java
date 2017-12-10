@@ -1,12 +1,11 @@
 package com.portfolionaire.realitycheck.asserter;
 
 import static com.portfolionaire.realitycheck.Reality.assertThat;
+import static com.portfolionaire.realitycheck.Reality.assertThatFile;
 import static org.junit.Assert.assertNotNull;
 
-import com.portfolionaire.realitycheck.tools.CoverageTool;
 import com.portfolionaire.realitycheck.tools.Files;
 import java.io.File;
-import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -15,31 +14,24 @@ import org.junit.Test;
 public class FileAssertTest {
 
   @Test
-  public void assertThatFileCsv_FilenameIsNull() throws Exception {
-    File file = null;
+  public void assertThatFile_FilePathIsNull() throws Exception {
+    String filePath = null;
 
-    assertNotNull(assertThat(file));
+    assertNotNull(assertThatFile(filePath).isNull());
   }
 
   @Test
-  public void assertThatFileCsv_FilenameIsEmpty() throws Exception {
-    File file = new File("");
+  public void assertThatFile_FilepathExists() throws Exception {
+    String filePath = Files.loadResource("test.txt").getPath();
 
-    assertNotNull(assertThat(file));
+    assertNotNull(assertThatFile(filePath).exists());
   }
 
   @Test
-  public void assertThatFileCsv_FilenameIsNonFile() throws Exception {
-    File file = new File("aaa");
+  public void assertThatFile_FilepathNotExists() throws Exception {
+    String filePath = "aaa";
 
-    assertNotNull(assertThat(file));
-  }
-
-  @Test
-  public void assertThat_isFile() throws Exception {
-    File file = Files.toFile("test.txt");
-
-    assertNotNull(assertThat(file));
+    assertNotNull(assertThatFile(filePath).notExists());
   }
 
   @Test
@@ -48,4 +40,19 @@ public class FileAssertTest {
 
     assertNotNull(assertThat(file));
   }
+
+  @Test
+  public void assertThatFileCsv_FileExists() throws Exception {
+    File file = Files.loadResource("test.txt");
+
+    assertNotNull(assertThat(file).exists());
+  }
+
+  @Test
+  public void assertThatFileCsv_FileNotExists() throws Exception {
+    File file = new File("");
+
+    assertNotNull(assertThat(file).notExists());
+  }
+
 }

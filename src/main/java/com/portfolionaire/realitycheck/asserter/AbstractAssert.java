@@ -1,17 +1,18 @@
 package com.portfolionaire.realitycheck.asserter;
 
 import com.portfolionaire.realitycheck.util.GenericClass;
+import java.util.Optional;
 
 /**
  * @author yanimetaxas
  */
-public abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, ACTUAL> implements
+abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, ACTUAL> implements
     Assertable<SELF, ACTUAL> {
 
   final ACTUAL actual;
   final SELF self;
 
-  public AbstractAssert(ACTUAL actual) {
+  AbstractAssert(ACTUAL actual) {
     GenericClass<SELF> genericClass = new GenericClass(getClass());
     self = genericClass.getType().cast(this);
     this.actual = actual;
@@ -33,19 +34,11 @@ public abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, 
     return self;
   }
 
-  /*@Override
-  public SELF isSameAs(Object expected) throws AssertionError {
-    if(!actual.equals(expected)) {
-      throw new AssertionError();
-    }
-    return self;
+  public ACTUAL getActualOrThrow(AssertionError e) throws AssertionError {
+    return Optional.ofNullable(actual).orElseThrow(() -> e);
   }
 
-  @Override
-  public SELF isNotSameAs(Object expected) throws AssertionError {
-    if(actual.equals(expected)) {
-      throw new AssertionError();
-    }
-    return self;
-  }*/
+  public ACTUAL getActual() throws AssertionError {
+    return getActualOrThrow(new AssertionError("Cannot get ACTUAL"));
+  }
 }

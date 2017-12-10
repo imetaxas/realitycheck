@@ -6,17 +6,18 @@ import java.io.File;
 
 /**
  * @author yanimetaxas
+ * @since 10-Dec-17
  */
-public class FileValidator extends AbstractValidator<File, File> {
+public class FilepathValidator extends AbstractValidator<String, String> {
 
-  public FileValidator(File value) {
+  public FilepathValidator(String value) {
     super(value);
   }
 
   @Override
-  public File validate() throws ValidationException {
+  public String validate() throws ValidationException {
     super.validate();
-    File resource = IoUtil.loadResourceOrThrow(getActualOrThrow(new ValidationException("No value present")).getName());
+    File resource = IoUtil.toFileOrNull(getActualOrThrow(new ValidationException("No value present")));
     if (!resource.exists() || !resource.isFile()) {
       throw new ValidationException("File not found");
     }
@@ -24,7 +25,7 @@ public class FileValidator extends AbstractValidator<File, File> {
   }
 
   @Override
-  public File doAction() throws ValidationException {
+  public String doAction() throws ValidationException {
     return validate();
   }
 }

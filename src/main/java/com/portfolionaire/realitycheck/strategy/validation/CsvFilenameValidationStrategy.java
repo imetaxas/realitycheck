@@ -7,7 +7,7 @@ import com.portfolionaire.realitycheck.validator.FileValidator;
 import java.io.File;
 
 /**
- * Created by imeta on 29-Oct-17.
+ * @author yanimetaxas
  */
 public class CsvFilenameValidationStrategy extends AbstractValidationStrategy<String> {
 
@@ -18,7 +18,7 @@ public class CsvFilenameValidationStrategy extends AbstractValidationStrategy<St
   @Override
   public byte[] validate() {
     String filename = getActualOrThrow(new ValidationException("No value present"));
-    File file = IoUtil.loadFileOrThrow(filename);
+    File file = IoUtil.loadResourceOrThrow(filename);
 
     add(new FileValidator(file));
     add(new CsvValidator(file));

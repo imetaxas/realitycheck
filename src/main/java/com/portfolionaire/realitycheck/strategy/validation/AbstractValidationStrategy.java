@@ -7,32 +7,32 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * Created by imeta on 24-Oct-17.
+ * @author yanimetaxas
  */
-public abstract class AbstractValidationStrategy<T> extends ArrayList<Action> implements ValidationStrategy<T> {
+abstract class AbstractValidationStrategy<T> extends ArrayList<Action> implements ValidationStrategy<T> {
 
   private transient T actual;
 
-  public AbstractValidationStrategy(T actual) {
+  AbstractValidationStrategy(T actual) {
     this.actual = actual;
   }
 
-  public T getActualOrElse(T value) {
+  T getActualOrElse(T value) {
     return Optional.ofNullable(actual).orElse(value);
   }
 
-  public T getActualOrThrow(ValidationException e) throws ValidationException {
+  T getActualOrThrow(ValidationException e) throws ValidationException {
     return Optional.ofNullable(actual).orElseThrow(() -> e);
   }
 
-  private Function<Void, T> toFunction(Action<Void, T> action) {
+  private Function<Void, T> toFunction(Action<T> action) {
     return x -> action.doAction();
   }
 
   @Override
   public byte[] validate() throws ValidationException {
     Iterator<Action> iterator = iterator();
-    Function<Void, byte[]> function = null;
+    Function<Void, T> function = null;
     while (iterator.hasNext()) {
       function = toFunction(iterator.next());
       if(iterator.hasNext()){
@@ -44,6 +44,31 @@ public abstract class AbstractValidationStrategy<T> extends ArrayList<Action> im
     if(function == null) {
       return new byte[0];
     }
-    return function.apply(null);
+    return (byte[]) function.apply(null);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    if (!super.equals(o)) {
+      return false;
+    }
+
+    AbstractValidationStrategy<?> that = (AbstractValidationStrategy<?>) o;
+
+    return actual != null ? actual.equals(that.actual) : that.actual == null;
+
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (actual != null ? actual.hashCode() : 0);
+    return result;
   }
 }
