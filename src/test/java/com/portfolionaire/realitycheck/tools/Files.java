@@ -9,11 +9,13 @@ import java.net.URL;
  */
 public class Files {
 
-  @SuppressWarnings("ConstantConditions")
-  public static File toFile(String filename) throws Exception {
+  public static File loadResource(String filename) throws Exception {
     ClassLoader classLoader = IoUtil.class.getClassLoader();
     URL url = classLoader.getResource(filename);
-    return new File(url.getFile());
+    try {
+      return new File(url.getFile());
+    } catch (NullPointerException npe) {
+      return new File(filename);
+    }
   }
-
 }

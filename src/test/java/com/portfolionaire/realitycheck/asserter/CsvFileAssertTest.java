@@ -29,7 +29,7 @@ public class CsvFileAssertTest {
 
   @Test
   public void isSameAs_given_file() throws Exception {
-    File file = Files.toFile("sampleA.csv"); //ISO-8859-1
+    File file = Files.loadResource("sampleA.csv"); //ISO-8859-1
 
     assertNotNull(assertThatFileCsv(file).hasSameContentAs(file.getName()));
   }
@@ -43,14 +43,14 @@ public class CsvFileAssertTest {
 
   @Test
   public void assertThatFileCsv_NoFileCsv() throws Exception {
-    File file = Files.toFile("test.txt");
+    File file = Files.loadResource("test.txt");
 
     assertNotNull(assertThatFileCsv(file.getName()));
   }
 
   @Test
   public void assertThatFileCsv_FileIsEmpty() throws Exception {
-    File file = Files.toFile("empty.csv");
+    File file = Files.loadResource("empty.csv");
 
     assertNotNull(assertThatFileCsv(file));
   }
@@ -73,15 +73,15 @@ public class CsvFileAssertTest {
 
   @Test
   public void isNotSameAs_given_file() throws Exception {
-    File file1 = Files.toFile("sampleA.csv");
-    File file2 = Files.toFile("sampleB.csv");
+    File file1 = Files.loadResource("sampleA.csv");
+    File file2 = Files.loadResource("sampleB.csv");
 
     assertNotNull(assertThatFileCsv(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
   public void isNotSameAs_False() throws Exception {
-    File file = Files.toFile("sampleA.csv");
+    File file = Files.loadResource("sampleA.csv");
 
     assertThatFileCsv(file).hasNotSameContentAs(file);
   }
@@ -96,14 +96,14 @@ public class CsvFileAssertTest {
 
   @Test
   public void headerHasNoDigits() throws Exception {
-    File file = Files.toFile("withHeader.csv");
+    File file = Files.loadResource("withHeader.csv");
 
     assertNotNull(Reality.assertThatFileCsv(file).headerHasNoDigits());
   }
 
   @Test(expected = AssertionError.class)
   public void headerHasNoDigits_NoHeader() throws Exception {
-    File file = Files.toFile("sampleA.csv");
+    File file = Files.loadResource("sampleA.csv");
 
     assertThatFileCsv(file).headerHasNoDigits();
   }
