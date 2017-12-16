@@ -10,8 +10,8 @@ import java.io.ByteArrayInputStream;
  */
 public class CsvAssert extends AbstractReadableAssert<CsvAssert, String, CsvValidationStrategy> {
 
-  public CsvAssert(String csv) throws AssertionError {
-    super(csv);
+  public CsvAssert(String csv, String message) throws AssertionError {
+    super(csv, message);
   }
 
   public CsvAssert hasSameContentAs(String expected) throws AssertionError {

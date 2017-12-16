@@ -5,6 +5,7 @@ import com.portfolionaire.realitycheck.asserter.CsvFileAssert;
 import com.portfolionaire.realitycheck.asserter.FileAssert;
 import com.portfolionaire.realitycheck.asserter.InputStreamAssert;
 import com.portfolionaire.realitycheck.asserter.StringAssert;
+import com.portfolionaire.realitycheck.asserter.StatementBuilder;
 import com.portfolionaire.realitycheck.exception.ValidationException;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,30 +21,30 @@ public class Reality {
 
   public static FileAssert assertThatFile(String filepath) throws AssertionError {
     try {
-      return new FileAssert(filepath);
+      return new FileAssert(filepath, null);
     } catch (FileNotFoundException e) {
       throw new AssertionError(e);
     }
   }
 
   public static CsvFileAssert assertThatFileCsv(String filename) throws AssertionError {
-    return new CsvFileAssert(filename);
+    return new CsvFileAssert(filename, null);
   }
 
   public static CsvFileAssert assertThatFileCsv(File file) throws AssertionError {
-    return new CsvFileAssert(file);
+    return new CsvFileAssert(file, null);
   }
 
   public static FileAssert assertThat(File file) throws AssertionError {
     try {
-      return new FileAssert(file);
+      return new FileAssert(file, null);
     } catch (FileNotFoundException e) {
       throw new AssertionError(e);
     }
   }
 
   public static CsvAssert assertThatCsv(String csv) throws ValidationException {
-    return new CsvAssert(csv);
+    return new CsvAssert(csv, null);
   }
 
   public static InputStreamAssert assertThat(InputStream inputStream) throws ValidationException {
@@ -52,5 +53,9 @@ public class Reality {
 
   public static StringAssert assertThat(String string) throws ValidationException {
     return new StringAssert(string);
+  }
+
+  public static StatementBuilder assertWithMessage(String message) throws ValidationException {
+    return new StatementBuilder().withMessage(message);
   }
 }

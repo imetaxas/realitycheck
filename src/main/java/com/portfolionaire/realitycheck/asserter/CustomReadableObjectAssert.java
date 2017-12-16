@@ -11,7 +11,7 @@ class CustomReadableObjectAssert extends AbstractReadableAssert<CustomReadableOb
 
 
   CustomReadableObjectAssert(CustomObject customObject) throws ValidationException {
-    super(customObject);
+    super(customObject, null);
   }
 
   CustomReadableObjectAssert isStringNull() throws ValidationException {

@@ -12,13 +12,13 @@ public class CsvFileAssert extends FileAssert {
 
   private CsvAssert csvAssert;
 
-  public CsvFileAssert(String filename) throws AssertionError {
-    super(IoUtil.toFileOrNull(filename), new CsvFilenameValidationStrategy(filename));
+  public CsvFileAssert(String filename, String message) throws AssertionError {
+    super(IoUtil.toFileOrNull(filename), message, new CsvFilenameValidationStrategy(filename));
   }
 
-  public CsvFileAssert(File csvFile) throws AssertionError {
-    super(csvFile, new CsvFileValidationStrategy(csvFile));
-    csvAssert = new CsvAssert(new String(getActualContent()));
+  public CsvFileAssert(File csvFile, String message) throws AssertionError {
+    super(csvFile, message, new CsvFileValidationStrategy(csvFile));
+    csvAssert = new CsvAssert(new String(getActualContent()), message);
   }
 
   public CsvAssert headerHasNoDigits() throws AssertionError {

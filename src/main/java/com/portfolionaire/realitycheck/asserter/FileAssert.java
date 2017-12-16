@@ -14,16 +14,16 @@ import java.io.FileNotFoundException;
 public class FileAssert extends AbstractReadableAssert<FileAssert, File, FileValidationStrategy> {
 
 
-  public FileAssert(String filepath) throws FileNotFoundException, AssertionError {
-    super(IoUtil.toFileOrNull(filepath), new FilepathValidationStrategy(filepath));
+  public FileAssert(String filepath, String message) throws FileNotFoundException, AssertionError {
+    super(IoUtil.toFileOrNull(filepath), message, new FilepathValidationStrategy(filepath));
   }
 
-  public FileAssert(File file) throws FileNotFoundException, AssertionError {
-    super(file);
+  public FileAssert(File file, String message) throws FileNotFoundException, AssertionError {
+    super(file, message);
   }
 
-  public FileAssert(File file, ValidationStrategy strategy) throws AssertionError {
-    super(file, strategy);
+  public FileAssert(File file, String message, ValidationStrategy strategy) throws AssertionError {
+    super(file, message, strategy);
   }
 
   public FileAssert exists() {

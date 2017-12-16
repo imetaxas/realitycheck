@@ -1,18 +1,24 @@
 package com.portfolionaire.realitycheck;
 
 import static com.portfolionaire.realitycheck.Reality.assertThat;
+import static com.portfolionaire.realitycheck.Reality.assertWithMessage;
 import static org.junit.Assert.assertNotNull;
 
 import com.portfolionaire.realitycheck.tools.CoverageTool;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import org.junit.After;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
  * @author yanimetaxas
  */
 public class RealityTest {
+
+  @Rule
+  public ExpectedException expectedEx = ExpectedException.none();
 
   @Test(expected = AssertionError.class)
   public void assertThat_FileIsNotNull() throws Exception {
@@ -69,6 +75,30 @@ public class RealityTest {
   public void assertThat_InputStream_IsNull() throws Exception {
     ByteArrayInputStream inputStream = null;
     assertNotNull(assertThat(inputStream).isNull());
+  }
+
+  @Test
+  public void assertThat_assertWithMessage_thatString_hasLength_6() throws Exception {
+    String string = "random";
+    assertNotNull(assertWithMessage("String has wrong length").that(string).hasLength(6));
+  }
+
+  @Test
+  public void assertThat_assertWithMessage_thatString_hasNotLength_7() throws Exception {
+    expectedEx.expect(AssertionError.class);
+    expectedEx.expectMessage("String has wrong length");
+
+    String string = "random";
+    assertWithMessage("String has wrong length").that(string).hasLength(7);
+  }
+
+  @Test
+  public void assertThat_assertWithMessage_InputStream_IsNotNull() throws Exception {
+    expectedEx.expect(AssertionError.class);
+    expectedEx.expectMessage("InputStream is NULL");
+
+    byte[] bytes = "RandomString".getBytes();
+    assertWithMessage("InputStream is NULL").that(new ByteArrayInputStream(bytes)).isNull();
   }
 
   @After

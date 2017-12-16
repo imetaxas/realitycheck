@@ -5,13 +5,17 @@ package com.portfolionaire.realitycheck.asserter;
  */
 public class StringAssert extends AbstractAssert<StringAssert, String> {
 
-  public StringAssert(String s) {
-    super(s);
+  public StringAssert(String string) {
+    super(string, null);
+  }
+
+  public StringAssert(String string, String message) {
+    super(string, message);
   }
 
   public StringAssert hasLength(int size) throws AssertionError {
     if(actual.length() != size) {
-      throw new AssertionError("Wrong length");
+      throwProperAssertionError("Wrong length");
     }
     return self;
   }
