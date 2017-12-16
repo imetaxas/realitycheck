@@ -18,14 +18,14 @@ abstract class AbstractReadableAssert<SELF extends AbstractReadableAssert<SELF, 
   private final byte[] actualContent;
   private final ValidationStrategy validationStrategy;
 
-  public AbstractReadableAssert(ACTUAL actual) throws AssertionError {
-    super(actual);
+  public AbstractReadableAssert(ACTUAL actual, String message) throws AssertionError {
+    super(actual, message);
     this.validationStrategy = getValidationStrategyFromType();
     this.actualContent = validateAndRead();
   }
 
-  public AbstractReadableAssert(ACTUAL actual, ValidationStrategy strategy) throws AssertionError {
-    super(actual);
+  public AbstractReadableAssert(ACTUAL actual, String message, ValidationStrategy strategy) throws AssertionError {
+    super(actual, null);
     this.validationStrategy = strategy;
     this.actualContent = validateAndRead();
   }
@@ -50,11 +50,11 @@ abstract class AbstractReadableAssert<SELF extends AbstractReadableAssert<SELF, 
     throw new AssertionError("InputStreams are exactly the same");
   }
 
-  public byte[] getActualContentOrElse(byte[] value) {
+  byte[] getActualContentOrElse(byte[] value) {
     return Optional.ofNullable(actualContent).orElse(value);
   }
 
-  public byte[] getActualContent() {
+  byte[] getActualContent() {
     return getActualContentOrElse(new byte[0]);
   }
 

@@ -10,6 +10,10 @@ public class InputStreamAssert extends
     AbstractReadableAssert<InputStreamAssert, InputStream, InputStreamValidationStrategy> {
 
   public InputStreamAssert(InputStream inputStream) throws AssertionError {
-    super(inputStream);
+    super(inputStream, null);
+  }
+
+  public InputStreamAssert(InputStream inputStream, String message) {
+    super(inputStream, message);
   }
 }

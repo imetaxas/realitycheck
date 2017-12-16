@@ -11,17 +11,19 @@ abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, ACTUAL>
 
   final ACTUAL actual;
   final SELF self;
+  final String customMessage;
 
-  AbstractAssert(ACTUAL actual) {
+  AbstractAssert(ACTUAL actual, String customMessage) {
     GenericClass<SELF> genericClass = new GenericClass(getClass());
     self = genericClass.getType().cast(this);
     this.actual = actual;
+    this.customMessage = customMessage;
   }
 
   @Override
   public SELF isNull() {
     if (this.actual != null) {
-      throw new AssertionError();
+      throwProperAssertionError("Subject is NULL");
     }
     return self;
   }
@@ -29,16 +31,24 @@ abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, ACTUAL>
   @Override
   public SELF isNotNull() {
     if (this.actual == null) {
-      throw new AssertionError();
+      throwProperAssertionError("Subject is not NULL");
     }
     return self;
   }
 
-  public ACTUAL getActualOrThrow(AssertionError e) throws AssertionError {
+  void throwProperAssertionError(String defaultMessage) {
+    if (customMessage == null) {
+      throw new AssertionError(defaultMessage);
+    } else {
+      throw new AssertionError(customMessage);
+    }
+  }
+
+  ACTUAL getActualOrThrow(AssertionError e) throws AssertionError {
     return Optional.ofNullable(actual).orElseThrow(() -> e);
   }
 
-  public ACTUAL getActual() throws AssertionError {
+  ACTUAL getActual() throws AssertionError {
     return getActualOrThrow(new AssertionError("Cannot get ACTUAL"));
   }
 }
