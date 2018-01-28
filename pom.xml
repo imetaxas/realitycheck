@@ -31,14 +31,14 @@
             <check />
           </configuration>
         </plugin>
-        <!--<plugin>
+        <plugin>
           <groupId>org.eluder.coveralls</groupId>
           <artifactId>coveralls-maven-plugin</artifactId>
           <version>4.3.0</version>
           <configuration>
-            <repoToken>ux6ZZIBjx43t113euc4EDfJ71Susi6CvU</repoToken>
+            <repoToken>MsmCx9LzyYstHLEfDdqEo9S3p2hIoQKsT</repoToken>
           </configuration>
-        </plugin>-->
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
