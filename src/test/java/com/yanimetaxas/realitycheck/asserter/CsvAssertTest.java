@@ -1,6 +1,6 @@
 package com.yanimetaxas.realitycheck.asserter;
 
-import static com.yanimetaxas.realitycheck.Reality.assertThatCsv;
+import static com.yanimetaxas.realitycheck.Reality.checkThatCsv;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
@@ -14,34 +14,34 @@ public class CsvAssertTest {
   public void assertThatCsv_WhenCsvIsNull() throws Exception {
     String csv = null;
 
-    assertNotNull(assertThatCsv(csv));
+    assertNotNull(checkThatCsv(csv));
   }
 
   @Test
   public void assertThatCsv_CsvIsNull() throws Exception {
     String csv = null;
 
-    assertNotNull(assertThatCsv(csv).isNull());
+    assertNotNull(checkThatCsv(csv).isNull());
   }
 
   @Test(expected = AssertionError.class)
   public void assertThatCsv_CsvIsNull_AssertNotNull() throws Exception {
     String csv = null;
 
-    assertThatCsv(csv).isNotNull();
+    checkThatCsv(csv).isNotNull();
   }
 
   @Test
   public void assertThatCsv_hasSameContentAs() throws Exception {
     String csv = "1,\"Eldon Base for stackable storage shelf, platinum\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8";
 
-    assertNotNull(assertThatCsv(csv).hasSameContentAs(csv));
+    assertNotNull(checkThatCsv(csv).hasSameContentAs(csv));
   }
 
   @Test(expected = AssertionError.class)
   public void assertThatCsv_hasNotSameContentAs() throws Exception {
     String csv = "1,\"Eldon Base for stackable storage shelf, platinum\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8";
 
-    assertThatCsv(csv).hasNotSameContentAs(csv);
+    checkThatCsv(csv).hasNotSameContentAs(csv);
   }
 }

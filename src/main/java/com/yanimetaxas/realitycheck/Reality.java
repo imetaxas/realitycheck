@@ -18,35 +18,35 @@ public class Reality {
   private Reality() {
   }
 
-  public static FileAssert assertThatFile(String filepath) throws AssertionError {
+  public static FileAssert checkThatFile(String filepath) throws AssertionError {
     return new FileAssert(filepath, null);
   }
 
-  public static CsvFileAssert assertThatFileCsv(String filename) throws AssertionError {
+  public static CsvFileAssert checkThatFileCsv(String filename) throws AssertionError {
     return new CsvFileAssert(filename, null);
   }
 
-  public static CsvFileAssert assertThatFileCsv(File file) throws AssertionError {
+  public static CsvFileAssert checkThatFileCsv(File file) throws AssertionError {
     return new CsvFileAssert(file, null);
   }
 
-  public static FileAssert assertThat(File file) throws AssertionError {
+  public static FileAssert checkThat(File file) throws AssertionError {
     return new FileAssert(file, null);
   }
 
-  public static CsvAssert assertThatCsv(String csv) throws ValidationException {
+  public static CsvAssert checkThatCsv(String csv) throws ValidationException {
     return new CsvAssert(csv, null);
   }
 
-  public static InputStreamAssert assertThat(InputStream inputStream) throws ValidationException {
+  public static InputStreamAssert checkThat(InputStream inputStream) throws ValidationException {
     return new InputStreamAssert(inputStream);
   }
 
-  public static StringAssert assertThat(String string) throws ValidationException {
+  public static StringAssert checkThat(String string) throws ValidationException {
     return new StringAssert(string);
   }
 
-  public static StatementBuilder assertWithMessage(String message) throws ValidationException {
+  public static StatementBuilder checkWithMessage(String message) throws ValidationException {
     return new StatementBuilder().withMessage(message);
   }
 }

@@ -1,10 +1,10 @@
 package com.yanimetaxas.realitycheck.asserter;
 
-import static com.yanimetaxas.realitycheck.Reality.assertThat;
+import static com.yanimetaxas.realitycheck.Reality.checkThat;
+import static com.yanimetaxas.realitycheck.Reality.checkThatFile;
 import static org.junit.Assert.assertNotNull;
 
 import com.yanimetaxas.realitycheck.tools.Files;
-import com.yanimetaxas.realitycheck.Reality;
 import java.io.File;
 import org.junit.Test;
 
@@ -17,42 +17,42 @@ public class FileAssertTest {
   public void assertThatFile_FilePathIsNull() throws Exception {
     String filePath = null;
 
-    assertNotNull(Reality.assertThatFile(filePath).isNull());
+    assertNotNull(checkThatFile(filePath).isNull());
   }
 
   @Test
   public void assertThatFile_FilepathExists() throws Exception {
     String filePath = Files.loadResource("test.txt").getPath();
 
-    assertNotNull(Reality.assertThatFile(filePath).exists());
+    assertNotNull(checkThatFile(filePath).exists());
   }
 
   @Test
   public void assertThatFile_FilepathNotExists() throws Exception {
     String filePath = "aaa";
 
-    assertNotNull(Reality.assertThatFile(filePath).notExists());
+    assertNotNull(checkThatFile(filePath).notExists());
   }
 
   @Test
   public void assertThat_FileIsNull() throws Exception {
     File file = null;
 
-    assertNotNull(Reality.assertThat(file));
+    assertNotNull(checkThat(file));
   }
 
   @Test
   public void assertThatFileCsv_FileExists() throws Exception {
     File file = Files.loadResource("test.txt");
 
-    assertNotNull(Reality.assertThat(file).exists());
+    assertNotNull(checkThat(file).exists());
   }
 
   @Test
   public void assertThatFileCsv_FileNotExists() throws Exception {
     File file = new File("");
 
-    assertNotNull(Reality.assertThat(file).notExists());
+    assertNotNull(checkThat(file).notExists());
   }
 
 }

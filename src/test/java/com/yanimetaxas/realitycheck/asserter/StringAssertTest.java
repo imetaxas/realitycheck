@@ -1,6 +1,6 @@
 package com.yanimetaxas.realitycheck.asserter;
 
-import static com.yanimetaxas.realitycheck.Reality.assertThat;
+import static com.yanimetaxas.realitycheck.Reality.checkThat;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -14,27 +14,27 @@ public class StringAssertTest {
   public void testIsNull() throws Exception {
     String string = null;
 
-    assertNotNull(assertThat(string).isNull());
+    assertNotNull(checkThat(string).isNull());
   }
 
   @Test
   public void testIsNotNull() throws Exception {
     String string = "RandomString";
 
-    assertNotNull(assertThat(string).isNotNull());
+    assertNotNull(checkThat(string).isNotNull());
   }
 
   @Test
   public void testHasLength12_True() throws Exception {
     String string = "RandomString";
 
-    assertNotNull(assertThat(string).hasLength(12));
+    assertNotNull(checkThat(string).hasLength(12));
   }
 
   @Test(expected = AssertionError.class)
   public void testHasLength10_False() throws Exception {
     String string = "RandomString";
 
-    assertNotNull(assertThat(string).hasLength(10));
+    assertNotNull(checkThat(string).hasLength(10));
   }
 }
