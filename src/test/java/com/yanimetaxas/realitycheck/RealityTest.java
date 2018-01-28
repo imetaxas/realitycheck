@@ -23,39 +23,39 @@ public class RealityTest {
 
   @Test(expected = AssertionError.class)
   public void assertThat_FileIsNotNull() throws Exception {
-    Reality.checkThat(new File("sampleA.csv")).isNull();
+    checkThat(new File("sampleA.csv")).isNull();
   }
 
   @Test
   public void assertThat_FileIsNull() throws Exception {
     File file = null;
-    assertNotNull(Reality.checkThat(file).isNull());
+    assertNotNull(checkThat(file).isNull());
   }
 
   @Test
   public void assertThat_FileIsSameAs() throws Exception {
     File file = new File("sampleA.csv");
-    assertNotNull(Reality.checkThat(file).hasSameContentAs(file));
+    assertNotNull(checkThat(file).hasSameContentAs(file));
   }
 
   @Test
   public void assertThat_FileIsNotSameAs() throws Exception {
     File file1 = new File("sampleA.csv");
     File file2 = new File("sampleB.csv");
-    assertNotNull(Reality.checkThat(file1).hasNotSameContentAs(file2));
+    assertNotNull(checkThat(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
   public void assertThat_FileIsSameAsAndNotSameAs_False() throws Exception {
     File file = new File("sampleA.csv");
-    Reality.checkThat(file).hasSameContentAs(file).hasNotSameContentAs(file);
+    checkThat(file).hasSameContentAs(file).hasNotSameContentAs(file);
   }
 
   @Test
   public void assertThat_FileIsSameAsAndNotSameAs_True() throws Exception {
     File file1 = new File("sampleA.csv");
     File file2 = new File("sampleB.csv");
-    assertNotNull(Reality.checkThat(file1).hasSameContentAs(file1).hasNotSameContentAs(file2));
+    assertNotNull(checkThat(file1).hasSameContentAs(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
@@ -63,19 +63,19 @@ public class RealityTest {
     File file1 = new File("sampleA.csv");
     File file2 = new File("sampleB.csv");
 
-    Reality.checkThat(file1).hasSameContentAs(file1).hasSameContentAs(file2);
+    checkThat(file1).hasSameContentAs(file1).hasSameContentAs(file2);
   }
 
   @Test
   public void assertThat_InputStream_IsNotNull() throws Exception {
     byte[] bytes = "RandomString".getBytes();
-    assertNotNull(Reality.checkThat(new ByteArrayInputStream(bytes)).isNotNull());
+    assertNotNull(checkThat(new ByteArrayInputStream(bytes)).isNotNull());
   }
 
   @Test
   public void assertThat_InputStream_IsNull() throws Exception {
     ByteArrayInputStream inputStream = null;
-    assertNotNull(Reality.checkThat(inputStream).isNull());
+    assertNotNull(checkThat(inputStream).isNull());
   }
 
   @Test

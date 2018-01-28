@@ -37,4 +37,11 @@ public class StringAssertTest {
 
     assertNotNull(checkThat(string).hasLength(10));
   }
+
+  @Test
+  public void test_NotNull_HasLength12_True() throws Exception {
+    String string = "RandomString";
+
+    assertNotNull(checkThat(string).isNotNull().hasLength(12));
+  }
 }
