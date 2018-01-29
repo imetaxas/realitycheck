@@ -2,6 +2,7 @@ package com.yanimetaxas.realitycheck.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.yanimetaxas.realitycheck.tools.CoverageTool;
@@ -18,35 +19,43 @@ import org.junit.Test;
 public class IoUtilTest {
 
   @Test
-  public void read() throws Exception {
+  public void testToFileOrNull_WhenFileExists() throws Exception {
     File file = IoUtil.toFileOrNull("test.txt");
 
     assertNotNull(file);
   }
 
   @Test
-  public void areInputStreamsEqual_True() throws Exception {
-    FileInputStream fis1 = new FileInputStream(IoUtil.loadResourceOrNull("test.txt"));
-    FileInputStream fis2 = new FileInputStream(IoUtil.loadResourceOrNull("test.txt"));
+  public void testToFileOrNull_WhenFileIsNull() throws Exception {
+    File file = IoUtil.toFileOrNull(null);
 
-    assertTrue(IOUtils.contentEquals(fis1, fis2));
+    assertNull(file);
   }
 
   @Test
-  public void areByteArrayInputStreamAndInputStreamsEqual_True() throws Exception {
-    File resource = IoUtil.loadResourceOrThrow(IoUtil.loadResourceOrNull("test.txt").getName());
-    FileInputStream fis2 = new FileInputStream(IoUtil.loadResourceOrNull("test.txt"));
+  public void testLoadResourceOrNull_WhenResourceExists() throws Exception {
+    File file = IoUtil.loadResourceOrNull("test.txt");
 
-    byte[] bytes = IOUtils.toByteArray(new java.io.FileReader(resource));
-    assertTrue(IOUtils.contentEquals(new ByteArrayInputStream(new String(bytes).getBytes()), fis2));
+    assertNotNull(file);
   }
 
   @Test
-  public void areInputStreamsEqual_False() throws Exception {
-    FileInputStream fis1 = new FileInputStream(IoUtil.loadResourceOrNull("test.txt"));
-    FileInputStream fis2 = new FileInputStream(IoUtil.loadResourceOrNull("empty.csv"));
+  public void testLoadResourceOrNull_WhenResourceNotExists() throws Exception {
+    File file = IoUtil.loadResourceOrNull("test");
 
-    assertFalse(IOUtils.contentEquals(fis1, fis2));
+    assertNull(file);
+  }
+
+  @Test
+  public void testReadFile_WhenFilenameExists() throws Exception {
+    byte[] bytes = IoUtil.readFile("test.txt");
+
+    assertNotNull(bytes);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testReadFile_WhenFilenameNotExists() throws Exception {
+    IoUtil.readFile("test");
   }
 
   @After

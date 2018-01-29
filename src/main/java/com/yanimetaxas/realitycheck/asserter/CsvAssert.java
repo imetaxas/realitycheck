@@ -31,7 +31,7 @@ public class CsvAssert extends AbstractReadableAssert<CsvAssert, String, CsvVali
         }
       }
     } catch (Exception e) {
-      throw new AssertionError();
+      throw new AssertionError(e);
     }
     return this;
   }
