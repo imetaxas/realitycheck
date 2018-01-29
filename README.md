@@ -1,14 +1,11 @@
 # Reality Check
 
-[![Main Site][gh-pages-shield]][gh-pages-link]
 [![Build Status](https://travis-ci.org/imetaxas/realitycheck.svg?branch=master)](https://travis-ci.org/imetaxas/realitycheck)
 [![Coverage Status](https://coveralls.io/repos/github/imetaxas/realitycheck/badge.svg?branch=master)](https://coveralls.io/github/imetaxas/realitycheck?branch=master)
 
-## An open source Fluent Assertion framework for Java. Never forget to check "your" reality...
+Reality Check is an open source Fluent Assertion framework for Java.
 
-**Maintainer**: [http://yanimetaxas.info](site:http://yanimetaxas.info/) 
-
-### Check examples
+### Examples
 
 #### Check files
   ```
@@ -47,21 +44,28 @@
   Reality.checkThat(string).isNotNull().hasLength(12);
   Reality.checkThat(file1).hasSameContentAs(file1).hasNotSameContentAs(file2);
   ```
-Coming checks
+Coming checks...
 -------
-  Collections
-  Deep & Shallow copies
-  Dates
-  Iterables
-  POJO
-  JSON
-  Optionals
-  Futures
-  REST
+  *  Collections
+  *  Deep & Shallow copies
+  *  Dates
+  *  Iterables
+  *  POJO
+  *  JSON
+  *  Optionals
+  *  Futures
+  *  REST
 
 Build
 -------
 mvn package
 
-[gh-pages-shield]: https://img.shields.io/badge/imetaxas.github.io/realitycheck-ff55ff.png?style=flat
-[gh-pages-link]: https://imetaxas.github.io/realitycheck
+
+## Contributing
+If you would like to help making this project better, see the [CONTRIBUTING.md](CONTRIBUTING.md).  
+
+## Maintainers
+Send any other comments and suggestions to [Yani Metaxas](https://github.com/imetaxas).
+
+## License
+This project is distributed under the [MIT License](LICENSE).
