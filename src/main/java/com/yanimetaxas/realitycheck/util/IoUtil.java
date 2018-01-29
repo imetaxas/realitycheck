@@ -33,7 +33,7 @@ public class IoUtil {
       URL url = classLoader.getResource(filename);
       return new File(url.getFile());
     } catch (NullPointerException e) {
-      throw new ReaderException(e);
+      return null;
     }
   }
 

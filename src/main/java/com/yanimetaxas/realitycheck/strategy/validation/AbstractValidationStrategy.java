@@ -46,29 +46,4 @@ abstract class AbstractValidationStrategy<T> extends ArrayList<Action> implement
     }
     return (byte[]) function.apply(null);
   }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    if (!super.equals(o)) {
-      return false;
-    }
-
-    AbstractValidationStrategy<?> that = (AbstractValidationStrategy<?>) o;
-
-    return actual != null ? actual.equals(that.actual) : that.actual == null;
-
-  }
-
-  @Override
-  public int hashCode() {
-    int result = super.hashCode();
-    result = 31 * result + (actual != null ? actual.hashCode() : 0);
-    return result;
-  }
 }
