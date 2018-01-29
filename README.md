@@ -1,8 +1,9 @@
 # Reality Check
 
-[![Build Status](https://travis-ci.org/imetaxas/realitycheck.svg?branch=master&service=github)](https://travis-ci.org/imetaxas/realitycheck)
-[![Coverage Status](https://coveralls.io/repos/github/imetaxas/realitycheck/badge.svg?branch=master)](https://coveralls.io/github/imetaxas/realitycheck?branch=master)
+[![Build Status](https://travis-ci.org/imetaxas/realitycheck.svg?branch=master)](https://travis-ci.org/imetaxas/realitycheck)
+[![Coverage Status](https://coveralls.io/repos/github/imetaxas/realitycheck/badge.svg?branch=master&service=github)](https://coveralls.io/github/imetaxas/realitycheck?branch=master)
 
+# Reality Check
 Reality Check is an open source Fluent Assertion framework for Java.
 
 ### Examples
