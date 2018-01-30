@@ -9,7 +9,7 @@ Reality Check is an open source Fluent Assertion framework for Java.
 
 #### Check files
   ```
-  Reality.checkThat(new File("sampleA.csv")).isNull();
+  Reality.checkThat(file).isNull();
   Reality.checkThat(file).hasSameContentAs(file);
   ```
 #### Check CSV files
@@ -29,14 +29,14 @@ Reality Check is an open source Fluent Assertion framework for Java.
   ```
 #### Check InputStreams
   ```
-  Reality.checkThat(new ByteArrayInputStream(bytes1)).hasSameContentAs(new ByteArrayInputStream(bytes2));
-  Reality.checkThat(new ByteArrayInputStream(bytes1)).hasNotSameContentAs(new ByteArrayInputStream(bytes2));
+  Reality.checkThat(new ByteArrayInputStream(byteArray1)).hasSameContentAs(new ByteArrayInputStream(byteArray2));
+  Reality.checkThat(new ByteArrayInputStream(byteArray1)).hasNotSameContentAs(new ByteArrayInputStream(byteArray2));
   ```
 #### Check with custom message
   ```
   Reality.checkWithMessage("File is NULL").that(file).isNotNull();
   Reality.checkWithMessage("String has wrong length").that(string).hasLength(6);
-  Reality.checkWithMessage("InputStream is NULL").that(new ByteArrayInputStream(bytes)).isNotNull();
+  Reality.checkWithMessage("InputStream is NULL").that(new ByteArrayInputStream(byteArray)).isNotNull();
   Reality.checkWithMessage("Files have different content").thatCsvFile(file).hasSameContentAs(file);
   ```
 #### Do multiple checks
