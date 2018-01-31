@@ -1,4 +1,3 @@
-[![Main Site](https://img.shields.io/badge/imetaxas.github.io/realitycheck-ff55ff.png?style=flat)](https://imetaxas.github.io/realitycheck/)
 [![Build Status](https://travis-ci.org/imetaxas/realitycheck.svg?branch=master)](https://travis-ci.org/imetaxas/realitycheck)
 [![Coverage Status](https://coveralls.io/repos/github/imetaxas/realitycheck/badge.svg?branch=master&service=github)](https://coveralls.io/github/imetaxas/realitycheck?branch=master)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
