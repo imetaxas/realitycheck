@@ -1,3 +1,4 @@
+[![Main Site](https://img.shields.io/badge/imetaxas.github.io/realitycheck-ff55ff.png?style=flat)](https://imetaxas.github.io/realitycheck/)
 [![Build Status](https://travis-ci.org/imetaxas/realitycheck.svg?branch=master)](https://travis-ci.org/imetaxas/realitycheck)
 [![Coverage Status](https://coveralls.io/repos/github/imetaxas/realitycheck/badge.svg?branch=master&service=github)](https://coveralls.io/github/imetaxas/realitycheck?branch=master)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -68,4 +69,4 @@ If you would like to help making this project better, see the [CONTRIBUTING.md](
 Send any other comments and suggestions to [Yani Metaxas](https://github.com/imetaxas).
 
 ## License
-This project is distributed under the [MIT License](LICENSE).
+This project is distributed under the [Apache-2.0 License](LICENSE).
