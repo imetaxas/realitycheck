@@ -56,17 +56,6 @@ Coming checks...
   *  Futures
   *  REST
 
-Build
--------
-mvn package
-
-Deploy to Sonatype
--------------------
-mvn deploy -P sign,release --settings ../../.m2/settings2.xml
-
-Release to Maven Central
--------------------------
-mvn release:clean release:prepare
 
 ## Contributing
 If you would like to help making this project better, see the [CONTRIBUTING.md](CONTRIBUTING.md).  
