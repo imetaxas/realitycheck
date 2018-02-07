@@ -4,7 +4,7 @@
 
   <groupId>com.yanimetaxas</groupId>
   <artifactId>realitycheck</artifactId>
-  <version>0.5.5-SNAPSHOT</version>
+  <version>0.5.5</version>
 
     <name>Reality Check</name>
     <url>https://github.com/imetaxas/realitycheck</url>
