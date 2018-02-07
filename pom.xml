@@ -171,10 +171,10 @@
                     <execution>
                       <id>deploy-to-sonatype</id>
                       <phase>deploy</phase>
-                      <goals>
+                      <!--<goals>
                         <goal>deploy</goal>
                         <goal>release</goal>
-                      </goals>
+                      </goals>-->
                     </execution>
                   </executions>
                 </plugin>
