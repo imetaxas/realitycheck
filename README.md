@@ -1,5 +1,8 @@
 [![Build Status](https://travis-ci.org/imetaxas/realitycheck.svg?branch=master)](https://travis-ci.org/imetaxas/realitycheck)
 [![Coverage Status](https://coveralls.io/repos/github/imetaxas/realitycheck/badge.svg?branch=master&service=github)](https://coveralls.io/github/imetaxas/realitycheck?branch=master)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.yanimetaxas/realitycheck/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.yanimetaxas/realitycheck/)
+[![GitHub release](http://github-release-version.herokuapp.com/github/imetaxas/realitycheck/release.svg)](https://github.com/imetaxas/realitycheck/releases/latest)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # Reality Check

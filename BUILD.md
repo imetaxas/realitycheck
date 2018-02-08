@@ -22,7 +22,9 @@ mvn release:clean
 
 mvn release:perform
 
-**Prepare bundle**
+**Prepare the bundle manually**
+https://stackoverflow.com/questions/28846802/how-to-manually-publish-jar-to-maven-central
+
 cd target
 jar -cvf bundle.jar realitycheck-*
 Upload to https://oss.sonatype.org/#staging-upload
