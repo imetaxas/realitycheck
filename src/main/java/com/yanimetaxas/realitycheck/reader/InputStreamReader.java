@@ -9,7 +9,7 @@ import org.apache.commons.io.IOUtils;
  * @author yanimetaxas
  * @since 11-Feb-18
  */
-public class InputStreamReader implements Reader<InputStream, byte[]> {
+public class InputStreamReader implements Reader<byte[]> {
 
   private InputStream inputStream;
 

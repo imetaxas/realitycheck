@@ -9,7 +9,7 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author yanimetaxas
  */
-public class FileReader implements Reader<File, byte[]> {
+public class FileReader implements Reader<byte[]> {
 
   private File file;
 

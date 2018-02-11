@@ -9,7 +9,7 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author yanimetaxas
  */
-public class CsvReader implements Reader<String, List> {
+public class CsvReader implements Reader<List> {
 
   private String csv;
 

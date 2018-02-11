@@ -10,7 +10,7 @@ import org.apache.commons.io.IOUtils;
  * @author yanimetaxas
  * @since 10-Dec-17
  */
-public class FilepathReader implements Reader<String, byte[]> {
+public class FilepathReader implements Reader<byte[]> {
 
   private String filepath;
 

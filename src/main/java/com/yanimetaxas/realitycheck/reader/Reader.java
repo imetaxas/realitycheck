@@ -7,7 +7,7 @@ import java.io.IOException;
  * @author yanimetaxas
  * @since 10-Dec-17
  */
-public interface Reader<T, K> extends Action<K> {
+public interface Reader<K> extends Action<K> {
 
   K read() throws IOException;
 }

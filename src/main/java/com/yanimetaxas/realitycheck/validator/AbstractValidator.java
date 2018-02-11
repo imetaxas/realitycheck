@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * @author yanimetaxas
  */
-abstract class AbstractValidator<T, K> implements Validator<K> {
+public abstract class AbstractValidator<T, K> implements Validator<K> {
 
   private T actual;
 
