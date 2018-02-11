@@ -3,6 +3,8 @@ package com.yanimetaxas.realitycheck.reader;
 import com.yanimetaxas.realitycheck.exception.ReaderException;
 import com.yanimetaxas.realitycheck.exception.ValidationException;
 import com.yanimetaxas.realitycheck.util.IoUtil;
+import com.yanimetaxas.realitycheck.validator.CsvValidator;
+import com.yanimetaxas.realitycheck.validator.FileValidator;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
@@ -12,26 +14,26 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author yanimetaxas
  */
-public class CsvFileReader implements Reader<String, List<String>> {
+public class CsvFileReader implements Reader<File, byte[]> {
 
-  private String filename;
+  private File file;
 
-  CsvFileReader(String filename) {
-    this.filename = filename;
+  public CsvFileReader(File file) {
+    this.file = file;
   }
 
   @Override
-  public List<String> read() throws ReaderException {
+  public byte[] read() throws ReaderException {
     try {
-      File file = IoUtil.loadResourceOrThrow(filename);
-      return IOUtils.readLines(new FileInputStream(file));
-    } catch (Exception e) {
+      new FileValidator(file).doAction();
+      return new CsvValidator(file).doAction();
+    } catch (ValidationException e) {
       throw new ReaderException(e);
     }
   }
 
   @Override
-  public List<String> doAction() throws ValidationException {
+  public byte[] doAction() throws ValidationException {
     return read();
   }
 }

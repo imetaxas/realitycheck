@@ -7,9 +7,9 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 
 /**
- * Created by imeta on 25-Sep-17.
+ * @author yanimetaxas
  */
-public class CsvReader implements Reader<String, List<String>> {
+public class CsvReader implements Reader<String, List> {
 
   private String csv;
 
@@ -18,7 +18,7 @@ public class CsvReader implements Reader<String, List<String>> {
   }
 
   @Override
-  public List<String> read() throws ReaderException {
+  public List read() throws ReaderException {
     try {
       return IOUtils.readLines(new StringReader(csv));
     } catch (Exception ioe) {
@@ -27,7 +27,7 @@ public class CsvReader implements Reader<String, List<String>> {
   }
 
   @Override
-  public List<String> doAction() throws ValidationException {
+  public List doAction() throws ValidationException {
     return read();
   }
 }

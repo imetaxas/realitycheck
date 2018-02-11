@@ -5,23 +5,23 @@ import com.yanimetaxas.realitycheck.exception.ValidationException;
 /**
  * @author yanimetaxas
  */
-public class StringValidator extends AbstractValidator<String, byte[]> {
+public class StringValidator extends AbstractValidator<String, String> {
 
   public StringValidator(String value) {
     super(value);
   }
 
   @Override
-  public byte[] validate() throws ValidationException {
+  public String validate() throws ValidationException {
     super.validate();
     if (getActualOrThrow(new ValidationException("Value is empty")).isEmpty()) {
       throw new ValidationException("Value is empty");
     }
-    return getActualOrElseNull().getBytes();
+    return getActualOrElseNull();
   }
 
   @Override
-  public byte[] doAction() throws ValidationException {
+  public String doAction() throws ValidationException {
     return validate();
   }
 }

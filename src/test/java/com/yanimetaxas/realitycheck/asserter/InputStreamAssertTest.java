@@ -4,6 +4,7 @@ import static com.yanimetaxas.realitycheck.Reality.checkThat;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayInputStream;
+import java.io.StringBufferInputStream;
 import org.junit.Test;
 
 /**

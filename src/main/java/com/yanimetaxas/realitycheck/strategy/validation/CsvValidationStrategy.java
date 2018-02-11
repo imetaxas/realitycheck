@@ -15,7 +15,7 @@ public class CsvValidationStrategy extends AbstractValidationStrategy<String> {
 
   @Override
   public byte[] validate() throws ValidationException {
-    byte[] validatedBytes = new StringValidator(getActualOrThrow(new ValidationException("No value present"))).doAction();
-    return new CsvValidator(new String(validatedBytes)).doAction();
+    String validatedString = new StringValidator(getActualOrThrow(new ValidationException("No value present"))).doAction();
+    return new CsvValidator(validatedString).doAction();
   }
 }

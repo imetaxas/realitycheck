@@ -48,11 +48,25 @@ public class FileAssertTest {
     assertNotNull(checkThat(file).exists());
   }
 
+  @Test(expected = AssertionError.class)
+  public void assertThatFileCsv_WhenFileExistsCheckThatNotExists() throws Exception {
+    File file = Files.loadResource("test.txt");
+
+    checkThat(file).notExists();
+  }
+
   @Test
   public void assertThatFileCsv_FileNotExists() throws Exception {
     File file = new File("");
 
     assertNotNull(checkThat(file).notExists());
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertThatFileCsv_WhenFileNotExistsCheckThatExists() throws Exception {
+    File file = new File("");
+
+    checkThat(file).exists();
   }
 
 }

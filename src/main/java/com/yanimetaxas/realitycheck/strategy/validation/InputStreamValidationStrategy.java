@@ -7,7 +7,7 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 
 /**
- * Created by imeta on 09-Nov-17.
+ * @author yanimetaxas
  */
 public class InputStreamValidationStrategy extends AbstractValidationStrategy<InputStream> {
 

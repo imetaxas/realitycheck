@@ -1,13 +1,10 @@
 package com.yanimetaxas.realitycheck.validator;
 
 import com.yanimetaxas.realitycheck.exception.ValidationException;
+import com.yanimetaxas.realitycheck.reader.CsvReader;
 import com.yanimetaxas.realitycheck.reader.FileReader;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.util.List;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author yanimetaxas
@@ -25,9 +22,10 @@ public class CsvValidator extends AbstractValidator<String, byte[]> {
   @Override
   public byte[] validate() throws ValidationException {
     super.validate();
+    List lines;
     try {
-      List lines = IOUtils.readLines(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(getActualOrElseNull().getBytes()))));
-      if (lines.isEmpty()) {
+      lines = new CsvReader(getActualOrElseNull()).doAction();
+      if (lines == null || lines.isEmpty()) {
         throw new ValidationException("File is empty");
       }
       for (Object line : lines) {
