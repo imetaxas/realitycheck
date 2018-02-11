@@ -5,19 +5,19 @@ import com.yanimetaxas.realitycheck.exception.ValidationException;
 /**
  * @author yanimetaxas
  */
-class StringValidator extends AbstractValidator<byte[], byte[]> {
+public class StringValidator extends AbstractValidator<String, byte[]> {
 
-  public StringValidator(byte[] value) {
+  public StringValidator(String value) {
     super(value);
   }
 
   @Override
   public byte[] validate() throws ValidationException {
     super.validate();
-    if (new String(getActualOrThrow(new ValidationException("Value is empty"))).isEmpty()) {
+    if (getActualOrThrow(new ValidationException("Value is empty")).isEmpty()) {
       throw new ValidationException("Value is empty");
     }
-    return getActualOrElseNull();
+    return getActualOrElseNull().getBytes();
   }
 
   @Override

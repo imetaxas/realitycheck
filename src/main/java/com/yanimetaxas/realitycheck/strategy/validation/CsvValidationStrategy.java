@@ -2,9 +2,10 @@ package com.yanimetaxas.realitycheck.strategy.validation;
 
 import com.yanimetaxas.realitycheck.exception.ValidationException;
 import com.yanimetaxas.realitycheck.validator.CsvValidator;
+import com.yanimetaxas.realitycheck.validator.StringValidator;
 
 /**
- * Created by imeta on 28-Oct-17.
+ * @author yanimetaxas
  */
 public class CsvValidationStrategy extends AbstractValidationStrategy<String> {
 
@@ -14,6 +15,7 @@ public class CsvValidationStrategy extends AbstractValidationStrategy<String> {
 
   @Override
   public byte[] validate() throws ValidationException {
-    return new CsvValidator(getActualOrThrow(new ValidationException("No value present"))).doAction();
+    byte[] validatedBytes = new StringValidator(getActualOrThrow(new ValidationException("No value present"))).doAction();
+    return new CsvValidator(new String(validatedBytes)).doAction();
   }
 }
