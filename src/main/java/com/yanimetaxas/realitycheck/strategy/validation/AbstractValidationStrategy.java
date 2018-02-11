@@ -41,9 +41,9 @@ abstract class AbstractValidationStrategy<T> extends ArrayList<Action> implement
         break;
       }
     }
-    if(function == null) {
+    /*if(function == null) {
       return new byte[0];
-    }
+    }*/
     return (byte[]) function.apply(null);
   }
 }

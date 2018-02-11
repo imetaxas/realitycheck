@@ -2,7 +2,8 @@ package com.yanimetaxas.realitycheck.reader;
 
 import static org.junit.Assert.assertEquals;
 
-import com.yanimetaxas.realitycheck.exception.ReaderException;
+import com.yanimetaxas.realitycheck.exception.ValidationException;
+import java.io.IOException;
 import java.util.List;
 import org.junit.Test;
 
@@ -23,11 +24,11 @@ public class CsvReaderTest {
     assertEquals(((String)contents.get(0)).split(",")[10], "0.8");
   }
 
-  @Test(expected = ReaderException.class)
+  @Test(expected = ValidationException.class)
   public void readCsv_csvIsNull() throws Exception {
     CsvReader csvReader = new CsvReader(null);
 
-    csvReader.read();
+    csvReader.doAction();
   }
 
   @Test

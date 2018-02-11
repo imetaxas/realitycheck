@@ -1,9 +1,9 @@
 package com.yanimetaxas.realitycheck.reader;
 
-import com.yanimetaxas.realitycheck.exception.ReaderException;
 import com.yanimetaxas.realitycheck.exception.ValidationException;
 import com.yanimetaxas.realitycheck.util.IoUtil;
 import java.io.File;
+import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -19,17 +19,17 @@ public class FilepathReader implements Reader<String, byte[]> {
   }
 
   @Override
-  public byte[] read() throws ReaderException {
-    try {
+  public byte[] read() throws IOException {
       File resource = IoUtil.toFileOrNull(filepath);
       return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
-    } catch (Exception e){
-      throw new ReaderException(e);
-    }
   }
 
   @Override
   public byte[] doAction() throws ValidationException {
-    return read();
+    try {
+      return read();
+    } catch (Exception ioe) {
+      throw new ValidationException(ioe.getMessage());
+    }
   }
 }

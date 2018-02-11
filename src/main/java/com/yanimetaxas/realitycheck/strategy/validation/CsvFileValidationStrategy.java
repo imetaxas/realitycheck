@@ -1,7 +1,7 @@
 package com.yanimetaxas.realitycheck.strategy.validation;
 
 import com.yanimetaxas.realitycheck.exception.ValidationException;
-import com.yanimetaxas.realitycheck.reader.CsvFileReader;
+import com.yanimetaxas.realitycheck.validator.CsvFileValidator;
 import java.io.File;
 
 /**
@@ -15,6 +15,6 @@ public class CsvFileValidationStrategy extends AbstractValidationStrategy<File> 
 
   @Override
   public byte[] validate() throws ValidationException {
-    return new CsvFileReader(getActualOrThrow(new ValidationException("No value present"))).doAction();
+    return new CsvFileValidator(getActualOrThrow(new ValidationException("No value present"))).doAction();
   }
 }

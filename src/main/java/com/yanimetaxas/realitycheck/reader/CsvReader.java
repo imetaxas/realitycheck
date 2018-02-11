@@ -1,7 +1,7 @@
 package com.yanimetaxas.realitycheck.reader;
 
-import com.yanimetaxas.realitycheck.exception.ReaderException;
 import com.yanimetaxas.realitycheck.exception.ValidationException;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
@@ -18,16 +18,16 @@ public class CsvReader implements Reader<String, List> {
   }
 
   @Override
-  public List read() throws ReaderException {
-    try {
-      return IOUtils.readLines(new StringReader(csv));
-    } catch (Exception ioe) {
-      throw new ReaderException(ioe);
-    }
+  public List read() throws IOException {
+    return IOUtils.readLines(new StringReader(csv));
   }
 
   @Override
   public List doAction() throws ValidationException {
-    return read();
+    try {
+      return read();
+    } catch (Exception ioe) {
+      throw new ValidationException(ioe.getMessage());
+    }
   }
 }

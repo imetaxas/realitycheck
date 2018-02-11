@@ -16,25 +16,20 @@ public class CsvValidator extends AbstractValidator<String, byte[]> {
   }
 
   public CsvValidator(File file) throws ValidationException {
-    super(new String(new FileReader(file).read()));
+    super(new String(new FileReader(file).doAction()));
   }
 
   @Override
   public byte[] validate() throws ValidationException {
     super.validate();
-    List lines;
-    try {
-      lines = new CsvReader(getActualOrElseNull()).doAction();
-      if (lines == null || lines.isEmpty()) {
-        throw new ValidationException("File is empty");
+    List lines = new CsvReader(getActualOrElseNull()).doAction();
+    if (lines == null || lines.isEmpty()) {
+      throw new ValidationException("File is empty");
+    }
+    for (Object line : lines) {
+      if (((String) line).split(",").length < 2) {
+        throw new ValidationException("String has not CSV format");
       }
-      for (Object line : lines) {
-        if (((String) line).split(",").length < 2) {
-          throw new ValidationException("String has not CSV format");
-        }
-      }
-    } catch (Exception e) {
-      throw new ValidationException(e);
     }
     return getActualOrElseNull().getBytes();
   }

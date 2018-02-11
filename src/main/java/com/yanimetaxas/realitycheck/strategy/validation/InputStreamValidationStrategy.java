@@ -1,6 +1,7 @@
 package com.yanimetaxas.realitycheck.strategy.validation;
 
 import com.yanimetaxas.realitycheck.exception.ValidationException;
+import com.yanimetaxas.realitycheck.reader.InputStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,10 +18,6 @@ public class InputStreamValidationStrategy extends AbstractValidationStrategy<In
 
   @Override
   public byte[] validate() throws ValidationException {
-    try {
-      return IOUtils.toByteArray(getActualOrElse(new ByteArrayInputStream(new byte[0])));
-    } catch (IOException ioe) {
-      throw new ValidationException(ioe);
-    }
+    return new InputStreamReader(getActualOrElse(new ByteArrayInputStream(new byte[0]))).doAction();
   }
 }

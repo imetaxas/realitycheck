@@ -1,10 +1,10 @@
 package com.yanimetaxas.realitycheck.reader;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
-import com.yanimetaxas.realitycheck.exception.ReaderException;
+import com.yanimetaxas.realitycheck.exception.ValidationException;
 import java.io.File;
+import java.io.IOException;
 import org.junit.Test;
 
 
@@ -16,29 +16,29 @@ public class FileReaderTest {
   @Test
   public void readFile() throws Exception {
     FileReader fileReader = new FileReader(new File("test.txt"));
-    byte[] contents = fileReader.read();
+    byte[] contents = fileReader.doAction();
 
     assertNotNull(contents[0]);
   }
 
-  @Test(expected = ReaderException.class)
+  @Test(expected = ValidationException.class)
   public void readFile_FileIsNull() throws Exception {
     FileReader fileReader = new FileReader(null);
 
-    fileReader.read();
+    fileReader.doAction();
   }
 
-  @Test(expected = ReaderException.class)
+  @Test(expected = ValidationException.class)
   public void readFile_FileIsEmpty() throws Exception {
     FileReader fileReader = new FileReader(new File(""));
 
-    fileReader.read();
+    fileReader.doAction();
   }
 
-  @Test(expected = ReaderException.class)
+  @Test(expected = ValidationException.class)
   public void readFile_FileIsNotFile() throws Exception {
     FileReader fileReader = new FileReader(new File("aaa"));
 
-    fileReader.read();
+    fileReader.doAction();
   }
 }

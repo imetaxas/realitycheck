@@ -1,12 +1,13 @@
 package com.yanimetaxas.realitycheck.reader;
 
-import com.yanimetaxas.realitycheck.exception.ReaderException;
 import com.yanimetaxas.realitycheck.strategy.validation.Action;
+import java.io.IOException;
 
 /**
- * Created by imeta on 25-Sep-17.
+ * @author yanimetaxas
+ * @since 10-Dec-17
  */
 public interface Reader<T, K> extends Action<K> {
 
-  K read() throws ReaderException;
+  K read() throws IOException;
 }

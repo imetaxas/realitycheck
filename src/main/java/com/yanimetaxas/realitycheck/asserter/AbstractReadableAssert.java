@@ -60,7 +60,7 @@ abstract class AbstractReadableAssert<SELF extends AbstractReadableAssert<SELF, 
   }
 
   private ValidationStrategy getValidationStrategyFromType() throws AssertionError {
-    Type superclass = null;
+    Type superclass;
     try {
       superclass = getClass().getGenericSuperclass();
       Type actualType = ((ParameterizedType) superclass).getActualTypeArguments()[1];

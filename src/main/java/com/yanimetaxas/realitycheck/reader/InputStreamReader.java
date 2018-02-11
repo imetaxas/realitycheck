@@ -1,26 +1,25 @@
 package com.yanimetaxas.realitycheck.reader;
 
 import com.yanimetaxas.realitycheck.exception.ValidationException;
-import com.yanimetaxas.realitycheck.util.IoUtil;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 
 /**
  * @author yanimetaxas
+ * @since 11-Feb-18
  */
-public class FileReader implements Reader<File, byte[]> {
+public class InputStreamReader implements Reader<InputStream, byte[]> {
 
-  private File file;
+  private InputStream inputStream;
 
-  public FileReader(File file) {
-    this.file = file;
+  public InputStreamReader(InputStream inputStream) {
+    this.inputStream = inputStream;
   }
 
   @Override
   public byte[] read() throws IOException {
-      File resource = IoUtil.loadResourceOrThrow(file.getName());
-      return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
+      return IOUtils.toByteArray(inputStream);
   }
 
   @Override
@@ -31,4 +30,5 @@ public class FileReader implements Reader<File, byte[]> {
       throw new ValidationException(ioe.getMessage());
     }
   }
+
 }
