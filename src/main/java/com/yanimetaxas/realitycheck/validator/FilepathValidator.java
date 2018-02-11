@@ -18,7 +18,7 @@ public class FilepathValidator extends AbstractValidator<String, String> {
   public String validate() throws ValidationException {
     super.validate();
     File resource = IoUtil.toFileOrNull(getActualOrThrow(new ValidationException("No value present")));
-    if (!resource.exists() || !resource.isFile()) {
+    if (!resource.isFile()) {
       throw new ValidationException("File not found");
     }
     return getActualOrElseNull();

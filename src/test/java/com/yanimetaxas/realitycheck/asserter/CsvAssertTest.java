@@ -3,6 +3,7 @@ package com.yanimetaxas.realitycheck.asserter;
 import static com.yanimetaxas.realitycheck.Reality.checkThatCsv;
 import static org.junit.Assert.assertNotNull;
 
+import com.yanimetaxas.realitycheck.exception.ValidationException;
 import org.junit.Test;
 
 /**
@@ -44,4 +45,13 @@ public class CsvAssertTest {
 
     checkThatCsv(csv).hasNotSameContentAs(csv);
   }
+
+  @Test(expected = AssertionError.class)
+  public void assertThatCsv_WhenHeaderNotExists() throws Exception {
+    String csv = "";
+
+    checkThatCsv(csv).headerHasNoDigits();
+  }
+
+
 }

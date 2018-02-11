@@ -24,7 +24,7 @@ public abstract class AbstractValidator<T, K> implements Validator<K> {
 
   @Override
   public K validate() throws ValidationException {
-    if (actual == Optional.empty()) {
+    if (actual == null) {
       throw new ValidationException("ACTUAL is NULL");
     }
     return null;

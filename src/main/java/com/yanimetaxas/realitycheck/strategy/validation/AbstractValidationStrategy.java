@@ -35,11 +35,11 @@ abstract class AbstractValidationStrategy<T> extends ArrayList<Action> implement
     Function<Void, T> function = null;
     while (iterator.hasNext()) {
       function = toFunction(iterator.next());
-      if(iterator.hasNext()){
+      //if(iterator.hasNext()){
         function.apply(null);
-      } else {
+      /*} else {
         break;
-      }
+      }*/
     }
     /*if(function == null) {
       return new byte[0];

@@ -6,14 +6,14 @@ import java.util.Optional;
 /**
  * @author yanimetaxas
  */
-abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, ACTUAL> implements
+public abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, ACTUAL> implements
     Assertable<SELF, ACTUAL> {
 
   final ACTUAL actual;
   final SELF self;
   final String customMessage;
 
-  AbstractAssert(ACTUAL actual, String customMessage) {
+  public AbstractAssert(ACTUAL actual, String customMessage) {
     GenericClass<SELF> genericClass = new GenericClass(getClass());
     self = genericClass.getType().cast(this);
     this.actual = actual;

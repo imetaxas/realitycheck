@@ -13,7 +13,7 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author yanimetaxas
  */
-abstract class AbstractReadableAssert<SELF extends AbstractReadableAssert<SELF, ACTUAL, STRATEGY>, ACTUAL, STRATEGY> extends AbstractAssert<SELF, ACTUAL> {
+public abstract class AbstractReadableAssert<SELF extends AbstractReadableAssert<SELF, ACTUAL, STRATEGY>, ACTUAL, STRATEGY> extends AbstractAssert<SELF, ACTUAL> {
 
   private final byte[] actualContent;
   private final ValidationStrategy validationStrategy;

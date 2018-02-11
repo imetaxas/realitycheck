@@ -23,7 +23,7 @@ public class CsvValidator extends AbstractValidator<String, byte[]> {
   public byte[] validate() throws ValidationException {
     super.validate();
     List lines = new CsvReader(getActualOrElseNull()).doAction();
-    if (lines == null || lines.isEmpty()) {
+    if (lines.isEmpty()) {
       throw new ValidationException("File is empty");
     }
     for (Object line : lines) {
