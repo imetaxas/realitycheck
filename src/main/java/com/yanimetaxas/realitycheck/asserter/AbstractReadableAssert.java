@@ -2,13 +2,13 @@ package com.yanimetaxas.realitycheck.asserter;
 
 import com.yanimetaxas.realitycheck.exception.ValidationException;
 import com.yanimetaxas.realitycheck.strategy.validation.ValidationStrategy;
+import com.yanimetaxas.realitycheck.util.IoUtil;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Optional;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author yanimetaxas
@@ -31,27 +31,20 @@ public abstract class AbstractReadableAssert<SELF extends AbstractReadableAssert
   }
 
   public AbstractReadableAssert hasSameContentAs(InputStream expected) throws AssertionError {
-    try {
-      if(!IOUtils.contentEquals(new ByteArrayInputStream(getActualContent()), expected)) {
-        throw new AssertionError("Not exactly the same");
-      }
-    } catch (Exception ioe) {
-      throw new AssertionError("Expected is not an InputStream", ioe);
+    if(!IoUtil.contentEquals(new ByteArrayInputStream(getActualContent()), expected)){
+      throw new AssertionError("InputStreams are NOT exactly the same");
     }
     return self;
   }
 
   public AbstractReadableAssert hasNotSameContentAs(InputStream expected) throws AssertionError {
-    try {
-      hasSameContentAs(expected);
-    } catch (AssertionError ae) {
-      return self;
+    if(IoUtil.contentEquals(new ByteArrayInputStream(getActualContent()), expected)){
+      throwProperAssertionError("InputStreams are exactly the same");
     }
-    throwProperAssertionError("InputStreams are exactly the same");
     return self;
   }
 
-  byte[] getActualContentOrElse(byte[] value) {
+  private byte[] getActualContentOrElse(byte[] value) {
     return Optional.ofNullable(actualContent).orElse(value);
   }
 

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import org.apache.commons.io.IOUtils;
@@ -56,6 +57,14 @@ public class IoUtil {
       return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
     } catch (Exception e) {
       throw new AssertionError(e);
+    }
+  }
+
+  public static boolean contentEquals(InputStream inputStream1, InputStream inputStream2) {
+    try {
+      return IOUtils.contentEquals(inputStream1, inputStream2);
+    } catch (Exception ioe) {
+      throw new AssertionError("Expected is not an InputStream", ioe);
     }
   }
 
