@@ -4,9 +4,9 @@ import static com.yanimetaxas.realitycheck.Reality.checkThat;
 import static com.yanimetaxas.realitycheck.Reality.checkWithMessage;
 import static org.junit.Assert.assertNotNull;
 
+import com.yanimetaxas.realitycheck.custom.CustomObject;
 import com.yanimetaxas.realitycheck.tools.CoverageTool;
 import com.yanimetaxas.realitycheck.tools.Files;
-import com.yanimetaxas.realitycheck.util.CustomObject;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import org.junit.After;

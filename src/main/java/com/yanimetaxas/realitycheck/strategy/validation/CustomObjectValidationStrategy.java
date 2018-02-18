@@ -1,7 +1,7 @@
 package com.yanimetaxas.realitycheck.strategy.validation;
 
+import com.yanimetaxas.realitycheck.custom.CustomObject;
 import com.yanimetaxas.realitycheck.exception.ValidationException;
-import com.yanimetaxas.realitycheck.util.CustomObject;
 
 /**
  * Created by imeta on 09-Nov-17.

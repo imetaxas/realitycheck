@@ -4,15 +4,15 @@ import com.yanimetaxas.realitycheck.asserter.BooleanAssert;
 import com.yanimetaxas.realitycheck.asserter.CsvAssert;
 import com.yanimetaxas.realitycheck.asserter.CsvFileAssert;
 import com.yanimetaxas.realitycheck.asserter.CsvResourceAssert;
-import com.yanimetaxas.realitycheck.asserter.CustomReadableObjectAssert;
+import com.yanimetaxas.realitycheck.asserter.CustomObjectAssert;
 import com.yanimetaxas.realitycheck.asserter.FileAssert;
 import com.yanimetaxas.realitycheck.asserter.InputStreamAssert;
 import com.yanimetaxas.realitycheck.asserter.IntegerAssert;
 import com.yanimetaxas.realitycheck.asserter.StatementBuilder;
 import com.yanimetaxas.realitycheck.asserter.StringAssert;
 import com.yanimetaxas.realitycheck.asserter.SystemResourceAssert;
+import com.yanimetaxas.realitycheck.custom.CustomObject;
 import com.yanimetaxas.realitycheck.exception.ValidationException;
-import com.yanimetaxas.realitycheck.util.CustomObject;
 import java.io.File;
 import java.io.InputStream;
 
@@ -76,7 +76,7 @@ public class Reality {
     return new StatementBuilder().withMessage(message);
   }
 
-  public static CustomReadableObjectAssert checkThat(CustomObject customObject)
+  public static CustomObjectAssert checkThat(CustomObject customObject)
       throws ValidationException {
     return new StatementBuilder().that(customObject);
   }

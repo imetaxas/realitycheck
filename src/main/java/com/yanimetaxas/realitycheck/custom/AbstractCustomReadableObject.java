@@ -1,4 +1,4 @@
-package com.yanimetaxas.realitycheck.util;
+package com.yanimetaxas.realitycheck.custom;
 
 import com.yanimetaxas.realitycheck.asserter.CustomReadableObjectAssert;
 import java.lang.reflect.Constructor;
@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
  * @author yanimetaxas
  * @since 18-Feb-18
  */
-public abstract class AbstractCustomObject<ASSERT> {
+public class AbstractCustomReadableObject<ASSERT>  {
 
   public CustomReadableObjectAssert getAssertFromType() throws AssertionError {
     Type superclass;

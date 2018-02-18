@@ -1,6 +1,7 @@
 package com.yanimetaxas.realitycheck.asserter;
 
-import com.yanimetaxas.realitycheck.util.CustomObject;
+import com.yanimetaxas.realitycheck.custom.CustomObject;
+import com.yanimetaxas.realitycheck.custom.CustomReadableObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -46,8 +47,11 @@ public class StatementBuilder {
     return new CsvAssert(actual, message);
   }
 
-  public final CustomReadableObjectAssert that(CustomObject actual) {
+  public final CustomReadableObjectAssert that(CustomReadableObject actual) {
     return actual.getAssertFromType();
   }
 
+  public final CustomObjectAssert that(CustomObject actual) {
+    return actual.getAssertFromType();
+  }
 }
