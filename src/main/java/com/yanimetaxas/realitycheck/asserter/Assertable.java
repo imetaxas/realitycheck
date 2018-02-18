@@ -9,4 +9,8 @@ public interface Assertable<SELF extends Assertable<SELF, ACTUAL>, ACTUAL> {
 
   SELF isNotNull();
 
+  SELF isEqualTo(ACTUAL expected);
+
+  SELF isNotEqualTo(ACTUAL expected);
+
 }

@@ -16,8 +16,8 @@ public class FileValidator extends AbstractValidator<File, File> {
   @Override
   public File validate() throws ValidationException {
     super.validate();
-    File resource = IoUtil.loadResourceOrThrow(getActualOrThrow(new ValidationException("No value present")).getName());
-    if (!resource.isFile()) {
+    File resource = IoUtil.loadResource(getActualOrThrow(new ValidationException("No value present")).getName());
+    if (resource == null || !resource.isFile()) {
       throw new ValidationException("File not found");
     }
     return getActualOrElseNull();

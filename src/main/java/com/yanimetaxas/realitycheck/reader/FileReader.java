@@ -19,7 +19,7 @@ public class FileReader implements Reader<byte[]> {
 
   @Override
   public byte[] read() throws IOException {
-      File resource = IoUtil.loadResourceOrThrow(file.getName());
+      File resource = IoUtil.loadResource(file.getName());
       return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
   }
 

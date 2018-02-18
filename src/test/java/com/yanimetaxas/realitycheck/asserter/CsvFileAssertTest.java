@@ -1,6 +1,6 @@
 package com.yanimetaxas.realitycheck.asserter;
 
-import static com.yanimetaxas.realitycheck.Reality.checkThatFileCsv;
+import static com.yanimetaxas.realitycheck.Reality.checkThatCsvFile;
 import static org.junit.Assert.assertNotNull;
 
 import com.yanimetaxas.realitycheck.Reality;
@@ -17,58 +17,58 @@ public class CsvFileAssertTest {
   public void assertThatFileCsv_FilenameIsNull() throws Exception {
     String filename = null;
 
-    assertNotNull(Reality.checkThatFileCsv(filename));
+    assertNotNull(Reality.checkThatCsvFile(filename));
   }
 
   @Test
   public void assertThatFileCsv_FilenameIsEmpty() throws Exception {
     String filename = "";
 
-    assertNotNull(Reality.checkThatFileCsv(filename));
+    assertNotNull(Reality.checkThatCsvFile(filename));
   }
 
   @Test
   public void isSameAs_given_file() throws Exception {
-    File file = Files.loadResource("sampleA.csv"); //ISO-8859-1
+    File file = Files.loadResource("sampleA.csv");
 
-    assertNotNull(checkThatFileCsv(file).hasSameContentAs(file.getName()));
+    assertNotNull(checkThatCsvFile(file).hasSameContentAs(file.getAbsolutePath()));
   }
 
   @Test
-  public void isSameAs_given_filename() throws Exception {
-    String filename = "sampleA.csv";
+  public void isSameAs_given_filepath() throws Exception {
+    String filepath = "src/test/resources/sampleA.csv";
 
-    assertNotNull(Reality.checkThatFileCsv(filename).hasSameContentAs(filename));
+    assertNotNull(Reality.checkThatCsvFile(filepath).hasSameContentAs(filepath));
   }
 
   @Test
   public void assertThatFileCsv_NoFileCsv() throws Exception {
     File file = Files.loadResource("test.txt");
 
-    assertNotNull(Reality.checkThatFileCsv(file.getName()));
+    assertNotNull(Reality.checkThatCsvFile(file.getName()));
   }
 
   @Test
   public void assertThatFileCsv_FileIsEmpty() throws Exception {
     File file = Files.loadResource("empty.csv");
 
-    assertNotNull(checkThatFileCsv(file));
+    assertNotNull(checkThatCsvFile(file));
   }
 
   @Test(expected = AssertionError.class)
   public void isSameAs_given_csv_and_not_csv() throws Exception {
-    String filename1 = "sampleA.csv";
-    String filename2 = "test.txt";
+    String filename1 = "src/test/resources/sampleA.csv";
+    String filename2 = "src/test/resources/test.txt";
 
-    Reality.checkThatFileCsv(filename1).hasSameContentAs(filename2);
+    Reality.checkThatCsvFile(filename1).hasSameContentAs(filename2);
   }
 
   @Test(expected = AssertionError.class)
   public void isSameAs_given_csv_and_empty_csv() throws Exception {
-    String filename1 = "sampleA.csv";
-    String filename2 = "empty.csv";
+    String filename1 = "src/test/resources/sampleA.csv";
+    String filename2 = "src/test/resources/empty.csv";
 
-    Reality.checkThatFileCsv(filename1).hasSameContentAs(filename2);
+    Reality.checkThatCsvFile(filename1).hasSameContentAs(filename2);
   }
 
   @Test
@@ -76,35 +76,35 @@ public class CsvFileAssertTest {
     File file1 = Files.loadResource("sampleA.csv");
     File file2 = Files.loadResource("sampleB.csv");
 
-    assertNotNull(checkThatFileCsv(file1).hasNotSameContentAs(file2));
+    assertNotNull(checkThatCsvFile(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
   public void isNotSameAs_False() throws Exception {
     File file = Files.loadResource("sampleA.csv");
 
-    checkThatFileCsv(file).hasNotSameContentAs(file);
+    checkThatCsvFile(file).hasNotSameContentAs(file);
   }
 
   @Test
   public void isNotSameAs_given_filename() throws Exception {
-    String filename1 = "sampleA.csv";
-    String filename2 = "sampleB.csv";
+    String filename1 = "src/test/resources/sampleA.csv";
+    String filename2 = "src/test/resources/sampleB.csv";
 
-    assertNotNull(Reality.checkThatFileCsv(filename1).hasNotSameContentAs(filename2));
+    assertNotNull(Reality.checkThatCsvFile(filename1).hasNotSameContentAs(filename2));
   }
 
   @Test
   public void headerHasNoDigits() throws Exception {
     File file = Files.loadResource("withHeader.csv");
 
-    assertNotNull(Reality.checkThatFileCsv(file).headerHasNoDigits());
+    assertNotNull(Reality.checkThatCsvFile(file).headerHasNoDigits());
   }
 
   @Test(expected = AssertionError.class)
   public void headerHasNoDigits_NoHeader() throws Exception {
     File file = Files.loadResource("sampleA.csv");
 
-    checkThatFileCsv(file).headerHasNoDigits();
+    checkThatCsvFile(file).headerHasNoDigits();
   }
 }

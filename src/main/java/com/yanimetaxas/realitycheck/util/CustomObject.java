@@ -1,9 +1,11 @@
 package com.yanimetaxas.realitycheck.util;
 
+import com.yanimetaxas.realitycheck.asserter.CustomReadableObjectAssert;
+
 /**
  * Created by imeta on 09-Nov-17.
  */
-public class CustomObject {
+public class CustomObject extends AbstractCustomObject<CustomReadableObjectAssert> {
 
   private String string;
   private int integer;
@@ -20,4 +22,6 @@ public class CustomObject {
   public int getInteger() {
     return integer;
   }
+
+
 }

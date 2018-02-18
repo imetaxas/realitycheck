@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 
 import com.yanimetaxas.realitycheck.tools.CoverageTool;
 import com.yanimetaxas.realitycheck.tools.Files;
+import com.yanimetaxas.realitycheck.util.CustomObject;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import org.junit.After;
@@ -23,7 +24,7 @@ public class RealityTest {
 
   @Test(expected = AssertionError.class)
   public void assertThat_FileIsNotNull() throws Exception {
-    checkThat(new File("sampleA.csv")).isNull();
+    checkThat(new File("src/test/resources/sampleA.csv")).isNull();
   }
 
   @Test
@@ -34,34 +35,34 @@ public class RealityTest {
 
   @Test
   public void assertThat_FileIsSameAs() throws Exception {
-    File file = new File("sampleA.csv");
+    File file = new File("src/test/resources/sampleA.csv");
     assertNotNull(checkThat(file).hasSameContentAs(file));
   }
 
   @Test
   public void assertThat_FileIsNotSameAs() throws Exception {
-    File file1 = new File("sampleA.csv");
-    File file2 = new File("sampleB.csv");
+    File file1 = new File("src/test/resources/sampleA.csv");
+    File file2 = new File("src/test/resources/sampleB.csv");
     assertNotNull(checkThat(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
   public void assertThat_FileIsSameAsAndNotSameAs_False() throws Exception {
-    File file = new File("sampleA.csv");
+    File file = new File("src/test/resources/sampleA.csv");
     checkThat(file).hasSameContentAs(file).hasNotSameContentAs(file);
   }
 
   @Test
   public void assertThat_FileIsSameAsAndNotSameAs_True() throws Exception {
-    File file1 = new File("sampleA.csv");
-    File file2 = new File("sampleB.csv");
+    File file1 = new File("src/test/resources/sampleA.csv");
+    File file2 = new File("src/test/resources/sampleB.csv");
     assertNotNull(checkThat(file1).hasSameContentAs(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
   public void assertThat_FileMultipleIsSame_isFalse() throws Exception {
-    File file1 = new File("sampleA.csv");
-    File file2 = new File("sampleB.csv");
+    File file1 = new File("src/test/resources/sampleA.csv");
+    File file2 = new File("src/test/resources/sampleB.csv");
 
     checkThat(file1).hasSameContentAs(file1).hasSameContentAs(file2);
   }
@@ -115,7 +116,7 @@ public class RealityTest {
     expectedEx.expect(AssertionError.class);
     expectedEx.expectMessage("Files have different content");
     File file = Files.loadResource("sampleA.csv");
-    checkWithMessage("Files have different content").thatCsvFile(file).hasNotSameContentAs(file.getName());
+    checkWithMessage("Files have different content").thatCsvFile(file).hasNotSameContentAs(file.getAbsolutePath());
   }
 
   @Test
@@ -125,6 +126,11 @@ public class RealityTest {
     String csv = "1,\"Eldon Base for stackable storage shelf, platinum\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8";
 
     checkWithMessage("Csv strings have different content").thatCsv(csv).hasNotSameContentAs(csv);
+  }
+
+  @Test
+  public void assertThat_CustomObject_IsNotNull() throws Exception {
+    assertNotNull(checkThat(new CustomObject("random", 1)).isIntegerGreaterThanZero());
   }
 
   @After

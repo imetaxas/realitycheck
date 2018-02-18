@@ -7,25 +7,24 @@ import com.yanimetaxas.realitycheck.util.CustomObject;
 /**
  * @author yanimetaxas
  */
-class CustomReadableObjectAssert extends AbstractReadableAssert<CustomReadableObjectAssert, CustomObject, CustomObjectValidationStrategy> {
+public class CustomReadableObjectAssert extends
+    AbstractReadableAssert<CustomReadableObjectAssert, CustomObject, CustomObjectValidationStrategy> {
 
-
-  CustomReadableObjectAssert(CustomObject customObject) throws ValidationException {
+  public CustomReadableObjectAssert(CustomObject customObject) throws ValidationException {
     super(customObject, null);
   }
 
-  CustomReadableObjectAssert isStringNull() throws ValidationException {
+  public CustomReadableObjectAssert isStringNull() throws ValidationException {
     if (actual.getString() != null) {
       throw new ValidationException("");
     }
     return self;
   }
 
-  CustomReadableObjectAssert isIntegerGreaterThanZero() throws ValidationException {
+  public CustomReadableObjectAssert isIntegerGreaterThanZero() throws ValidationException {
     if (actual.getInteger() <= 0) {
       throw new ValidationException("");
     }
     return self;
   }
-
 }
