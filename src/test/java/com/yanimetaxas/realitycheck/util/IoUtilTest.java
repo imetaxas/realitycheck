@@ -44,15 +44,27 @@ public class IoUtilTest {
   }
 
   @Test
-  public void testReadFile_WhenFilenameExists() throws Exception {
+  public void testReadResource_WhenFilenameExists() throws Exception {
     byte[] bytes = IoUtil.readResource("test.txt");
 
     assertNotNull(bytes);
   }
 
   @Test(expected = AssertionError.class)
-  public void testReadFile_WhenFilenameNotExists() throws Exception {
+  public void testReadResource_WhenFilenameNotExists() throws Exception {
     IoUtil.readResource("test");
+  }
+
+  @Test
+  public void testReadFile_WhenFilenameExists() throws Exception {
+    byte[] bytes = IoUtil.readFile("src/test/resources/test.txt");
+
+    assertNotNull(bytes);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testReadFile_WhenFilenameNotExists() throws Exception {
+    IoUtil.readFile("test");
   }
 
   @Test

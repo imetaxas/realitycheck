@@ -1,6 +1,6 @@
 package com.yanimetaxas.realitycheck.asserter;
 
-import com.yanimetaxas.realitycheck.strategy.validation.FilepathValidationStrategy;
+import com.yanimetaxas.realitycheck.strategy.validation.CsvFilenameValidationStrategy;
 import com.yanimetaxas.realitycheck.strategy.validation.ValidationStrategy;
 import com.yanimetaxas.realitycheck.util.IoUtil;
 import java.io.ByteArrayInputStream;
@@ -12,8 +12,8 @@ import java.io.File;
  */
 public class SystemResourceAssert extends FileAssert {
 
-  public SystemResourceAssert(String filepath, String message) throws AssertionError {
-    super(IoUtil.loadResource(filepath), message, new FilepathValidationStrategy(filepath));
+  public SystemResourceAssert(String filename, String message) throws AssertionError {
+    super(IoUtil.loadResource(filename), message, new CsvFilenameValidationStrategy(filename));
   }
 
   public SystemResourceAssert(File file, String message) throws AssertionError {

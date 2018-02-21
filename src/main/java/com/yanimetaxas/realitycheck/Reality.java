@@ -24,8 +24,8 @@ public class Reality {
   private Reality() {
   }
 
-  public static SystemResourceAssert checkThatResource(String filepath) throws AssertionError {
-    return new SystemResourceAssert(filepath, null);
+  public static SystemResourceAssert checkThatResource(String filename) throws AssertionError {
+    return new SystemResourceAssert(filename, null);
   }
 
   public static CsvResourceAssert checkThatCsvResource(String filename) throws AssertionError {

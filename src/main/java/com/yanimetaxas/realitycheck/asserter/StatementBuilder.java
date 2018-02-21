@@ -19,6 +19,14 @@ public class StatementBuilder {
     return this;
   }
 
+  public final IntegerAssert that(Integer actual) {
+    return new IntegerAssert(actual, message);
+  }
+
+  public final BooleanAssert that(Boolean actual) {
+    return new BooleanAssert(actual, message);
+  }
+
   public final StringAssert that(String actual) {
     return new StringAssert(actual, message);
   }
