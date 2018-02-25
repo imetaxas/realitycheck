@@ -11,12 +11,22 @@ import org.junit.Test;
 public class IntegerAssertTest {
 
   @Test
-  public void isOne() throws Exception {
+  public void isEqualTo() throws Exception {
     assertNotNull(new IntegerAssert(1).isEqualTo(1));
   }
 
   @Test(expected = AssertionError.class)
-  public void checkIsOne_WhenIsNot() throws Exception {
+  public void isEqualTo_WhenIsNot() throws Exception {
+    assertNotNull(new IntegerAssert(1).isEqualTo(2));
+  }
+
+  @Test(expected = AssertionError.class)
+  public void checkIsNotEqualToOne_WhenIs() throws Exception {
     new IntegerAssert(1).isNotEqualTo(1);
+  }
+
+  @Test
+  public void checkIsNotEqualToOne_WhenIsNot() throws Exception {
+    new IntegerAssert(1).isNotEqualTo(2);
   }
 }

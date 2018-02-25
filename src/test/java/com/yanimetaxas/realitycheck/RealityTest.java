@@ -149,7 +149,7 @@ public class RealityTest {
   }
 
   @Test
-  public void checkWithMessage_thatIntegerIsNotOne() throws Exception {
+  public void checkWithMessage_thatIntegerIsNotOne_WhenIs() throws Exception {
     expectedEx.expect(AssertionError.class);
     expectedEx.expectMessage("Integer is wrong");
 
