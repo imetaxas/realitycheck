@@ -55,6 +55,12 @@ public class IoUtilTest {
     IoUtil.readResource("test");
   }
 
+  @Test(expected = AssertionError.class)
+  public void testLoadResource_WhenFilenameIsNull() throws Exception {
+    String filename = null;
+    IoUtil.readResource(filename);
+  }
+  
   @Test
   public void testReadFile_WhenFilenameExists() throws Exception {
     byte[] bytes = IoUtil.readFile("src/test/resources/test.txt");
@@ -78,7 +84,6 @@ public class IoUtilTest {
   @Test(expected = AssertionError.class)
   public void testContentEquals_WhenInputStreamIsInvalid() throws Exception {
     byte[] bytes1 = IoUtil.readResource("test.txt");
-    byte[] bytes2 = IoUtil.readResource("test.txt");
 
     IoUtil.contentEquals(new ByteArrayInputStream(bytes1), null);
   }

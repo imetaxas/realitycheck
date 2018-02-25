@@ -59,8 +59,18 @@ public class IoUtil {
   }
 
   public static byte[] readResource(String filename) throws AssertionError {
+      if(filename == null) {
+        throw new AssertionError("File NOT exists!");
+      }
+      return readResource(new File(filename));
+  }
+
+  public static byte[] readResource(File file) throws AssertionError {
     try {
-      File resource = loadResource(filename);
+      if(file == null) {
+        throw new AssertionError("File NOT exists!");
+      }
+      File resource = loadResource(file.getName());
       return IOUtils.toByteArray(new java.io.FileReader(resource), "ISO-8859-1");
     } catch (Exception e) {
       throw new AssertionError(e);

@@ -5,6 +5,7 @@ import com.yanimetaxas.realitycheck.asserter.CsvAssert;
 import com.yanimetaxas.realitycheck.asserter.CsvFileAssert;
 import com.yanimetaxas.realitycheck.asserter.CsvResourceAssert;
 import com.yanimetaxas.realitycheck.asserter.CustomObjectAssert;
+import com.yanimetaxas.realitycheck.asserter.CustomReadableObjectAssert;
 import com.yanimetaxas.realitycheck.asserter.FileAssert;
 import com.yanimetaxas.realitycheck.asserter.InputStreamAssert;
 import com.yanimetaxas.realitycheck.asserter.IntegerAssert;
@@ -12,6 +13,7 @@ import com.yanimetaxas.realitycheck.asserter.StatementBuilder;
 import com.yanimetaxas.realitycheck.asserter.StringAssert;
 import com.yanimetaxas.realitycheck.asserter.SystemResourceAssert;
 import com.yanimetaxas.realitycheck.custom.CustomObject;
+import com.yanimetaxas.realitycheck.custom.CustomReadableObject;
 import com.yanimetaxas.realitycheck.exception.ValidationException;
 import java.io.File;
 import java.io.InputStream;
@@ -24,7 +26,11 @@ public class Reality {
   private Reality() {
   }
 
-  public static SystemResourceAssert checkThatResource(String filename) throws AssertionError {
+  public static SystemResourceAssert checkThatSystemResource(File file) throws AssertionError {
+    return new SystemResourceAssert(file, null);
+  }
+
+  public static SystemResourceAssert checkThatSystemResource(String filename) throws AssertionError {
     return new SystemResourceAssert(filename, null);
   }
 
@@ -79,5 +85,10 @@ public class Reality {
   public static CustomObjectAssert checkThat(CustomObject customObject)
       throws ValidationException {
     return new StatementBuilder().that(customObject);
+  }
+
+  public static CustomReadableObjectAssert checkThat(CustomReadableObject customReadableObject)
+      throws ValidationException {
+    return new StatementBuilder().that(customReadableObject);
   }
 }

@@ -2,7 +2,7 @@ package com.yanimetaxas.realitycheck.asserter;
 
 import static org.junit.Assert.assertNotNull;
 
-import com.yanimetaxas.realitycheck.tools.Files;
+import com.yanimetaxas.realitycheck.util.IoUtil;
 import java.io.File;
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ public class CsvResourceAssertTest {
 
   @Test
   public void headerHasNoDigits() throws Exception {
-    File file = Files.loadResource("withHeader.csv");
+    File file = IoUtil.loadResource("withHeader.csv");
 
     assertNotNull(new CsvResourceAssert(file, null).headerHasNoDigits());
   }

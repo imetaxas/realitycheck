@@ -1,7 +1,7 @@
 package com.yanimetaxas.realitycheck.asserter;
 
-import com.yanimetaxas.realitycheck.strategy.validation.CsvFilenameValidationStrategy;
-import com.yanimetaxas.realitycheck.strategy.validation.ValidationStrategy;
+import com.yanimetaxas.realitycheck.strategy.validation.FileValidationStrategy;
+import com.yanimetaxas.realitycheck.strategy.validation.FilenameValidationStrategy;
 import com.yanimetaxas.realitycheck.util.IoUtil;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -13,16 +13,11 @@ import java.io.File;
 public class SystemResourceAssert extends FileAssert {
 
   public SystemResourceAssert(String filename, String message) throws AssertionError {
-    super(IoUtil.loadResource(filename), message, new CsvFilenameValidationStrategy(filename));
+    super(IoUtil.loadResource(filename), message, new FilenameValidationStrategy(filename));
   }
 
   public SystemResourceAssert(File file, String message) throws AssertionError {
-    super(file, message);
-  }
-
-  public SystemResourceAssert(File file, String message, ValidationStrategy strategy)
-      throws AssertionError {
-    super(file, message, strategy);
+    super(file, message, new FileValidationStrategy(file));
   }
 
   @Override
@@ -33,13 +28,13 @@ public class SystemResourceAssert extends FileAssert {
   @Override
   public FileAssert hasSameContentAs(File file) throws AssertionError {
     return (FileAssert) super
-        .hasSameContentAs(new ByteArrayInputStream(IoUtil.readResource(file.getName())));
+        .hasSameContentAs(new ByteArrayInputStream(IoUtil.readResource(file)));
   }
 
   @Override
   public FileAssert hasNotSameContentAs(File file) throws AssertionError {
     return (FileAssert) super
-        .hasNotSameContentAs(new ByteArrayInputStream(IoUtil.readResource(file.getName())));
+        .hasNotSameContentAs(new ByteArrayInputStream(IoUtil.readResource(file)));
   }
 
   @Override

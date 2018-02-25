@@ -8,8 +8,9 @@ import static com.yanimetaxas.realitycheck.Reality.checkWithMessage;
 import static org.junit.Assert.assertNotNull;
 
 import com.yanimetaxas.realitycheck.custom.CustomObject;
+import com.yanimetaxas.realitycheck.custom.CustomReadableObject;
 import com.yanimetaxas.realitycheck.tools.CoverageTool;
-import com.yanimetaxas.realitycheck.tools.Files;
+import com.yanimetaxas.realitycheck.util.IoUtil;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import org.junit.After;
@@ -107,13 +108,13 @@ public class RealityTest {
   }
 
   @Test
-  public void checkWithMessage_WhenStringHasLength() throws Exception {
+  public void checkWithMessage_thatStringHasLength() throws Exception {
     String string = "random";
     assertNotNull(checkWithMessage("String has wrong length").that(string).hasLength(6));
   }
 
   @Test
-  public void checkWithMessage_WhenStringHasNotLength() throws Exception {
+  public void checkWithMessage_thatStringHasNotLength() throws Exception {
     expectedEx.expect(AssertionError.class);
     expectedEx.expectMessage("String has wrong length");
 
@@ -122,12 +123,12 @@ public class RealityTest {
   }
 
   @Test
-  public void checkWithMessage_WhenBooleanIsTrue() throws Exception {
+  public void checkWithMessage_thatBooleanIsTrue() throws Exception {
     assertNotNull(checkWithMessage("Boolean is false").that(true).isTrue());
   }
 
   @Test
-  public void checkWithMessage_WhenBooleanIsNotTrue() throws Exception {
+  public void checkWithMessage_thatBooleanIsNotTrue() throws Exception {
     expectedEx.expect(AssertionError.class);
     expectedEx.expectMessage("Boolean is false");
 
@@ -135,7 +136,7 @@ public class RealityTest {
   }
 
   @Test
-  public void checkWithMessage_WhenIntegerIsOne() throws Exception {
+  public void checkWithMessage_thatIntegerIsOne() throws Exception {
     assertNotNull(checkWithMessage("Integer is 1").that(1).isEqualTo(1));
   }
 
@@ -148,7 +149,7 @@ public class RealityTest {
   }
 
   @Test
-  public void checkWithMessage_WhenIntegerIsNotOne() throws Exception {
+  public void checkWithMessage_thatIntegerIsNotOne() throws Exception {
     expectedEx.expect(AssertionError.class);
     expectedEx.expectMessage("Integer is wrong");
 
@@ -156,7 +157,7 @@ public class RealityTest {
   }
 
   @Test
-  public void assertThat_assertWithMessage_InputStream_IsNotNull() throws Exception {
+  public void checkWithMessage_thatInputStream_IsNotNull() throws Exception {
     expectedEx.expect(AssertionError.class);
     expectedEx.expectMessage("InputStream is NULL");
 
@@ -165,7 +166,7 @@ public class RealityTest {
   }
 
   @Test
-  public void assertThat_assertWithMessage_FileIsNotNull() throws Exception {
+  public void checkWithMessage_thatFileIsNotNull() throws Exception {
     expectedEx.expect(AssertionError.class);
     expectedEx.expectMessage("File is NULL");
     File file = null;
@@ -173,15 +174,15 @@ public class RealityTest {
   }
 
   @Test
-  public void thatCsvFile_assertWithMessage_hasNotSameContentAs_given_file() throws Exception {
+  public void checkWithMessage_thatCsvFile_hasNotSameContentAs_given_file() throws Exception {
     expectedEx.expect(AssertionError.class);
     expectedEx.expectMessage("Files have different content");
-    File file = Files.loadResource("sampleA.csv");
+    File file = IoUtil.loadResource("sampleA.csv");
     checkWithMessage("Files have different content").thatCsvFile(file).hasNotSameContentAs(file.getAbsolutePath());
   }
 
   @Test
-  public void thatCsv_assertWithMessage_hasNotSameContentAs_given_csv() throws Exception {
+  public void checkWithMessage_thatCsv_hasNotSameContentAs_given_csv() throws Exception {
     expectedEx.expect(AssertionError.class);
     expectedEx.expectMessage("Csv strings have different content");
     String csv = "1,\"Eldon Base for stackable storage shelf, platinum\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8";
@@ -190,31 +191,86 @@ public class RealityTest {
   }
 
   @Test
-  public void assertThat_CustomObject_IsNotNull() throws Exception {
-    assertNotNull(checkThat(new CustomObject("random", 1)).isIntegerGreaterThanZero());
-  }
-
-  @Test
   public void checkThatCsvResource_WhenHeaderHasNoDigits() throws Exception {
-    File csvResource = Files.loadResource("withHeader.csv");
+    File csvResource = IoUtil.loadResource("withHeader.csv");
     assertNotNull(checkThatCsvResource(csvResource).headerHasNoDigits());
   }
 
   @Test
   public void checkThatCsvResourceNameExists() throws Exception {
-    File csvResource = Files.loadResource("withHeader.csv");
+    File csvResource = IoUtil.loadResource("withHeader.csv");
     assertNotNull(checkThatCsvResource(csvResource.getName()).exists());
   }
 
   @Test
   public void checkThatResource() throws Exception {
-    File csvResource = Files.loadResource("withHeader.csv");
-    assertNotNull(Reality.checkThatResource(csvResource.getName()).exists());
+    File csvResource = IoUtil.loadResource("withHeader.csv");
+    assertNotNull(Reality.checkThatSystemResource(csvResource.getName()).exists());
+  }
+
+  @Test
+  public void checkResource_WhenHasSameContentAs() throws Exception {
+    File file = new File("src/test/resources/test.txt");
+    assertNotNull(Reality.checkThatSystemResource(file).hasSameContentAs(file));
+  }
+
+  @Test
+  public void checkResource_WhenHasNotSameContentAs() throws Exception {
+    File file1 = new File("src/test/resources/sampleA.csv");
+    File file2 = new File("src/test/resources/sampleB.csv");
+    assertNotNull(Reality.checkThatSystemResource(file1).hasNotSameContentAs(file2));
+  }
+
+  @Test(expected = AssertionError.class)
+  public void checkResource_WhenHasSameContentAs_And_WhenHasNotSameContentAs_False() throws Exception {
+    File file = new File("src/test/resources/sampleA.csv");
+    Reality.checkThatSystemResource(file).hasSameContentAs(file).hasNotSameContentAs(file);
+  }
+
+  @Test
+  public void checkResource_WhenHasSameContentAs_And_WhenHasNotSameContentAs_True() throws Exception {
+    File file1 = new File("src/test/resources/sampleA.csv");
+    File file2 = new File("src/test/resources/sampleB.csv");
+    assertNotNull(Reality.checkThatSystemResource(file1).hasSameContentAs(file1).hasNotSameContentAs(file2));
+  }
+
+  @Test(expected = AssertionError.class)
+  public void checkResource_WhenHasSameContentAs_And_WhenHasSameContentAs_False() throws Exception {
+    File file1 = new File("src/test/resources/sampleA.csv");
+    File file2 = new File("src/test/resources/sampleB.csv");
+
+    Reality.checkThatSystemResource(file1).hasSameContentAs(file1).hasSameContentAs(file2);
   }
 
   @Test
   public void checkThatIntegerIsOne() throws Exception {
     assertNotNull(checkThat(1).isEqualTo(1).isNotNull());
+  }
+
+  @Test
+  public void checkWithMessage_thatCsvResource_hasNotSameContentAs_given_file() throws Exception {
+    expectedEx.expect(AssertionError.class);
+    expectedEx.expectMessage("Files have different content");
+    File file = IoUtil.loadResource("sampleA.csv");
+    checkWithMessage("Files have different content").thatCsvResource(file).hasNotSameContentAs(file.getAbsolutePath());
+  }
+
+  @Test
+  public void checkWithMessage_thatSystemResource_hasNotSameContentAs_given_file() throws Exception {
+    expectedEx.expect(AssertionError.class);
+    expectedEx.expectMessage("Files have different content");
+    File file = IoUtil.loadResource("test.txt");
+    checkWithMessage("Files have different content").thatSystemResource(file).hasNotSameContentAs(file);
+  }
+
+  @Test
+  public void checkThat_CustomObject_IsNotNull() throws Exception {
+    assertNotNull(checkThat(new CustomObject("random", 1)).isNotNull());
+  }
+
+  @Test
+  public void checkThat_CustomReadableObject_IsNotNull() throws Exception {
+    assertNotNull(checkThat(new CustomReadableObject()).isNotNull());
   }
 
   @After

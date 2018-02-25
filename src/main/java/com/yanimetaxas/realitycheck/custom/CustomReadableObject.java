@@ -8,4 +8,5 @@ import com.yanimetaxas.realitycheck.asserter.CustomReadableObjectAssert;
  */
 public class CustomReadableObject extends AbstractCustomReadableObject<CustomReadableObjectAssert> {
 
+
 }

@@ -2,7 +2,7 @@ package com.yanimetaxas.realitycheck.asserter;
 
 import static org.junit.Assert.assertNotNull;
 
-import com.yanimetaxas.realitycheck.tools.Files;
+import com.yanimetaxas.realitycheck.util.IoUtil;
 import java.io.File;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ public class CsvFileAssertTest {
 
   @Test
   public void isSameAs_given_file() throws Exception {
-    File file = Files.loadResource("sampleA.csv");
+    File file = IoUtil.loadResource("sampleA.csv");
 
     assertNotNull(new CsvFileAssert(file, null).hasSameContentAs(file.getAbsolutePath()));
   }
@@ -41,14 +41,14 @@ public class CsvFileAssertTest {
 
   @Test
   public void assertThatFileCsv_NoFileCsv() throws Exception {
-    File file = Files.loadResource("test.txt");
+    File file = IoUtil.loadResource("test.txt");
 
     assertNotNull(new CsvFileAssert(file.getName(), null));
   }
 
   @Test
   public void assertThatFileCsv_FileIsEmpty() throws Exception {
-    File file = Files.loadResource("empty.csv");
+    File file = IoUtil.loadResource("empty.csv");
 
     assertNotNull(new CsvFileAssert(file, null));
   }
@@ -71,15 +71,15 @@ public class CsvFileAssertTest {
 
   @Test
   public void isNotSameAs_given_file() throws Exception {
-    File file1 = Files.loadResource("sampleA.csv");
-    File file2 = Files.loadResource("sampleB.csv");
+    File file1 = IoUtil.loadResource("sampleA.csv");
+    File file2 = IoUtil.loadResource("sampleB.csv");
 
     assertNotNull(new CsvFileAssert(file1, null).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
   public void isNotSameAs_False() throws Exception {
-    File file = Files.loadResource("sampleA.csv");
+    File file = IoUtil.loadResource("sampleA.csv");
 
     new CsvFileAssert(file, null).hasNotSameContentAs(file);
   }
@@ -94,14 +94,14 @@ public class CsvFileAssertTest {
 
   @Test
   public void headerHasNoDigits() throws Exception {
-    File file = Files.loadResource("withHeader.csv");
+    File file = IoUtil.loadResource("withHeader.csv");
 
     assertNotNull(new CsvFileAssert(file, null).headerHasNoDigits());
   }
 
   @Test(expected = AssertionError.class)
   public void headerHasNoDigits_NoHeader() throws Exception {
-    File file = Files.loadResource("sampleA.csv");
+    File file = IoUtil.loadResource("sampleA.csv");
 
     new CsvFileAssert(file, null).headerHasNoDigits();
   }

@@ -2,7 +2,7 @@ package com.yanimetaxas.realitycheck.asserter;
 
 import static org.junit.Assert.assertNotNull;
 
-import com.yanimetaxas.realitycheck.tools.Files;
+import com.yanimetaxas.realitycheck.util.IoUtil;
 import java.io.File;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class FileAssertTest {
 
   @Test
   public void testFilepathExists() throws Exception {
-    String filePath = Files.loadResource("test.txt").getPath();
+    String filePath = IoUtil.loadResource("test.txt").getPath();
     FileAssert fileAssert = new FileAssert(filePath, null);
 
     assertNotNull(fileAssert.exists());
@@ -53,7 +53,7 @@ public class FileAssertTest {
 
   @Test(expected = AssertionError.class)
   public void testFileNotExists_WhenNotExists() throws Exception {
-    File file = Files.loadResource("test.txt");
+    File file = IoUtil.loadResource("test.txt");
     FileAssert fileAssert = new FileAssert(file, null);
 
     fileAssert.doesNotExist();
@@ -61,7 +61,7 @@ public class FileAssertTest {
 
   @Test
   public void testFileNotExists_WhenExists() throws Exception {
-    File file = Files.loadResource("test.txt");
+    File file = IoUtil.loadResource("test.txt");
     FileAssert fileAssert = new FileAssert(file, null);
 
     assertNotNull(fileAssert.exists());
@@ -77,7 +77,7 @@ public class FileAssertTest {
 
   @Test
   public void testFileIsDirectory() throws Exception {
-    File file = Files.loadResource("dir");
+    File file = IoUtil.loadResource("dir");
     FileAssert fileAssert = new FileAssert(file, null);
 
     assertNotNull(fileAssert.isDirectory());
@@ -101,9 +101,41 @@ public class FileAssertTest {
 
   @Test(expected = AssertionError.class)
   public void testFileIsNotDirectory_WhenIsDirectory() throws Exception {
-    File file = Files.loadResource("dir");
+    File file = IoUtil.loadResource("dir");
     FileAssert fileAssert = new FileAssert(file, null);
 
     fileAssert.isNotDirectory();
+  }
+
+  @Test
+  public void testFileIsHidden() throws Exception {
+    File file = new File("src/test/resources/hidden.txt");
+    FileAssert fileAssert = new FileAssert(file, null);
+
+    assertNotNull(fileAssert.isHidden());
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testFileIsHidden_WhenIsNot() throws Exception {
+    File file = new File("src/test/resources/test.txt");
+    FileAssert fileAssert = new FileAssert(file, null);
+
+    fileAssert.isHidden();
+  }
+
+  @Test
+  public void testFileIsNotHidden() throws Exception {
+    File file = new File("src/test/resources/test.txt");
+    FileAssert fileAssert = new FileAssert(file, null);
+
+    assertNotNull(fileAssert.isNotHidden());
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testFileIsHidden_WhenIs() throws Exception {
+    File file = new File("src/test/resources/hidden.txt");
+    FileAssert fileAssert = new FileAssert(file, null);
+
+    fileAssert.isNotHidden();
   }
 }
