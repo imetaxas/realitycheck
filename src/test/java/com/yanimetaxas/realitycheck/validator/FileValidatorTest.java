@@ -1,6 +1,6 @@
 package com.yanimetaxas.realitycheck.validator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import com.yanimetaxas.realitycheck.exception.ValidationException;
 import java.io.File;
@@ -13,7 +13,7 @@ public class FileValidatorTest {
 
   @Test
   public void validate() throws Exception {
-    File file = new File("sampleA.csv");
+    File file = new File("src/test/resources/sampleA.csv");
     FileValidator fileValidator = new FileValidator(file);
 
 

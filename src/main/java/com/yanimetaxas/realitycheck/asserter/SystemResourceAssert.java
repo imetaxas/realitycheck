@@ -1,7 +1,7 @@
 package com.yanimetaxas.realitycheck.asserter;
 
 import com.yanimetaxas.realitycheck.strategy.validation.FileValidationStrategy;
-import com.yanimetaxas.realitycheck.strategy.validation.FilenameValidationStrategy;
+import com.yanimetaxas.realitycheck.strategy.validation.SystemResourceValidationStrategy;
 import com.yanimetaxas.realitycheck.util.IoUtil;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.io.File;
 public class SystemResourceAssert extends FileAssert {
 
   public SystemResourceAssert(String filename, String message) throws AssertionError {
-    super(IoUtil.loadResource(filename), message, new FilenameValidationStrategy(filename));
+    super(IoUtil.loadResource(filename), message, new SystemResourceValidationStrategy(filename));
   }
 
   public SystemResourceAssert(File file, String message) throws AssertionError {
