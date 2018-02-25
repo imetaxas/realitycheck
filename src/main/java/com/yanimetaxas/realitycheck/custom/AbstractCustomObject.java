@@ -1,6 +1,5 @@
 package com.yanimetaxas.realitycheck.custom;
 
-import com.yanimetaxas.realitycheck.asserter.CustomObjectAssert;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -11,7 +10,7 @@ import java.lang.reflect.Type;
  */
 public abstract class AbstractCustomObject<ASSERT> {
 
-  public CustomObjectAssert getAssertFromType() throws AssertionError {
+  public ASSERT getAssertFromType() throws AssertionError {
     Type superclass;
     try {
       superclass = getClass().getGenericSuperclass();
@@ -20,7 +19,7 @@ public abstract class AbstractCustomObject<ASSERT> {
       Type customObjectType = ((ParameterizedType) assertRawType.getGenericSuperclass()).getActualTypeArguments()[1];
       Class<?> customObjectRawType = (Class<?>) customObjectType;
       Constructor constructor = assertRawType.getConstructor(customObjectRawType);
-      return (CustomObjectAssert) constructor.newInstance(this);
+      return (ASSERT) constructor.newInstance(this);
     } catch (Exception e) {
       throw new AssertionError(e);
     }

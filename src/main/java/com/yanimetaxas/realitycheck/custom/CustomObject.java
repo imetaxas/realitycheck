@@ -3,7 +3,8 @@ package com.yanimetaxas.realitycheck.custom;
 import com.yanimetaxas.realitycheck.asserter.CustomObjectAssert;
 
 /**
- * Created by imeta on 09-Nov-17.
+ * @author yanimetaxas
+ * @since 18-Feb-18
  */
 public class CustomObject extends AbstractCustomObject<CustomObjectAssert> {
 
