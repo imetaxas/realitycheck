@@ -1,31 +1,16 @@
 package com.yanimetaxas.realitycheck.asserter;
 
+import com.yanimetaxas.realitycheck.custom.CustomReadableObject;
 import com.yanimetaxas.realitycheck.exception.ValidationException;
-import com.yanimetaxas.realitycheck.strategy.validation.CustomObjectValidationStrategy;
-import com.yanimetaxas.realitycheck.util.CustomObject;
+import com.yanimetaxas.realitycheck.strategy.validation.CustomReadableObjectValidationStrategy;
 
 /**
  * @author yanimetaxas
  */
-class CustomReadableObjectAssert extends AbstractReadableAssert<CustomReadableObjectAssert, CustomObject, CustomObjectValidationStrategy> {
+public class CustomReadableObjectAssert extends
+    AbstractReadableAssert<CustomReadableObjectAssert, CustomReadableObject, CustomReadableObjectValidationStrategy> {
 
-
-  CustomReadableObjectAssert(CustomObject customObject) throws ValidationException {
-    super(customObject, null);
+  public CustomReadableObjectAssert(CustomReadableObject customReadableObject) throws ValidationException {
+    super(customReadableObject, null);
   }
-
-  CustomReadableObjectAssert isStringNull() throws ValidationException {
-    if (actual.getString() != null) {
-      throw new ValidationException("");
-    }
-    return self;
-  }
-
-  CustomReadableObjectAssert isIntegerGreaterThanZero() throws ValidationException {
-    if (actual.getInteger() <= 0) {
-      throw new ValidationException("");
-    }
-    return self;
-  }
-
 }

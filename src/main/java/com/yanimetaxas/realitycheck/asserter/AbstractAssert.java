@@ -36,6 +36,22 @@ public abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, 
     return self;
   }
 
+  @Override
+  public SELF isEqualTo(ACTUAL expected) {
+    if (!this.actual.equals(expected)) {
+      throwProperAssertionError("Subject is not equal");
+    }
+    return self;
+  }
+
+  @Override
+  public SELF isNotEqualTo(ACTUAL expected) {
+    if (this.actual.equals(expected)) {
+      throwProperAssertionError("Subject is equal");
+    }
+    return self;
+  }
+
   void throwProperAssertionError(String defaultMessage) {
     if (customMessage == null) {
       throw new AssertionError(defaultMessage);

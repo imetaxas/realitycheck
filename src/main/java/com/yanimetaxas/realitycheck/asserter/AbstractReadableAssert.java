@@ -32,7 +32,7 @@ public abstract class AbstractReadableAssert<SELF extends AbstractReadableAssert
 
   public AbstractReadableAssert hasSameContentAs(InputStream expected) throws AssertionError {
     if(!IoUtil.contentEquals(new ByteArrayInputStream(getActualContent()), expected)){
-      throw new AssertionError("InputStreams are NOT exactly the same");
+      throwProperAssertionError("InputStreams are NOT exactly the same");
     }
     return self;
   }

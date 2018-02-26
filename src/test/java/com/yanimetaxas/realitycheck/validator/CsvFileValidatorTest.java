@@ -13,7 +13,7 @@ public class CsvFileValidatorTest {
 
   @Test
   public void readCsvFile() throws Exception {
-    CsvFileValidator csvFileValidator = new CsvFileValidator(new File("sampleA.csv"));
+    CsvFileValidator csvFileValidator = new CsvFileValidator(new File("src/test/resources/sampleA.csv"));
     byte[] lines = csvFileValidator.validate();
 
     assertNotNull(lines);

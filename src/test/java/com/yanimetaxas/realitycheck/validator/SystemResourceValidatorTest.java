@@ -8,38 +8,37 @@ import org.junit.Test;
 
 /**
  * @author yanimetaxas
+ * @since 25-Feb-18
  */
-public class FileValidatorTest {
+public class SystemResourceValidatorTest {
 
   @Test
   public void validate() throws Exception {
     File file = new File("src/test/resources/sampleA.csv");
-    FileValidator fileValidator = new FileValidator(file);
+    SystemResourceValidator resourceValidator = new SystemResourceValidator(file);
 
-
-    assertNotNull(fileValidator.validate());
+    assertNotNull(resourceValidator.validate());
   }
 
   @Test(expected = ValidationException.class)
   public void validate_FileIsNull() throws Exception {
-    FileValidator fileValidator = new FileValidator(null);
+    SystemResourceValidator resourceValidator = new SystemResourceValidator(null);
 
-    assertNotNull(fileValidator.validate());
+    assertNotNull(resourceValidator.validate());
   }
 
   @Test(expected = ValidationException.class)
   public void validate_FileIsEmpty() throws Exception {
-    File file = new File("");
-    FileValidator fileValidator = new FileValidator(file);
+    SystemResourceValidator resourceValidator = new SystemResourceValidator(new File(""));
 
-    assertNotNull(fileValidator.validate());
+    assertNotNull(resourceValidator.validate());
   }
 
   @Test(expected = ValidationException.class)
   public void validate_FileNotExists() throws Exception {
-    File file = new File("");
-    FileValidator fileValidator = new FileValidator(file);
+    SystemResourceValidator resourceValidator = new SystemResourceValidator(new File(""));
 
-    assertNotNull(fileValidator.validate());
+    assertNotNull(resourceValidator.validate());
   }
+
 }

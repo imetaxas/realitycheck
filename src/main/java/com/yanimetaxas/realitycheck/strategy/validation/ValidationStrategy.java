@@ -3,7 +3,8 @@ package com.yanimetaxas.realitycheck.strategy.validation;
 import com.yanimetaxas.realitycheck.exception.ValidationException;
 
 /**
- * Created by imeta on 24-Oct-17.
+ * @author yanimetaxas
+ * @since 18-Feb-18
  */
 @FunctionalInterface
 public interface ValidationStrategy<K> {

@@ -1,6 +1,6 @@
 package com.yanimetaxas.realitycheck.reader;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import com.yanimetaxas.realitycheck.exception.ValidationException;
 import com.yanimetaxas.realitycheck.util.IoUtil;
@@ -14,7 +14,7 @@ public class FilepathReaderTest {
 
   @Test
   public void readFilepath() throws Exception {
-    FilepathReader filepathReader = new FilepathReader(IoUtil.loadResourceOrNull("test.txt").getAbsolutePath());
+    FilepathReader filepathReader = new FilepathReader(IoUtil.loadResource("test.txt").getAbsolutePath());
     byte[] contents = filepathReader.read();
 
     assertNotNull(contents[0]);

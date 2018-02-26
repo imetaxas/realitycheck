@@ -12,8 +12,8 @@ public class CsvFileAssert extends FileAssert {
 
   private CsvAssert csvAssert;
 
-  public CsvFileAssert(String filename, String message) throws AssertionError {
-    super(IoUtil.toFileOrNull(filename), message, new CsvFilenameValidationStrategy(filename));
+  public CsvFileAssert(String filepath, String message) throws AssertionError {
+    super(IoUtil.toFile(filepath), message, new CsvFilenameValidationStrategy(filepath));
   }
 
   public CsvFileAssert(File csvFile, String message) throws AssertionError {

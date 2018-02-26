@@ -6,7 +6,8 @@ import com.yanimetaxas.realitycheck.validator.FileValidator;
 import java.io.File;
 
 /**
- * Created by imeta on 28-Oct-17.
+ * @author yanimetaxas
+ * @since 18-Feb-18
  */
 public class FileValidationStrategy extends AbstractValidationStrategy<File> {
 
