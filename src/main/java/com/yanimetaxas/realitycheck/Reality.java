@@ -78,10 +78,6 @@ public class Reality {
     return new StringAssert(string);
   }
 
-  public static StatementBuilder checkWithMessage(String message) throws ValidationException {
-    return new StatementBuilder().withMessage(message);
-  }
-
   public static CustomObjectAssert checkThat(CustomObject customObject)
       throws ValidationException {
     return new StatementBuilder().that(customObject);
@@ -91,4 +87,9 @@ public class Reality {
       throws ValidationException {
     return new StatementBuilder().that(customReadableObject);
   }
+
+  public static StatementBuilder checkWithMessage(String message) throws ValidationException {
+    return new StatementBuilder().withMessage(message);
+  }
+
 }
