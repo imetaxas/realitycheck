@@ -15,91 +15,91 @@ public class StringAssert extends AbstractAssert<StringAssert, String> {
 
   public StringAssert hasLength(int size) throws AssertionError {
     if(actual.length() != size) {
-      throwProperAssertionError("Wrong length");
+      throwAssertionErrorWithCustomMessage("Wrong length");
     }
     return self;
   }
 
   public StringAssert equalsIgnoreCase(String expected) {
     if(!actual.equalsIgnoreCase(expected)) {
-      throwProperAssertionError("Not equal");
+      throwAssertionErrorWithCustomMessage("Not equal");
     }
     return self;
   }
 
   public StringAssert doesNotEqualIgnoreCase(String expected) {
     if(actual.equalsIgnoreCase(expected)) {
-      throwProperAssertionError("Equals");
+      throwAssertionErrorWithCustomMessage("Equals");
     }
     return self;
   }
 
   public StringAssert equals(String expected) {
     if(!actual.equals(expected)) {
-      throwProperAssertionError("Not equal");
+      throwAssertionErrorWithCustomMessage("Not equal");
     }
     return self;
   }
 
   public StringAssert doesNotEqual(String expected) {
     if(actual.equals(expected)) {
-      throwProperAssertionError("Equals");
+      throwAssertionErrorWithCustomMessage("Equals");
     }
     return self;
   }
 
   public StringAssert startsWith(String expected) {
     if(!actual.startsWith(expected)) {
-      throwProperAssertionError("Not start with");
+      throwAssertionErrorWithCustomMessage("Not start with");
     }
     return self;
   }
 
   public StringAssert endsWith(String expected) {
     if(!actual.endsWith(expected)) {
-      throwProperAssertionError("Not end with");
+      throwAssertionErrorWithCustomMessage("Not end with");
     }
     return self;
   }
 
   public StringAssert contains(String expected) {
     if(!actual.contains(expected)) {
-      throwProperAssertionError("Is not contained");
+      throwAssertionErrorWithCustomMessage("Is not contained");
     }
     return self;
   }
 
   public StringAssert doesNotContain(String expected) {
     if(actual.contains(expected)) {
-      throwProperAssertionError("Is contained");
+      throwAssertionErrorWithCustomMessage("Is contained");
     }
     return self;
   }
 
   public StringAssert isEmpty() {
     if(!actual.isEmpty()) {
-      throwProperAssertionError("Is not empty");
+      throwAssertionErrorWithCustomMessage("Is not empty");
     }
     return self;
   }
 
   public StringAssert isNotEmpty() {
     if(actual.isEmpty()) {
-      throwProperAssertionError("Is empty");
+      throwAssertionErrorWithCustomMessage("Is empty");
     }
     return self;
   }
 
   public StringAssert matches(String regex) {
     if(!actual.matches(regex)) {
-      throwProperAssertionError("Regex not matched");
+      throwAssertionErrorWithCustomMessage("Regex not matched");
     }
     return self;
   }
 
   public StringAssert doesNotMatch(String regex) {
     if(actual.matches(regex)) {
-      throwProperAssertionError("Regex matched");
+      throwAssertionErrorWithCustomMessage("Regex matched");
     }
     return self;
   }

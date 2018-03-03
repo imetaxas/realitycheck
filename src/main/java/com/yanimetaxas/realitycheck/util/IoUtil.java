@@ -32,7 +32,7 @@ public class IoUtil {
     if(dir.isDirectory()){
       return dir;
     }
-    return null;
+    return new File("");
   }
 
   public static File toFile(String filepath) {

@@ -16,14 +16,14 @@ public class BooleanAssert extends AbstractAssert<BooleanAssert, Boolean> {
 
   public BooleanAssert isTrue() throws AssertionError {
     if(!actual) {
-      throwProperAssertionError("Is false");
+      throwAssertionErrorWithCustomMessage("Is false");
     }
     return self;
   }
 
   public BooleanAssert isFalse() throws AssertionError {
     if(actual) {
-      throwProperAssertionError("Is true");
+      throwAssertionErrorWithCustomMessage("Is true");
     }
     return self;
   }

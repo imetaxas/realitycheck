@@ -23,7 +23,7 @@ public abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, 
   @Override
   public SELF isNull() {
     if (this.actual != null) {
-      throwProperAssertionError("Subject is NULL");
+      throwAssertionErrorWithCustomMessage("Subject is NULL");
     }
     return self;
   }
@@ -31,7 +31,7 @@ public abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, 
   @Override
   public SELF isNotNull() {
     if (this.actual == null) {
-      throwProperAssertionError("Subject is not NULL");
+      throwAssertionErrorWithCustomMessage("Subject is not NULL");
     }
     return self;
   }
@@ -39,7 +39,7 @@ public abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, 
   @Override
   public SELF isEqualTo(ACTUAL expected) {
     if (!this.actual.equals(expected)) {
-      throwProperAssertionError("Subject is not equal");
+      throwAssertionErrorWithCustomMessage("Subject is not equal");
     }
     return self;
   }
@@ -47,12 +47,12 @@ public abstract class AbstractAssert<SELF extends AbstractAssert<SELF, ACTUAL>, 
   @Override
   public SELF isNotEqualTo(ACTUAL expected) {
     if (this.actual.equals(expected)) {
-      throwProperAssertionError("Subject is equal");
+      throwAssertionErrorWithCustomMessage("Subject is equal");
     }
     return self;
   }
 
-  void throwProperAssertionError(String defaultMessage) {
+  void throwAssertionErrorWithCustomMessage(String defaultMessage) {
     if (customMessage == null) {
       throw new AssertionError(defaultMessage);
     } else {

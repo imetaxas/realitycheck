@@ -1,5 +1,6 @@
 package com.yanimetaxas.realitycheck.util;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -40,7 +41,7 @@ public class IoUtilTest {
   public void testLoadResourceOrNull_WhenResourceNotExists() throws Exception {
     File file = IoUtil.loadResource("test");
 
-    assertNull(file);
+    assertFalse(file.exists());
   }
 
   @Test
@@ -60,7 +61,13 @@ public class IoUtilTest {
     String filename = null;
     IoUtil.readResource(filename);
   }
-  
+
+  @Test(expected = AssertionError.class)
+  public void testLoadResource_WhenFileIsNull() throws Exception {
+    File file = null;
+    IoUtil.readResource(file);
+  }
+
   @Test
   public void testReadFile_WhenFilenameExists() throws Exception {
     byte[] bytes = IoUtil.readFile("src/test/resources/test.txt");

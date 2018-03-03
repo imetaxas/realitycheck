@@ -10,19 +10,31 @@ Reality Check is an open source Fluent Assertion framework for Java.
 
 ### Examples
 
+#### Check files in system resources
+  ```
+  Reality.checkThatSystemResource(csvResource.getName()).exists();
+  Reality.checkThatSystemResource(csvResource1).hasSameContentAs(resource1);
+  ```
+#### Check CSV files in system resources
+  ```
+  Reality.checkThatCsvResource(csvResource.getName()).exists();
+  Reality.checkThatCsvResource(csvResource).doesNotExist();
+  ```
 #### Check files
   ```
   Reality.checkThat(file).isNull();
   Reality.checkThat(file).hasSameContentAs(file);
+  Reality.checkThatFile(filePath).exists();
   ```
 #### Check CSV files
   ```
-  Reality.checkThatFileCsv(file1).hasSameContentAs(file2);
-  Reality.checkThatFileCsv(file1).hasNotSameContentAs(file2);
+  Reality.checkThatCsvFile(file1).hasSameContentAs(file1);
+  Reality.checkThatCsvFile(file1).hasNotSameContentAs(file2);
+  Reality.checkThatCsvFile(filename).headerHasNoDigits();
   ```
 #### Check CSV strings
   ```
-  Reality.checkThatCsv(csvString1).hasSameContentAs(csvString2);
+  Reality.checkThatCsv(csvString1).hasSameContentAs(csvString1);
   Reality.checkThatCsv(csvString1).hasNotSameContentAs(csvString2);
   ```
 #### Check strings
@@ -30,9 +42,19 @@ Reality Check is an open source Fluent Assertion framework for Java.
   Reality.checkThat(string).isNotNull();
   Reality.checkThat(string).hasLength(12);
   ```
+#### Check integers
+  ```
+  Reality.checkThat(1).isEqualTo(1);
+  Reality.checkThat(1).isNotEqualTo(2);
+  ```
+#### Check booleans
+  ```
+  Reality.checkThat(true).isTrue();
+  Reality.checkThat(false).isFalse();
+  ```
 #### Check InputStreams
   ```
-  Reality.checkThat(new ByteArrayInputStream(byteArray1)).hasSameContentAs(new ByteArrayInputStream(byteArray2));
+  Reality.checkThat(new ByteArrayInputStream(byteArray1)).hasSameContentAs(new ByteArrayInputStream(byteArray1));
   Reality.checkThat(new ByteArrayInputStream(byteArray1)).hasNotSameContentAs(new ByteArrayInputStream(byteArray2));
   ```
 #### Check with custom message
@@ -41,6 +63,7 @@ Reality Check is an open source Fluent Assertion framework for Java.
   Reality.checkWithMessage("String has wrong length").that(string).hasLength(6);
   Reality.checkWithMessage("InputStream is NULL").that(new ByteArrayInputStream(byteArray)).isNotNull();
   Reality.checkWithMessage("Files have different content").thatCsvFile(file).hasSameContentAs(file);
+  Reality.checkWithMessage("Boolean is false").that(true).isTrue();
   ```
 #### Do multiple checks
   ```
