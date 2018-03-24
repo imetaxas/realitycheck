@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/imetaxas/realitycheck.svg?branch=master)](https://travis-ci.org/imetaxas/realitycheck)
 [![CodeCov Coverage](https://codecov.io/gh/imetaxas/realitycheck/graph/badge.svg?branch=master)](https://codecov.io/gh/imetaxas/realitycheck?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.yanimetaxas/realitycheck/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.yanimetaxas/realitycheck/)
-[![GitHub release](http://github-release-version.herokuapp.com/github/imetaxas/realitycheck/release.svg)](https://github.com/imetaxas/realitycheck/releases/latest)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](http://makeapullrequest.com)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 

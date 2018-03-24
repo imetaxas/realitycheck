@@ -54,6 +54,10 @@ public final class Reality {
     return new IntegerCheck(integer);
   }
 
+  public static ObjectCheck checkThat(Object object) throws AssertionError {
+    return new ObjectCheck(object);
+  }
+
   public static BooleanCheck checkThat(Boolean bool) throws AssertionError {
     return new BooleanCheck(bool);
   }

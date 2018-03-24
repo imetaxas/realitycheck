@@ -116,11 +116,6 @@ public class RealityTest {
   }
 
   @Test
-  public void checkWithMessageThatIntegerIsEqualTo() throws Exception {
-    assertNotNull(checkWithMessage("Integer is 1").that(1).isEqualTo(1));
-  }
-
-  @Test
   public void checkThatStringEqualsIgnoreCase() throws Exception {
     String string1 = "RandomString";
     String string2 = "RANDOMSTRING";
@@ -129,11 +124,31 @@ public class RealityTest {
   }
 
   @Test
+  public void checkWithMessageThatIntegerIsEqualTo() throws Exception {
+    assertNotNull(checkWithMessage("Integer is 1").that(1).isEqualTo(1));
+  }
+
+  @Test
   public void checkWithMessageThatIntegerIsNotEqualTo_WhenIs() throws Exception {
     expectedEx.expect(AssertionError.class);
     expectedEx.expectMessage("Integer is wrong");
 
     checkWithMessage("Integer is wrong").that(1).isNotEqualTo(1);
+  }
+
+  @Test
+  public void checkWithMessageThatObjectIsEqualTo() throws Exception {
+    Object object = new Object();
+    assertNotNull(checkWithMessage("Object equals shelf").that(object).isEqualTo(object));
+  }
+
+  @Test
+  public void checkWithMessageThatObjectIsNotEqualTo_WhenIs() throws Exception {
+    expectedEx.expect(AssertionError.class);
+    expectedEx.expectMessage("Object is NOT equals shelf");
+
+    Object object = new Object();
+    checkWithMessage("Object is NOT equals shelf").that(object).isNotEqualTo(object);
   }
 
   @Test
@@ -225,6 +240,12 @@ public class RealityTest {
   @Test
   public void checkThatIntegerIsOne() throws Exception {
     assertNotNull(checkThat(1).isEqualTo(1).isNotNull());
+  }
+
+  @Test
+  public void checkThatObjectIsEqualTo() throws Exception {
+    Object object = new Object();
+    assertNotNull(checkThat(object).isEqualTo(object).isNotNull());
   }
 
   @Test

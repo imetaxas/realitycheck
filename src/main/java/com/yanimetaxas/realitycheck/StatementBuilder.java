@@ -23,6 +23,10 @@ public final class StatementBuilder {
     return new IntegerCheck(actual, message);
   }
 
+  public final ObjectCheck that(Object actual) {
+    return new ObjectCheck(actual, message);
+  }
+
   public final BooleanCheck that(Boolean actual) {
     return new BooleanCheck(actual, message);
   }
