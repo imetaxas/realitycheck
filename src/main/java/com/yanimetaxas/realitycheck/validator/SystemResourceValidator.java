@@ -8,7 +8,7 @@ import java.io.File;
  * @author yanimetaxas
  * @since 25-Feb-18
  */
-public class SystemResourceValidator extends AbstractValidator<File, File> {
+public final class SystemResourceValidator extends AbstractValidator<File, File> {
 
   public SystemResourceValidator(File value) {
     super(value);

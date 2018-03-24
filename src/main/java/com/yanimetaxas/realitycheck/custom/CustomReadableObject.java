@@ -1,12 +1,12 @@
 package com.yanimetaxas.realitycheck.custom;
 
-import com.yanimetaxas.realitycheck.asserter.CustomReadableObjectAssert;
+import com.yanimetaxas.realitycheck.CustomReadableObjectCheck;
 
 /**
  * @author yanimetaxas
  * @since 18-Feb-18
  */
-public class CustomReadableObject extends AbstractCustomObject<CustomReadableObjectAssert> {
+public final class CustomReadableObject extends AbstractCustomObject<CustomReadableObjectCheck> {
 
   public CustomReadableObject() {
   }

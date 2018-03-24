@@ -5,7 +5,7 @@ import com.yanimetaxas.realitycheck.exception.ValidationException;
 /**
  * @author yanimetaxas
  */
-public class StringValidator extends AbstractValidator<String, String> {
+public final class StringValidator extends AbstractValidator<String, String> {
 
   public StringValidator(String value) {
     super(value);

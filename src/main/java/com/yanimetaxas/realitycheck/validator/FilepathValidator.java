@@ -8,7 +8,7 @@ import java.io.File;
  * @author yanimetaxas
  * @since 10-Dec-17
  */
-public class FilepathValidator extends AbstractValidator<String, String> {
+public final class FilepathValidator extends AbstractValidator<String, String> {
 
   public FilepathValidator(String value) {
     super(value);

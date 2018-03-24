@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author yanimetaxas
  */
-public class CsvValidator extends AbstractValidator<String, byte[]> {
+public final class CsvValidator extends AbstractValidator<String, byte[]> {
 
   public CsvValidator(String csv) {
     super(csv);

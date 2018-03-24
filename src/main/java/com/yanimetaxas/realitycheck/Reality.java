@@ -1,17 +1,5 @@
 package com.yanimetaxas.realitycheck;
 
-import com.yanimetaxas.realitycheck.asserter.BooleanAssert;
-import com.yanimetaxas.realitycheck.asserter.CsvAssert;
-import com.yanimetaxas.realitycheck.asserter.CsvFileAssert;
-import com.yanimetaxas.realitycheck.asserter.CsvResourceAssert;
-import com.yanimetaxas.realitycheck.asserter.CustomObjectAssert;
-import com.yanimetaxas.realitycheck.asserter.CustomReadableObjectAssert;
-import com.yanimetaxas.realitycheck.asserter.FileAssert;
-import com.yanimetaxas.realitycheck.asserter.InputStreamAssert;
-import com.yanimetaxas.realitycheck.asserter.IntegerAssert;
-import com.yanimetaxas.realitycheck.asserter.StatementBuilder;
-import com.yanimetaxas.realitycheck.asserter.StringAssert;
-import com.yanimetaxas.realitycheck.asserter.SystemResourceAssert;
 import com.yanimetaxas.realitycheck.custom.CustomObject;
 import com.yanimetaxas.realitycheck.custom.CustomReadableObject;
 import com.yanimetaxas.realitycheck.exception.ValidationException;
@@ -21,69 +9,69 @@ import java.io.InputStream;
 /**
  * @author yanimetaxas
  */
-public class Reality {
+public final class Reality {
 
   private Reality() {
   }
 
-  public static SystemResourceAssert checkThatSystemResource(File file) throws AssertionError {
-    return new SystemResourceAssert(file, null);
+  public static SystemResourceCheck checkThatSystemResource(File file) throws AssertionError {
+    return new SystemResourceCheck(file, null);
   }
 
-  public static SystemResourceAssert checkThatSystemResource(String filename) throws AssertionError {
-    return new SystemResourceAssert(filename, null);
+  public static SystemResourceCheck checkThatSystemResource(String filename) throws AssertionError {
+    return new SystemResourceCheck(filename, null);
   }
 
-  public static CsvResourceAssert checkThatCsvResource(String filename) throws AssertionError {
-    return new CsvResourceAssert(filename, null);
+  public static CsvResourceCheck checkThatCsvResource(String filename) throws AssertionError {
+    return new CsvResourceCheck(filename, null);
   }
 
-  public static CsvResourceAssert checkThatCsvResource(File file) throws AssertionError {
-    return new CsvResourceAssert(file, null);
+  public static CsvResourceCheck checkThatCsvResource(File file) throws AssertionError {
+    return new CsvResourceCheck(file, null);
   }
 
-  public static FileAssert checkThatFile(String filepath) throws AssertionError {
-    return new FileAssert(filepath, null);
+  public static FileCheck checkThatFile(String filepath) throws AssertionError {
+    return new FileCheck(filepath, null);
   }
 
-  public static CsvFileAssert checkThatCsvFile(String filepath) throws AssertionError {
-    return new CsvFileAssert(filepath, null);
+  public static CsvFileCheck checkThatCsvFile(String filepath) throws AssertionError {
+    return new CsvFileCheck(filepath, null);
   }
 
-  public static CsvFileAssert checkThatCsvFile(File file) throws AssertionError {
-    return new CsvFileAssert(file, null);
+  public static CsvFileCheck checkThatCsvFile(File file) throws AssertionError {
+    return new CsvFileCheck(file, null);
   }
 
-  public static CsvAssert checkThatCsv(String csv) throws ValidationException {
-    return new CsvAssert(csv, null);
+  public static CsvCheck checkThatCsv(String csv) throws ValidationException {
+    return new CsvCheck(csv, null);
   }
 
-  public static FileAssert checkThat(File file) throws AssertionError {
-    return new FileAssert(file, null);
+  public static FileCheck checkThat(File file) throws AssertionError {
+    return new FileCheck(file, null);
   }
 
-  public static IntegerAssert checkThat(Integer integer) throws AssertionError {
-    return new IntegerAssert(integer);
+  public static IntegerCheck checkThat(Integer integer) throws AssertionError {
+    return new IntegerCheck(integer);
   }
 
-  public static BooleanAssert checkThat(Boolean bool) throws AssertionError {
-    return new BooleanAssert(bool);
+  public static BooleanCheck checkThat(Boolean bool) throws AssertionError {
+    return new BooleanCheck(bool);
   }
 
-  public static InputStreamAssert checkThat(InputStream inputStream) throws ValidationException {
-    return new InputStreamAssert(inputStream);
+  public static InputStreamCheck checkThat(InputStream inputStream) throws ValidationException {
+    return new InputStreamCheck(inputStream);
   }
 
-  public static StringAssert checkThat(String string) throws ValidationException {
-    return new StringAssert(string);
+  public static StringCheck checkThat(String string) throws ValidationException {
+    return new StringCheck(string);
   }
 
-  public static CustomObjectAssert checkThat(CustomObject customObject)
+  public static CustomObjectCheck checkThat(CustomObject customObject)
       throws ValidationException {
     return new StatementBuilder().that(customObject);
   }
 
-  public static CustomReadableObjectAssert checkThat(CustomReadableObject customReadableObject)
+  public static CustomReadableObjectCheck checkThat(CustomReadableObject customReadableObject)
       throws ValidationException {
     return new StatementBuilder().that(customReadableObject);
   }

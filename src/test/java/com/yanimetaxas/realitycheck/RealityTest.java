@@ -245,7 +245,7 @@ public class RealityTest {
 
   @Test
   public void checkThatCustomObjectIsNotNull() throws Exception {
-    assertNotNull(checkThat(new CustomObject("random", 1)).isNotNull());
+    assertNotNull(checkThat(new CustomObject()).isNotNull());
   }
 
   @Test

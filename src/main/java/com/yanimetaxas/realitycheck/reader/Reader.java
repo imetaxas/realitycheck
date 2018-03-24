@@ -1,6 +1,6 @@
 package com.yanimetaxas.realitycheck.reader;
 
-import com.yanimetaxas.realitycheck.strategy.validation.Action;
+import com.yanimetaxas.realitycheck.strategy.Action;
 import java.io.IOException;
 
 /**

@@ -1,28 +1,14 @@
 package com.yanimetaxas.realitycheck.custom;
 
-import com.yanimetaxas.realitycheck.asserter.CustomObjectAssert;
+import com.yanimetaxas.realitycheck.CustomObjectCheck;
 
 /**
  * @author yanimetaxas
  * @since 18-Feb-18
  */
-public class CustomObject extends AbstractCustomObject<CustomObjectAssert> {
+public final class CustomObject extends AbstractCustomObject<CustomObjectCheck> {
 
-  private String string;
-  private int integer;
-
-  public CustomObject(String string, int integer) {
-    this.string = string;
-    this.integer = integer;
+  public CustomObject() {
   }
-
-  public String getString() {
-    return string;
-  }
-
-  public int getInteger() {
-    return integer;
-  }
-
 
 }

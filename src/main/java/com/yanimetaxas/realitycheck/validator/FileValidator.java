@@ -7,7 +7,7 @@ import java.io.File;
 /**
  * @author yanimetaxas
  */
-public class FileValidator extends AbstractValidator<File, File> {
+public final class FileValidator extends AbstractValidator<File, File> {
 
   public FileValidator(File value) {
     super(value);

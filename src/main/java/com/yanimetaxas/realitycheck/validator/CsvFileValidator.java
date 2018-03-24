@@ -7,7 +7,7 @@ import java.io.File;
 /**
  * @author yanimetaxas
  */
-public class CsvFileValidator extends AbstractValidator<File, byte[]> {
+public final class CsvFileValidator extends AbstractValidator<File, byte[]> {
 
   public CsvFileValidator(File file) throws ValidationException {
     super(file);

@@ -4,16 +4,17 @@
 
   <groupId>com.yanimetaxas</groupId>
   <artifactId>realitycheck</artifactId>
-  <version>0.5.8-SNAPSHOT</version>
+  <version>0.5.9-SNAPSHOT</version>
 
     <name>Reality Check</name>
     <url>https://github.com/imetaxas/realitycheck</url>
+    <description>Fluent Java Code Test Checks.</description>
 
     <scm>
         <url>https://github.com/imetaxas/realitycheck</url>
         <connection>scm:git:git@github.com:imetaxas/realitycheck.git</connection>
         <developerConnection>scm:git:git@github.com:imetaxas/realitycheck.git</developerConnection>
-        <tag>realitycheck-0.5.8</tag>
+        <tag>realitycheck-0.5.9</tag>
     </scm>
 
     <issueManagement>
@@ -24,8 +25,6 @@
         <system>Jenkins</system>
         <url>https://travis-ci.org/imetaxas/realitycheck</url>
     </ciManagement>
-
-    <description>https://github.com/imetaxas/realitycheck.git</description>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -41,17 +40,24 @@
         </license>
     </licenses>
 
+    <organization>
+      <name>Yani (Ioannis) Metaxas</name>
+      <url>http://yanimetaxas.com</url>
+    </organization>
+
     <developers>
         <developer>
             <id>imetaxas</id>
             <name>Yani (Ioannis) Metaxas</name>
             <email>imetaxas@gmail.com</email>
-            <url>http://yanimetaxas.info</url>
+            <url>http://yanimetaxas.com</url>
             <roles>
                 <role>creator</role>
                 <role>developer</role>
             </roles>
             <timezone>+1</timezone>
+            <organization>Yani (Ioannis) Metaxas</organization>
+            <organizationUrl>http://yanimetaxas.com</organizationUrl>
         </developer>
     </developers>
 
