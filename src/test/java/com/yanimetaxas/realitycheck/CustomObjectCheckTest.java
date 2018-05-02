@@ -10,8 +10,8 @@ import org.junit.Test;
 public class CustomObjectCheckTest {
 
   @Test
-  public void isStringNull() throws Exception {
-    new CustomObjectCheck(new CustomObject());
+  public void isNotNull() throws Exception {
+    new CustomObjectCheck(new CustomObject()).isNotNull();
   }
 
 }

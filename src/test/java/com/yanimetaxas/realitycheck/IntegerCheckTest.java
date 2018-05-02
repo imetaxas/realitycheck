@@ -16,17 +16,17 @@ public class IntegerCheckTest {
   }
 
   @Test(expected = AssertionError.class)
-  public void isEqualTo_WhenIsNot() throws Exception {
+  public void isEqualToWhenIsNot() throws Exception {
     assertNotNull(new IntegerCheck(1).isEqualTo(2));
   }
 
   @Test(expected = AssertionError.class)
-  public void checkIsNotEqualToOne_WhenIs() throws Exception {
+  public void checkIsNotEqualToOneWhenIs() throws Exception {
     new IntegerCheck(1).isNotEqualTo(1);
   }
 
   @Test
-  public void checkIsNotEqualToOne_WhenIsNot() throws Exception {
+  public void checkIsNotEqualToOneWhenIsNot() throws Exception {
     new IntegerCheck(1).isNotEqualTo(2);
   }
 }

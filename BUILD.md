@@ -12,7 +12,11 @@ Release to Maven Central
 
 mvn release:clean release:prepare
 
-**If it fails:**
+**If it fails because it cannot push:**
+
+Go to 'Prepare the bundle manually'
+
+**Else If it fails for other reason:**
 
 mvn release:rollback
 

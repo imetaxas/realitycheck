@@ -31,7 +31,7 @@ public abstract class AbstractReadableCheck<SELF extends AbstractReadableCheck<S
     this.actualContent = validateAndRead();
   }
 
-  AbstractReadableCheck hasSameContentAs(InputStream expected) throws AssertionError {
+  protected AbstractReadableCheck hasSameContentAs(InputStream expected) throws AssertionError {
     if(!IoUtil.contentEquals(new ByteArrayInputStream(getActualContent()), expected)){
       throwAssertionErrorWithCustomMessage("InputStreams are NOT exactly the same");
     }
@@ -49,7 +49,7 @@ public abstract class AbstractReadableCheck<SELF extends AbstractReadableCheck<S
     return Optional.ofNullable(actualContent).orElse(value);
   }
 
-  byte[] getActualContent() {
+  protected byte[] getActualContent() {
     return getActualContentOrElse(new byte[0]);
   }
 

@@ -1,7 +1,6 @@
 package com.yanimetaxas.realitycheck;
 
 import static com.yanimetaxas.realitycheck.Reality.checkThat;
-import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -10,16 +9,6 @@ import org.junit.Test;
  * @since 18-Feb-18
  */
 public class BooleanCheckTest {
-
-  @Test
-  public void isTrue() throws Exception {
-    assertNotNull(checkThat(true).isTrue());
-  }
-
-  @Test
-  public void isFalse() throws Exception {
-    assertNotNull(checkThat(false).isFalse());
-  }
 
   @Test(expected = AssertionError.class)
   public void checkFalseTrue_WhenIsNot() throws Exception {

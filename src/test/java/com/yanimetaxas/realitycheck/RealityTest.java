@@ -63,9 +63,16 @@ public class RealityTest {
   }
 
   @Test
-  public void checkFile_WhenHasSameContentAs() throws Exception {
+  public void checkFileWhenHasSameContentAs() throws Exception {
     File file = new File("src/test/resources/sampleA.csv");
     assertNotNull(checkThat(file).hasSameContentAs(file));
+  }
+
+  @Test
+  public void checkFilepathWhenHasSameContentAs() throws Exception {
+    String filepath = "src/test/resources/sampleA.csv";
+
+    assertNotNull(checkThatFile(filepath).hasSameContentAs(filepath));
   }
 
   @Test
@@ -105,6 +112,19 @@ public class RealityTest {
   @Test
   public void checkWithMessageThatBooleanIsTrue() throws Exception {
     assertNotNull(checkWithMessage("Boolean is false").that(true).isTrue());
+  }
+
+  @Test
+  public void checkWithMessageThatBooleanIsFalse() throws Exception {
+    assertNotNull(checkWithMessage("Boolean is true").that(false).isFalse());
+  }
+
+  @Test
+  public void checkWithMessageThatBooleanIsTrue_WhenIsNot() throws Exception {
+    expectedEx.expect(AssertionError.class);
+    expectedEx.expectMessage("Boolean is true");
+
+    checkWithMessage("Boolean is true").that(false).isTrue();
   }
 
   @Test
@@ -186,6 +206,15 @@ public class RealityTest {
   }
 
   @Test
+  public void checkWithMessageThatCsvHasSameContentAs() throws Exception {
+    expectedEx.expect(AssertionError.class);
+    expectedEx.expectMessage("Csv strings have same content");
+    String csv1 = "1,\"Eldon Base for stackable storage shelf, platinum\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8";
+    String csv2 = "1,2";
+    checkWithMessage("Csv strings have same content").thatCsv(csv1).hasSameContentAs(csv2);
+  }
+
+  @Test
   public void checkThatCsvResourceNameExists() throws Exception {
     File csvResource = IoUtil.loadResource("withHeader.csv");
     assertNotNull(checkThatCsvResource(csvResource.getName()).exists());
@@ -204,33 +233,33 @@ public class RealityTest {
   }
 
   @Test
-  public void checkResource_WhenHasSameContentAs() throws Exception {
+  public void checkResourceWhenHasSameContentAs() throws Exception {
     File file = new File("src/test/resources/test.txt");
     assertNotNull(checkThatSystemResource(file).hasSameContentAs(file));
   }
 
   @Test
-  public void checkResource_WhenHasNotSameContentAs() throws Exception {
+  public void checkResourceWhenHasNotSameContentAs() throws Exception {
     File file1 = new File("src/test/resources/sampleA.csv");
     File file2 = new File("src/test/resources/sampleB.csv");
     assertNotNull(checkThatSystemResource(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
-  public void checkResource_WhenHasSameContentAs_And_WhenHasNotSameContentAs_False() throws Exception {
+  public void checkResourceWhenHasSameContentAsAndWhenHasNotSameContentAs_False() throws Exception {
     File file = new File("src/test/resources/sampleA.csv");
     checkThatSystemResource(file).hasSameContentAs(file).hasNotSameContentAs(file);
   }
 
   @Test
-  public void checkResource_WhenHasSameContentAs_And_WhenHasNotSameContentAs_True() throws Exception {
+  public void checkResource_WhenHasSameContentAsAndWhenHasNotSameContentAs_True() throws Exception {
     File file1 = new File("src/test/resources/sampleA.csv");
     File file2 = new File("src/test/resources/sampleB.csv");
     assertNotNull(checkThatSystemResource(file1).hasSameContentAs(file1).hasNotSameContentAs(file2));
   }
 
   @Test(expected = AssertionError.class)
-  public void checkResource_WhenHasSameContentAs_And_WhenHasSameContentAs_False() throws Exception {
+  public void checkResource_WhenHasSameContentAsAndWhenHasSameContentAs_False() throws Exception {
     File file1 = new File("src/test/resources/sampleA.csv");
     File file2 = new File("src/test/resources/sampleB.csv");
 
