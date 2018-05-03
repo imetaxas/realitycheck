@@ -3,7 +3,6 @@ package com.yanimetaxas.realitycheck;
 import com.yanimetaxas.realitycheck.custom.CustomObject;
 import com.yanimetaxas.realitycheck.custom.CustomReadableObject;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
@@ -39,8 +38,20 @@ public final class StatementBuilder {
     return new InputStreamCheck(actual, message);
   }
 
-  public final FileCheck that(File actual) throws FileNotFoundException {
+  public final FileCheck that(File actual) {
     return new FileCheck(actual, message);
+  }
+
+  public final CustomReadableObjectCheck that(CustomReadableObject actual) {
+    return actual.getAssertFromType();
+  }
+
+  public final CustomObjectCheck that(CustomObject actual) {
+    return actual.getAssertFromType();
+  }
+
+  public final CsvCheck thatCsv(String actual) {
+    return new CsvCheck(actual, message);
   }
 
   public final CsvFileCheck thatCsvFile(File actual) {
@@ -53,17 +64,5 @@ public final class StatementBuilder {
 
   public final SystemResourceCheck thatSystemResource(File actual) {
     return new SystemResourceCheck(actual, message);
-  }
-
-  public final CsvCheck thatCsv(String actual) {
-    return new CsvCheck(actual, message);
-  }
-
-  public final CustomReadableObjectCheck that(CustomReadableObject actual) {
-    return actual.getAssertFromType();
-  }
-
-  public final CustomObjectCheck that(CustomObject actual) {
-    return actual.getAssertFromType();
   }
 }
