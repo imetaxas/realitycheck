@@ -14,28 +14,28 @@ import org.junit.Test;
 public class ObjectCheckTest {
 
   @Test
-  public void objectIsEqualTo() throws Exception {
+  public void objectIsEqualTo() {
     Object object = new Object();
     assertNotNull(new ObjectCheck(object).isEqualTo(object));
   }
 
   @Test(expected = AssertionError.class)
-  public void objectIsEqualTo_WhenIsNot() throws Exception {
+  public void objectIsEqualTo_WhenIsNot() {
     Object object1 = new Object();
     Object object2 = new Object();
     assertNotNull(new ObjectCheck(object1).isEqualTo(object2));
   }
 
   @Test
-  public void customObjectIsEqualTo() throws Exception {
-    Money money = new Money(new BigDecimal(10.1), Currency.getInstance("EUR"));
+  public void customObjectIsEqualTo() {
+    Money money = new Money(new BigDecimal("10.1"), Currency.getInstance("EUR"));
     assertNotNull(new ObjectCheck(money).isEqualTo(money));
   }
 
   @Test(expected = AssertionError.class)
-  public void customObjectIsEqualTo_WhenIsNot() throws Exception {
-    Money moneyEUR = new Money(new BigDecimal(10.1), Currency.getInstance("EUR"));
-    Money moneySEK = new Money(new BigDecimal(10.1), Currency.getInstance("SEK"));
+  public void customObjectIsEqualTo_WhenIsNot() {
+    Money moneyEUR = new Money(new BigDecimal("10.1"), Currency.getInstance("EUR"));
+    Money moneySEK = new Money(new BigDecimal("10.1"), Currency.getInstance("SEK"));
     assertNotNull(new ObjectCheck(moneyEUR).isEqualTo(moneySEK));
   }
 }
