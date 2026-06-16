@@ -1,6 +1,6 @@
-com.yanimetaxas.realitycheck
-com.yanimetaxas.realitycheck.json
-com.yanimetaxas.realitycheck.junit5
-com.yanimetaxas.realitycheck.snapshot
-com.yanimetaxas.realitycheck.xml
-com.yanimetaxas.realitycheck.yaml
+io.github.imetaxas.realitycheck
+io.github.imetaxas.realitycheck.json
+io.github.imetaxas.realitycheck.junit5
+io.github.imetaxas.realitycheck.snapshot
+io.github.imetaxas.realitycheck.xml
+io.github.imetaxas.realitycheck.yaml
