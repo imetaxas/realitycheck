@@ -7,6 +7,11 @@ on:
   pull_request:
     branches: [ master, main ]
 
+# Fix #2: cancel in-progress runs for the same branch/tag
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -14,25 +19,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      # Fix #1: let both matrix legs complete and report independently
+      fail-fast: false
       matrix:
         java: [ '17', '21' ]
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4.2.1
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           java-version: ${{ matrix.java }}
           distribution: temurin
           cache: maven
 
+      # Fix #3: -ntp suppresses noisy transfer-progress lines
       - name: Build and test
-        run: mvn -B verify
+        run: mvn -B -ntp verify
 
       - name: Upload coverage to Codecov
         if: matrix.java == '17'
-        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: '**/target/site/jacoco/jacoco.xml'
@@ -45,35 +53,42 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Set up JDK 17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4.2.1
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           java-version: '17'
           distribution: temurin
           cache: maven
 
       - name: Generate Javadoc
-        run: mvn -B javadoc:aggregate -DskipTests
+        run: mvn -B -ntp javadoc:aggregate -DskipTests
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/reports/apidocs
 
   release:
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    # Fix (security): only the repo owner can trigger a release
+    if: startsWith(github.ref, 'refs/tags/v') && github.actor == 'imetaxas'
     runs-on: ubuntu-latest
+    # Fix (security): environment gate — requires manual approval before secrets are exposed
+    environment: maven-central
     permissions:
       contents: write
+
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          # Needed so git push back to master works after version bump
+          fetch-depth: 0
 
       - name: Set up JDK 17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4.2.1
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           java-version: '17'
           distribution: temurin
@@ -85,11 +100,34 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Set release version from tag
-        run: mvn -B versions:set -DnewVersion=${GITHUB_REF_NAME#v} -DgenerateBackupPoms=false
+        run: mvn -B -ntp versions:set -DnewVersion=${GITHUB_REF_NAME#v} -DgenerateBackupPoms=false
 
+      # Fix #6: loopback pinentry prevents GPG from hanging in a no-terminal CI environment
       - name: Publish to Maven Central
-        run: mvn -B deploy -P release -DskipTests
+        run: mvn -B -ntp deploy -P release -DskipTests -Dgpg.pinentry-mode=loopback
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          # Fix #4: Central Portal tokens (generated at central.sonatype.com)
+          MAVEN_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      # Fix #8: create a GitHub Release with auto-generated notes from merged PRs
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ github.ref_name }} \
+            --generate-notes \
+            --title "Reality Check ${{ github.ref_name }}"
+
+      # Fix #7: bump to next patch SNAPSHOT so the repo never stays on a released version
+      - name: Bump to next development version
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          NEXT=$(echo "$VERSION" | awk -F. '{printf "%s.%s.%d-SNAPSHOT\n", $1, $2, $3+1}')
+          mvn -B -ntp versions:set -DnewVersion="$NEXT" -DgenerateBackupPoms=false
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: bump version to $NEXT [skip ci]"
+          git push origin HEAD:refs/heads/master
