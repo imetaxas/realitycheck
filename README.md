@@ -1,7 +1,7 @@
 # Reality Check
 
 [![CI](https://github.com/imetaxas/realitycheck/actions/workflows/ci.yml/badge.svg)](https://github.com/imetaxas/realitycheck/actions)
-[![Maven Central](https://img.shields.io/maven-central/v/com.yanimetaxas/realitycheck-core)](https://central.sonatype.com/artifact/com.yanimetaxas/realitycheck-core)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.imetaxas/realitycheck-core)](https://central.sonatype.com/artifact/io.github.imetaxas/realitycheck-core)
 [![codecov](https://codecov.io/gh/imetaxas/realitycheck/graph/badge.svg)](https://codecov.io/gh/imetaxas/realitycheck)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -60,7 +60,7 @@ Reality Check is a fluent assertion framework built for Java 17+ that goes beyon
 
 ```xml
 <dependency>
-    <groupId>com.yanimetaxas</groupId>
+    <groupId>io.github.imetaxas</groupId>
     <artifactId>realitycheck-core</artifactId>
     <version>1.0.0</version>
     <scope>test</scope>
@@ -70,13 +70,13 @@ Reality Check is a fluent assertion framework built for Java 17+ that goes beyon
 **Gradle (Kotlin DSL):**
 
 ```kotlin
-testImplementation("com.yanimetaxas:realitycheck-core:1.0.0")
+testImplementation("io.github.imetaxas:realitycheck-core:1.0.0")
 ```
 
 **Gradle (Groovy DSL):**
 
 ```groovy
-testImplementation 'com.yanimetaxas:realitycheck-core:1.0.0'
+testImplementation 'io.github.imetaxas:realitycheck-core:1.0.0'
 ```
 
 Or use the BOM for multiple modules:
@@ -85,7 +85,7 @@ Or use the BOM for multiple modules:
 <dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>com.yanimetaxas</groupId>
+            <groupId>io.github.imetaxas</groupId>
             <artifactId>realitycheck-bom</artifactId>
             <version>1.0.0</version>
             <type>pom</type>
@@ -98,9 +98,9 @@ Or use the BOM for multiple modules:
 Gradle BOM:
 
 ```kotlin
-testImplementation(platform("com.yanimetaxas:realitycheck-bom:1.0.0"))
-testImplementation("com.yanimetaxas:realitycheck-core")
-testImplementation("com.yanimetaxas:realitycheck-json")
+testImplementation(platform("io.github.imetaxas:realitycheck-bom:1.0.0"))
+testImplementation("io.github.imetaxas:realitycheck-core")
+testImplementation("io.github.imetaxas:realitycheck-json")
 ```
 
 ### 30-Second Example
@@ -108,7 +108,7 @@ testImplementation("com.yanimetaxas:realitycheck-json")
 Copy, paste, run. This is a complete test class:
 
 ```java
-import static com.yanimetaxas.realitycheck.RealityAssertions.*;
+import static io.github.imetaxas.realitycheck.RealityAssertions.*;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
@@ -144,7 +144,7 @@ class QuickStartTest {
 ```
 
 > **Coming from AssertJ or Truth?** `assertThat` works out of the box — same muscle memory, zero friction.
-> Prefer Reality Check's canonical style? Use `import static com.yanimetaxas.realitycheck.Reality.*` for `checkThat`.
+> Prefer Reality Check's canonical style? Use `import static io.github.imetaxas.realitycheck.Reality.*` for `checkThat`.
 
 ### What Happens When a Test Fails?
 
@@ -180,10 +180,10 @@ assertThatJson(actualJson).isEqualTo(expectedJson);
 ## Usage
 
 ```java
-import static com.yanimetaxas.realitycheck.RealityAssertions.*;  // assertThat() — recommended
+import static io.github.imetaxas.realitycheck.RealityAssertions.*;  // assertThat() — recommended
 ```
 
-> Prefer Reality Check's own naming? `import static com.yanimetaxas.realitycheck.Reality.*` gives you `checkThat()`.
+> Prefer Reality Check's own naming? `import static io.github.imetaxas.realitycheck.Reality.*` gives you `checkThat()`.
 
 ### Strings
 
@@ -484,7 +484,7 @@ class MyTest {
 ### JSON (`realitycheck-json`)
 
 ```java
-import static com.yanimetaxas.realitycheck.json.JsonReality.*;
+import static io.github.imetaxas.realitycheck.json.JsonReality.*;
 
 assertThatJson(response)
     .isValidJson()
@@ -504,7 +504,7 @@ assertThatJson(config).fieldEquals("database[\"connection.string\"]", "jdbc:..."
 ### XML (`realitycheck-xml`)
 
 ```java
-import static com.yanimetaxas.realitycheck.xml.XmlReality.*;
+import static io.github.imetaxas.realitycheck.xml.XmlReality.*;
 
 assertThatXml(response)
     .isWellFormed()
@@ -515,7 +515,7 @@ assertThatXml(response)
 ### YAML (`realitycheck-yaml`)
 
 ```java
-import static com.yanimetaxas.realitycheck.yaml.YamlReality.*;
+import static io.github.imetaxas.realitycheck.yaml.YamlReality.*;
 
 assertThatYaml(config)
     .isValidYaml()
@@ -527,7 +527,7 @@ assertThatYaml(config)
 ### Snapshot Testing (`realitycheck-snapshot`)
 
 ```java
-import static com.yanimetaxas.realitycheck.snapshot.SnapshotReality.*;
+import static io.github.imetaxas.realitycheck.snapshot.SnapshotReality.*;
 
 assertThatSnapshot(apiResponse)
     .serializedWith(obj -> objectMapper.writeValueAsString(obj))

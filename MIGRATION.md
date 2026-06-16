@@ -9,7 +9,7 @@
 import static org.assertj.core.api.Assertions.*;
 
 // After (Reality Check)
-import static com.yanimetaxas.realitycheck.RealityAssertions.*; // assertThat() — same muscle memory
+import static io.github.imetaxas.realitycheck.RealityAssertions.*; // assertThat() — same muscle memory
 ```
 
 ### 2. API mapping
@@ -111,7 +111,7 @@ assertThat(payment, MoneyCheck::new).hasCurrency("USD");
 import static com.google.common.truth.Truth.assertThat;
 
 // After (Reality Check)
-import static com.yanimetaxas.realitycheck.RealityAssertions.*;
+import static io.github.imetaxas.realitycheck.RealityAssertions.*;
 ```
 
 ### 2. API mapping

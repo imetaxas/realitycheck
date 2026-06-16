@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.yanimetaxas</groupId>
+        <groupId>io.github.imetaxas</groupId>
         <artifactId>realitycheck-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -35,7 +35,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Automatic-Module-Name>com.yanimetaxas.realitycheck.core</Automatic-Module-Name>
+                            <Automatic-Module-Name>io.github.imetaxas.realitycheck.core</Automatic-Module-Name>
                         </manifestEntries>
                     </archive>
                 </configuration>

@@ -10,7 +10,7 @@ Neither Truth nor AssertJ offer anything for testing non-deterministic LLM outpu
 
 ```xml
 <dependency>
-    <groupId>com.yanimetaxas</groupId>
+    <groupId>io.github.imetaxas</groupId>
     <artifactId>realitycheck-ai</artifactId>
     <version><!-- upcoming --></version>
     <scope>test</scope>
@@ -18,7 +18,7 @@ Neither Truth nor AssertJ offer anything for testing non-deterministic LLM outpu
 ```
 
 ```java
-import static com.yanimetaxas.realitycheck.ai.AiReality.*;
+import static io.github.imetaxas.realitycheck.ai.AiReality.*;
 ```
 
 ## Proposed API

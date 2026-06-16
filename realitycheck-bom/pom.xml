@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.yanimetaxas</groupId>
+        <groupId>io.github.imetaxas</groupId>
         <artifactId>realitycheck-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -18,32 +18,32 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.yanimetaxas</groupId>
+                <groupId>io.github.imetaxas</groupId>
                 <artifactId>realitycheck-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yanimetaxas</groupId>
+                <groupId>io.github.imetaxas</groupId>
                 <artifactId>realitycheck-json</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yanimetaxas</groupId>
+                <groupId>io.github.imetaxas</groupId>
                 <artifactId>realitycheck-xml</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yanimetaxas</groupId>
+                <groupId>io.github.imetaxas</groupId>
                 <artifactId>realitycheck-yaml</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yanimetaxas</groupId>
+                <groupId>io.github.imetaxas</groupId>
                 <artifactId>realitycheck-snapshot</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yanimetaxas</groupId>
+                <groupId>io.github.imetaxas</groupId>
                 <artifactId>realitycheck-junit5</artifactId>
                 <version>${project.version}</version>
             </dependency>
