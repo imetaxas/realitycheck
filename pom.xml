@@ -66,7 +66,7 @@
         <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
         <jacoco-plugin.version>0.8.14</jacoco-plugin.version>
-        <central-publishing-plugin.version>0.7.0</central-publishing-plugin.version>
+        <central-publishing-plugin.version>1.2.0</central-publishing-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -237,7 +237,7 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.sonatype.central</groupId>
+                        <groupId>io.github.mavenplugins</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
                         <version>${central-publishing-plugin.version}</version>
                         <extensions>true</extensions>
