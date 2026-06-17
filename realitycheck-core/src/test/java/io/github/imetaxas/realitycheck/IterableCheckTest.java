@@ -61,14 +61,32 @@ class IterableCheckTest {
     }
 
     @Test
+    void doesNotContain_fails_whenElementPresent() {
+        assertThrows(AssertionError.class,
+                () -> checkThatIterable(rangeIterable(0, 5)).doesNotContain(3));
+    }
+
+    @Test
     void containsAll_passes() {
         assertDoesNotThrow(() -> checkThatIterable(rangeIterable(0, 10)).containsAll(1, 3, 7));
+    }
+
+    @Test
+    void containsAll_fails_whenElementMissing() {
+        assertThrows(AssertionError.class,
+                () -> checkThatIterable(rangeIterable(0, 5)).containsAll(1, 2, 99));
     }
 
     @Test
     void allMatch_passes() {
         assertDoesNotThrow(() ->
                 checkThatIterable(rangeIterable(0, 10)).allMatch(n -> n >= 0, "non-negative"));
+    }
+
+    @Test
+    void allMatch_fails_whenElementDoesNotMatch() {
+        assertThrows(AssertionError.class,
+                () -> checkThatIterable(rangeIterable(0, 5)).allMatch(n -> n > 2, "greater than 2"));
     }
 
     @Test
@@ -81,6 +99,12 @@ class IterableCheckTest {
     void noneMatch_passes() {
         assertDoesNotThrow(() ->
                 checkThatIterable(rangeIterable(0, 10)).noneMatch(n -> n < 0, "negative"));
+    }
+
+    @Test
+    void noneMatch_fails_whenElementMatches() {
+        assertThrows(AssertionError.class,
+                () -> checkThatIterable(rangeIterable(0, 5)).noneMatch(n -> n == 3, "equals 3"));
     }
 
     @Test

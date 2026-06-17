@@ -2,15 +2,60 @@ package io.github.imetaxas.realitycheck;
 
 import static io.github.imetaxas.realitycheck.Reality.checkThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class MapCheckTest {
+
+    @Nested
+    class WhenActualIsNull {
+
+        @Test
+        void allGuardedAssertions_shortCircuit_whenActualIsNull() {
+            var handler = new SoftFailureHandler();
+            var check = new MapCheck<String, String>(null, handler);
+            check.isEmpty().isNotEmpty().hasSize(0).containsKey("k").doesNotContainKey("k");
+            assertTrue(handler.failures().size() >= 5, "each null-guarded method should record a failure");
+        }
+    }
+
+    @Nested
+    class HasSameEntriesAs {
+
+        @Test
+        void hasSameEntriesAs_extraKey_fails() {
+            Map<String, String> actual = Map.of("a", "1", "extra", "x");
+            Map<String, String> expected = Map.of("a", "1");
+            var e = assertThrows(AssertionError.class,
+                    () -> checkThat(actual).hasSameEntriesAs(expected));
+            assertTrue(e.getMessage().contains("extra:"));
+        }
+
+        @Test
+        void hasSameEntriesAs_missingKey_fails() {
+            Map<String, String> actual = Map.of("a", "1");
+            Map<String, String> expected = Map.of("a", "1", "missing", "y");
+            var e = assertThrows(AssertionError.class,
+                    () -> checkThat(actual).hasSameEntriesAs(expected));
+            assertTrue(e.getMessage().contains("missing:"));
+        }
+
+        @Test
+        void hasSameEntriesAs_changedValue_fails() {
+            Map<String, String> actual = Map.of("a", "new");
+            Map<String, String> expected = Map.of("a", "old");
+            var e = assertThrows(AssertionError.class,
+                    () -> checkThat(actual).hasSameEntriesAs(expected));
+            assertTrue(e.getMessage().contains("changed:"));
+        }
+    }
 
     @Test
     void isEmpty_passes() {
@@ -23,8 +68,18 @@ class MapCheckTest {
     }
 
     @Test
+    void isNotEmpty_fails_onEmptyMap() {
+        assertThrows(AssertionError.class, () -> checkThat(Map.of()).isNotEmpty());
+    }
+
+    @Test
     void hasSize_passes() {
         assertDoesNotThrow(() -> checkThat(Map.of("a", 1, "b", 2)).hasSize(2));
+    }
+
+    @Test
+    void hasSize_fails_onWrongSize() {
+        assertThrows(AssertionError.class, () -> checkThat(Map.of("a", 1)).hasSize(5));
     }
 
     @Test
@@ -169,6 +224,19 @@ class MapCheckTest {
         var m = new HashMap<String, Object>();
         m.put("n", null);
         assertThrows(AssertionError.class, () -> checkThat(m).stringAtPath("n").isNotEmpty());
+    }
+
+    @Test
+    void stringAtPath_softMode_nullValue_yieldsNullActual() {
+        // In soft mode fail() records without throwing, so execution reaches the
+        // defensive ternary `value != null ? value.toString() : null` — covering the null path.
+        var m = new HashMap<String, Object>();
+        m.put("n", null);
+        var handler = new SoftFailureHandler();
+        var check = new MapCheck<>(m, handler);
+        var s = check.stringAtPath("n");
+        assertNull(s.actual());
+        assertTrue(handler.failures().size() >= 1);
     }
 
     @Test

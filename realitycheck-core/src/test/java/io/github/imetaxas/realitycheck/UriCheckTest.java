@@ -7,9 +7,51 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class UriCheckTest {
+
+    @Nested
+    class ParseQueryEdgeCases {
+
+        @Test
+        void hasQueryParam_emptyQueryString_fails() {
+            URI emptyQuery = URI.create("https://example.com?");
+            assertThrows(AssertionError.class,
+                    () -> checkThat(emptyQuery).hasQueryParam("key"));
+        }
+
+        @Test
+        void hasQueryParam_valuelessParam_passes() {
+            URI flagUri = URI.create("https://example.com?flag");
+            assertDoesNotThrow(() -> checkThat(flagUri).hasQueryParam("flag"));
+        }
+
+        @Test
+        void hasQueryParam_valuelessParam_hasEmptyValue() {
+            URI flagUri = URI.create("https://example.com?flag");
+            assertDoesNotThrow(() -> checkThat(flagUri).hasQueryParam("flag", ""));
+        }
+    }
+
+    @Nested
+    class NullPathURI {
+
+        @Test
+        void pathStartsWith_nullPath_fails() {
+            URI opaque = URI.create("mailto:user@example.com");
+            assertThrows(AssertionError.class,
+                    () -> checkThat(opaque).pathStartsWith("/"));
+        }
+
+        @Test
+        void pathContains_nullPath_fails() {
+            URI opaque = URI.create("mailto:user@example.com");
+            assertThrows(AssertionError.class,
+                    () -> checkThat(opaque).pathContains("user"));
+        }
+    }
 
     private static final URI FULL_URI = URI.create(
             "https://api.example.com:8443/v2/users?page=1&limit=50&sort=name#section");

@@ -7,9 +7,46 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class NumberCheckTest {
+
+    @Nested
+    class WhenActualIsNull {
+
+        @Test
+        void allGuardedAssertions_shortCircuit_whenActualIsNull() {
+            var handler = new SoftFailureHandler();
+            var check = new NumberCheck<Integer>(null, handler);
+            check.isZero().isNotZero().isPositive().isNegative().isCloseTo(0, 1);
+            assertTrue(handler.failures().size() >= 5);
+        }
+    }
+
+    @Nested
+    class SignumBranches {
+
+        @Test
+        void isNegative_worksForNegativeLong() {
+            assertDoesNotThrow(() -> checkThat(-1L).isNegative());
+        }
+
+        @Test
+        void isNegative_worksForNegativeBigInteger() {
+            assertDoesNotThrow(() -> checkThat(BigInteger.ONE.negate()).isNegative());
+        }
+
+        @Test
+        void isNotZero_worksForNegativeBigDecimal() {
+            assertDoesNotThrow(() -> checkThat(new BigDecimal("-1")).isNotZero());
+        }
+
+        @Test
+        void isZero_worksForDouble() {
+            assertDoesNotThrow(() -> checkThat(0.0).isZero());
+        }
+    }
 
     @Test
     void isPositive_passes() {

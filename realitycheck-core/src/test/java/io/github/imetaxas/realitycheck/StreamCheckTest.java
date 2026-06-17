@@ -2,7 +2,9 @@ package io.github.imetaxas.realitycheck;
 
 import static io.github.imetaxas.realitycheck.Reality.checkThatStream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -132,6 +134,17 @@ class StreamCheckTest {
     void first_fail_empty() {
         assertThrows(AssertionError.class, () ->
                 checkThatStream(Stream.<String>empty()).first());
+    }
+
+    @Test
+    void first_softMode_emptyStream_yieldsNullActual() {
+        // In soft mode fail() records without throwing, so execution reaches the
+        // defensive ternary `list.isEmpty() ? null : list.get(0)` — covering the null path.
+        var handler = new SoftFailureHandler();
+        var check = new StreamCheck<>(Stream.<String>empty(), handler);
+        var obj = check.first();
+        assertNull(obj.actual());
+        assertTrue(handler.failures().size() >= 1);
     }
 
     @Test

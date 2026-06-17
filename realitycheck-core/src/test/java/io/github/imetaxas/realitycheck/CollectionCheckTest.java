@@ -5,11 +5,25 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class CollectionCheckTest {
+
+    @Nested
+    class WhenActualIsNull {
+
+        @Test
+        void guardedAssertions_shortCircuit_whenActualIsNull() {
+            var handler = new SoftFailureHandler();
+            var check = new CollectionCheck<String>((Collection<String>) null, handler);
+            check.isEmpty().isNotEmpty().hasSize(0);
+            assertTrue(handler.failures().size() >= 3);
+        }
+    }
 
     @Test
     void isEmpty_passes() {

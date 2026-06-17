@@ -15,6 +15,7 @@ class LocalDateCheckTest {
     private static final LocalDate PAST_SAMPLE = LocalDate.of(2000, 1, 15);
     private static final LocalDate MONDAY = LocalDate.of(2024, 3, 18);
     private static final LocalDate SATURDAY = LocalDate.of(2024, 3, 16);
+    private static final LocalDate SUNDAY = LocalDate.of(2024, 3, 17);
 
     @Test
     void isBefore_passes() {
@@ -115,9 +116,21 @@ class LocalDateCheckTest {
     }
 
     @Test
+    void isWeekday_failsOnSunday() {
+        // Covers the second operand of the && (dow != SATURDAY is true, but dow != SUNDAY is false)
+        assertThrows(AssertionError.class, () -> checkThat(SUNDAY).isWeekday());
+    }
+
+    @Test
     void isWeekend_passesAndFails() {
         assertDoesNotThrow(() -> checkThat(SATURDAY).isWeekend());
         assertThrows(AssertionError.class, () -> checkThat(MONDAY).isWeekend());
+    }
+
+    @Test
+    void isWeekend_passesOnSunday() {
+        // Covers the second operand of the || (dow == SATURDAY is false, but dow == SUNDAY is true)
+        assertDoesNotThrow(() -> checkThat(SUNDAY).isWeekend());
     }
 
     @Test

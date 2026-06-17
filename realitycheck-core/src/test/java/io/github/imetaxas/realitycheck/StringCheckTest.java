@@ -8,9 +8,28 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.regex.Pattern;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class StringCheckTest {
+
+    @Nested
+    class WhenActualIsNull {
+
+        @Test
+        void allAssertions_shortCircuit_withoutNpe_whenActualIsNull() {
+            var handler = new SoftFailureHandler();
+            var check = new StringCheck(null, handler);
+            check.isEmpty().isNotEmpty().isBlank().isNotBlank()
+                    .hasLength(0).contains("x").doesNotContain("x")
+                    .startsWith("x").endsWith("x").matches("x").doesNotMatch("x")
+                    .matchesPattern(Pattern.compile("x")).containsIgnoringCase("x")
+                    .isEqualToIgnoringCase("x").hasLengthGreaterThan(0)
+                    .hasLengthLessThan(10).hasLengthBetween(1, 5);
+            check.matchesAndCaptures("(\\d+)");
+            assertTrue(handler.failures().size() >= 18, "all null-guarded methods should record a failure");
+        }
+    }
 
     @Test
     void isNotNull_passes() {

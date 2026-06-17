@@ -59,8 +59,20 @@ class JsonCheckTest {
     }
 
     @Test
+    void doesNotHaveField_fails_whenFieldExists() {
+        // Covers the `node != null && !node.isMissingNode()` true-branch
+        assertThrows(AssertionError.class, () -> checkThatJson(SAMPLE).doesNotHaveField("name"));
+    }
+
+    @Test
     void fieldEquals_string() {
         assertDoesNotThrow(() -> checkThatJson(SAMPLE).fieldEquals("name", "Alice"));
+    }
+
+    @Test
+    void fieldEquals_string_onNonTextualNode_passes() {
+        // age is an IntNode; isTextual() is false → takes node.toString() path in the ternary
+        assertDoesNotThrow(() -> checkThatJson(SAMPLE).fieldEquals("age", "30"));
     }
 
     @Test
@@ -74,8 +86,20 @@ class JsonCheckTest {
     }
 
     @Test
+    void fieldEquals_int_wrongValue_fails() {
+        // Covers `node.asInt() != expectedValue` branch of the || condition
+        assertThrows(AssertionError.class, () -> checkThatJson(SAMPLE).fieldEquals("age", 99));
+    }
+
+    @Test
     void fieldEquals_boolean() {
         assertDoesNotThrow(() -> checkThatJson(SAMPLE).fieldEquals("active", true));
+    }
+
+    @Test
+    void fieldEquals_boolean_wrongValue_fails() {
+        // Covers `node.asBoolean() != expectedValue` branch of the || condition
+        assertThrows(AssertionError.class, () -> checkThatJson(SAMPLE).fieldEquals("active", false));
     }
 
     @Test
@@ -86,8 +110,28 @@ class JsonCheckTest {
     }
 
     @Test
+    void fieldIsNull_existingNonNullField_fails() {
+        // Covers the `!node.isNull()` true-branch (field exists but is not JSON null)
+        assertThrows(AssertionError.class, () -> checkThatJson(SAMPLE).fieldIsNull("name"));
+    }
+
+    @Test
     void fieldIsArray_passes() {
         assertDoesNotThrow(() -> checkThatJson(SAMPLE).fieldIsArray("tags"));
+    }
+
+    @Test
+    void fieldIsArray_nonArrayField_fails() {
+        // Covers the `!node.isArray()` true-branch (field exists but is not an array)
+        assertThrows(AssertionError.class, () -> checkThatJson(SAMPLE).fieldIsArray("name"));
+    }
+
+    @Test
+    void navigatePath_numericSegmentOnObjectNode() {
+        // Covers the `segment.matches("\\d+") && !node.isArray()` branch in navigatePath
+        // A numeric-looking key on an object falls through to the regular get() path
+        String json = "{\"123\": \"found\"}";
+        assertDoesNotThrow(() -> checkThatJson(json).fieldEquals("123", "found"));
     }
 
     @Test
@@ -910,5 +954,27 @@ class JsonCheckTest {
                 """;
         assertDoesNotThrow(() ->
                 checkThatJson(json).fieldEquals("items[0", "a"));
+    }
+
+    @Test
+    void parsePathSegments_dollarRoot_returnsEmptyList() {
+        // path.equals("$") → returns List.of() — covers that else-if branch
+        var segments = JsonCheck.parsePathSegments("$");
+        assertTrue(segments.isEmpty());
+    }
+
+    @Test
+    void parsePathSegments_unclosedQuoteBracket_treatedAsLiteralSegment() {
+        // ["key with no closing "] → closing < 0: segment added verbatim, loop breaks
+        var segments = JsonCheck.parsePathSegments("[\"broken");
+        assertEquals(List.of("[\"broken"), segments);
+    }
+
+    @Test
+    void parsePathSegments_consecutiveQuoteBrackets_noDotBetween() {
+        // ["a"]["b"] — after first bracket closes, next char is '[' not '.', so the
+        // `i < len && charAt(i) == '.'` false-branch for the quote-bracket case is taken.
+        var segments = JsonCheck.parsePathSegments("[\"a\"][\"b\"]");
+        assertEquals(List.of("a", "b"), segments);
     }
 }
