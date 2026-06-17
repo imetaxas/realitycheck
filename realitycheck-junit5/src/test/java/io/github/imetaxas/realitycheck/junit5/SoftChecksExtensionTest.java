@@ -8,12 +8,14 @@ import org.junit.jupiter.api.extension.ExtensionContext.Store;
 import org.opentest4j.MultipleFailuresError;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import org.junit.jupiter.api.extension.ParameterContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,10 +38,20 @@ class SoftChecksExtensionTest {
     }
 
     @Test
-    void supportsParameter_returnsFalseForOtherTypes() throws Exception {
-        Method method = SoftChecksExtensionTest.class.getDeclaredMethod("supportsParameter_returnsFalseForOtherTypes");
-        assertEquals(0, method.getParameters().length);
+    void supportsParameter_returnsFalseForNonSoftChecksType() throws Exception {
+        var ext = new SoftChecksExtension();
+        Method method = SoftChecksExtensionTest.class.getDeclaredMethod("helperWithStringParam", String.class);
+        Parameter param = method.getParameters()[0];
+        ParameterContext paramCtx = new ParameterContext() {
+            @Override public Parameter getParameter() { return param; }
+            @Override public int getIndex() { return 0; }
+            @Override public Optional<Object> getTarget() { return Optional.empty(); }
+        };
+        assertFalse(ext.supportsParameter(paramCtx, null));
     }
+
+    @SuppressWarnings("unused")
+    private void helperWithStringParam(String s) {}
 
     @Test
     void softCheckFailure_isReportedAfterTest(SoftChecks softly) {

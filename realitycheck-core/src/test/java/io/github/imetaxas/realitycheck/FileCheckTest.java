@@ -4,8 +4,10 @@ import static io.github.imetaxas.realitycheck.Reality.checkThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
@@ -27,6 +29,13 @@ class FileCheckTest {
 
     @TempDir
     Path tempDir;
+
+    @Test
+    void checkThat_nullFile_yieldsCheckWithNullActual() {
+        // Covers the CheckFacade.file(null, handler) ternary true-branch
+        FileCheck check = CheckFacade.file(null, new SoftFailureHandler());
+        assertNull(check.actual());
+    }
 
     @Test
     void exists_passes() throws IOException {

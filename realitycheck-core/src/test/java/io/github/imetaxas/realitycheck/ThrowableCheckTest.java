@@ -2,13 +2,106 @@ package io.github.imetaxas.realitycheck;
 
 import static io.github.imetaxas.realitycheck.Reality.checkThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class ThrowableCheckTest {
+
+    @Nested
+    class NullMessage {
+        // hasMessageStartingWith / hasMessageMatching with `msg != null && ...`
+        // when msg IS null → the short-circuit false branch of && is taken.
+
+        @Test
+        void hasMessageStartingWith_nullMessage_fails() {
+            assertThrows(AssertionError.class,
+                    () -> checkThatThrownBy(this::throwNpe).hasMessageStartingWith("prefix"));
+        }
+
+        @Test
+        void hasMessageMatching_nullMessage_fails() {
+            assertThrows(AssertionError.class,
+                    () -> checkThatThrownBy(this::throwNpe).hasMessageMatching(".*"));
+        }
+
+        private void throwNpe() { throw new NullPointerException(); }
+    }
+
+    @Nested
+    class SuppressedExceptions {
+
+        @Test
+        void suppressedException_validIndex_returnsThrowableCheck() {
+            var outer = new RuntimeException("outer");
+            outer.addSuppressed(new IllegalStateException("suppressed"));
+            assertDoesNotThrow(() ->
+                    checkThatThrownBy(() -> { throw outer; })
+                            .suppressedException(0)
+                            .isInstanceOf(IllegalStateException.class));
+        }
+
+        @Test
+        void suppressedException_negativeIndex_softMode_returnsNullCheck() {
+            var handler = new SoftFailureHandler();
+            var outer = new RuntimeException("outer");
+            outer.addSuppressed(new IllegalStateException("s"));
+            ThrowableCheck check = CheckFacade.thrownBy(() -> { throw outer; }, handler);
+            ThrowableCheck result = check.suppressedException(-1);
+            assertNull(result.actual());
+            assertEquals(1, handler.failures().size());
+        }
+
+        @Test
+        void rootCauseOf_noCause_returnsSelf() {
+            var lone = new RuntimeException("lone");
+            assertDoesNotThrow(() ->
+                    checkThatThrownBy(() -> { throw lone; })
+                            .hasRootCauseInstanceOf(RuntimeException.class));
+        }
+    }
+
+    @Nested
+    class WhenActualIsNull {
+        // Use a soft handler so thrownBy() records a failure instead of throwing,
+        // giving us a ThrowableCheck with null actual to exercise all null guards.
+
+        private ThrowableCheck nullCheck() {
+            return CheckFacade.thrownBy(() -> {}, new SoftFailureHandler());
+        }
+
+        @Test
+        void allAssertions_silentlyReturn_whenActualIsNull() {
+            assertDoesNotThrow(() ->
+                nullCheck()
+                     .isExactlyInstanceOf(Exception.class)
+                     .hasMessageStartingWith("x")
+                     .hasMessageMatching(".*")
+                     .hasCause()
+                     .hasCauseInstanceOf(Exception.class)
+                     .hasRootCauseInstanceOf(Exception.class)
+                     .hasSuppressed()
+                     .hasNoSuppressed()
+                     .hasSuppressedCount(0)
+                     .hasSuppressedInstanceOf(Exception.class));
+        }
+
+        @Test
+        void extractorMethods_silentlyReturn_whenActualIsNull() {
+            assertDoesNotThrow(() -> {
+                ThrowableCheck check = nullCheck();
+                assertNull(check.cause().actual());
+                assertNull(check.rootCause().actual());
+                assertNull(check.message().actual());
+                assertNull(check.suppressedException(0).actual());
+            });
+        }
+    }
 
     @Test
     void isInstanceOf_passes() {

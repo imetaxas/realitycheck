@@ -554,4 +554,13 @@ class SnapshotCheckTest {
         assertFalse(handler.messages.isEmpty());
         assertTrue(handler.messages.get(0).contains("Snapshot mismatch"));
     }
+
+    @Test
+    void matchResult_formatFailure_includesCiMessage_whenPresent() {
+        // Covers the `if (ciMessage != null)` true-branch in formatFailure()
+        var result = new SnapshotManager.MatchResult(false, null, false, "Snapshot missing in CI");
+        String msg = result.formatFailure();
+        assertTrue(msg.contains("Snapshot missing in CI"));
+        assertTrue(msg.contains("update snapshots"));
+    }
 }

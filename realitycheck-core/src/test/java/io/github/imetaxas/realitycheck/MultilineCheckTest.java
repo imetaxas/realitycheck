@@ -2,6 +2,7 @@ package io.github.imetaxas.realitycheck;
 
 import static io.github.imetaxas.realitycheck.Reality.checkThatMultiline;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -334,5 +335,25 @@ class MultilineCheckTest {
     void noLineMatches_failsWhenOneMatches() {
         assertThrows(AssertionError.class,
                 () -> checkThatMultiline("abc\n123").noLineMatches("\\d+"));
+    }
+
+    @Test
+    void line_negativeIndex_softMode_returnsEmptyString() {
+        // In strict mode fail() throws before the defensive ternary in line() runs.
+        // Soft mode exercises the `index >= 0 && index < size` false branches.
+        var handler = new SoftFailureHandler();
+        MultilineCheck check = new MultilineCheck("a\nb", handler);
+        StringCheck result = check.line(-1);
+        assertEquals("", result.actual());
+        assertEquals(1, handler.failures().size());
+    }
+
+    @Test
+    void line_outOfRangePositive_softMode_returnsEmptyString() {
+        var handler = new SoftFailureHandler();
+        MultilineCheck check = new MultilineCheck("a\nb", handler);
+        StringCheck result = check.line(999);
+        assertEquals("", result.actual());
+        assertEquals(1, handler.failures().size());
     }
 }

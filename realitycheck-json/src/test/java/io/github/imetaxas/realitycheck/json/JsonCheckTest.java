@@ -911,4 +911,26 @@ class JsonCheckTest {
         assertDoesNotThrow(() ->
                 checkThatJson(json).fieldEquals("items[0", "a"));
     }
+
+    @Test
+    void parsePathSegments_dollarRoot_returnsEmptyList() {
+        // path.equals("$") → returns List.of() — covers that else-if branch
+        var segments = JsonCheck.parsePathSegments("$");
+        assertTrue(segments.isEmpty());
+    }
+
+    @Test
+    void parsePathSegments_unclosedQuoteBracket_treatedAsLiteralSegment() {
+        // ["key with no closing "] → closing < 0: segment added verbatim, loop breaks
+        var segments = JsonCheck.parsePathSegments("[\"broken");
+        assertEquals(List.of("[\"broken"), segments);
+    }
+
+    @Test
+    void parsePathSegments_consecutiveQuoteBrackets_noDotBetween() {
+        // ["a"]["b"] — after first bracket closes, next char is '[' not '.', so the
+        // `i < len && charAt(i) == '.'` false-branch for the quote-bracket case is taken.
+        var segments = JsonCheck.parsePathSegments("[\"a\"][\"b\"]");
+        assertEquals(List.of("a", "b"), segments);
+    }
 }

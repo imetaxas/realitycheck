@@ -8,9 +8,53 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class MapCheckTest {
+
+    @Nested
+    class WhenActualIsNull {
+
+        @Test
+        void allGuardedAssertions_shortCircuit_whenActualIsNull() {
+            var handler = new SoftFailureHandler();
+            var check = new MapCheck<String, String>(null, handler);
+            check.isEmpty().isNotEmpty().hasSize(0).containsKey("k").doesNotContainKey("k");
+            assertTrue(handler.failures().size() >= 5, "each null-guarded method should record a failure");
+        }
+    }
+
+    @Nested
+    class HasSameEntriesAs {
+
+        @Test
+        void hasSameEntriesAs_extraKey_fails() {
+            Map<String, String> actual = Map.of("a", "1", "extra", "x");
+            Map<String, String> expected = Map.of("a", "1");
+            var e = assertThrows(AssertionError.class,
+                    () -> checkThat(actual).hasSameEntriesAs(expected));
+            assertTrue(e.getMessage().contains("extra:"));
+        }
+
+        @Test
+        void hasSameEntriesAs_missingKey_fails() {
+            Map<String, String> actual = Map.of("a", "1");
+            Map<String, String> expected = Map.of("a", "1", "missing", "y");
+            var e = assertThrows(AssertionError.class,
+                    () -> checkThat(actual).hasSameEntriesAs(expected));
+            assertTrue(e.getMessage().contains("missing:"));
+        }
+
+        @Test
+        void hasSameEntriesAs_changedValue_fails() {
+            Map<String, String> actual = Map.of("a", "new");
+            Map<String, String> expected = Map.of("a", "old");
+            var e = assertThrows(AssertionError.class,
+                    () -> checkThat(actual).hasSameEntriesAs(expected));
+            assertTrue(e.getMessage().contains("changed:"));
+        }
+    }
 
     @Test
     void isEmpty_passes() {

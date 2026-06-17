@@ -2,6 +2,7 @@ package io.github.imetaxas.realitycheck;
 
 import static io.github.imetaxas.realitycheck.Reality.checkThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -330,6 +331,30 @@ class MatchResultCheckTest {
             assertThrows(AssertionError.class, () ->
                     checkThat("hello").matchesAndCaptures("(?<word>\\w+)(?:-(?<suffix>\\w+))?")
                             .hasGroup("suffix", "x"));
+        }
+    }
+
+    @Nested
+    class GroupIndexSoftMode {
+        // In strict mode fail() throws before the defensive ternary in group(int) runs.
+        // Soft mode covers the `index >= 0 && index <= groupCount` false branches.
+
+        @Test
+        void group_negativeIndex_softMode_returnsNullStringCheck() {
+            var handler = new SoftFailureHandler();
+            MatchResultCheck check = MatchResultCheck.from("hello", "(\\w+)", handler);
+            StringCheck result = check.group(-1);
+            assertNull(result.actual());
+            assertEquals(1, handler.failures().size());
+        }
+
+        @Test
+        void group_outOfRangePositive_softMode_returnsNullStringCheck() {
+            var handler = new SoftFailureHandler();
+            MatchResultCheck check = MatchResultCheck.from("hello", "(\\w+)", handler);
+            StringCheck result = check.group(99);
+            assertNull(result.actual());
+            assertEquals(1, handler.failures().size());
         }
     }
 }
