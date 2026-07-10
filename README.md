@@ -12,6 +12,8 @@
 
 [**Quick Start**](#quick-start) · [**Full Usage Guide**](docs/USAGE.md) · [**Migration from AssertJ / Truth**](MIGRATION.md) · [**Roadmap**](docs/ROADMAP.md) · [**Javadoc**](https://imetaxas.github.io/realitycheck/)
 
+Assertion missing? [Open an issue](https://github.com/imetaxas/realitycheck/issues) — contributions are welcome!
+
 </div>
 
 ---
@@ -60,6 +62,12 @@
 testImplementation("io.github.imetaxas:realitycheck-core:1.0.0")
 ```
 
+**Gradle (Groovy DSL):**
+
+```groovy
+testImplementation 'io.github.imetaxas:realitycheck-core:1.0.0'
+```
+
 > Using multiple modules? See the [BOM setup](docs/USAGE.md#bom-setup) to manage versions in one place.
 
 ### Your first test
@@ -77,7 +85,8 @@ class QuickStartTest {
 
     @Test
     void json() {
-        assertThatJson(apiResponse)
+        String response = "{\"user\":{\"name\":\"Alice\",\"roles\":[\"admin\"]}}";
+        assertThatJson(response)
             .isValidJson()
             .fieldEquals("user.name", "Alice")
             .fieldIsArray("user.roles");
@@ -92,6 +101,9 @@ class QuickStartTest {
 
     @Test
     void softAssertions() {
+        String name = "Alice";
+        int age = 30;
+        String email = "alice@example.com";
         assertAll(softly -> {
             softly.assertThat(name).isNotEmpty();
             softly.assertThat(age).isPositive();
