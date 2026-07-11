@@ -18,31 +18,6 @@ Assertion missing? [Open an issue](https://github.com/imetaxas/realitycheck/issu
 
 ---
 
-## Why Reality Check?
-
-| Feature | JUnit 5 | Google Truth | AssertJ | Reality Check |
-|---|:---:|:---:|:---:|:---:|
-| JSON structural diff | — | — | — | ✅ |
-| CSV assertions (RFC 4180) | — | — | — | ✅ |
-| XML assertions (XPath, XXE-safe) | — | — | — | ✅ |
-| YAML assertions (dot-path) | — | — | — | ✅ |
-| Snapshot / golden-file testing | — | — | — | ✅ |
-| Map dot-path navigation | — | — | — | ✅ |
-| Regex capture group assertions | — | — | — | ✅ |
-| URI/URL component assertions | — | — | Limited | ✅ |
-| Multiline diff in failure messages | — | — | — | ✅ |
-| Execution timing assertions | — | — | — | ✅ |
-| Exception cause chain traversal | — | Limited | Limited | ✅ |
-| Suppressed exception access | — | [Missing](https://github.com/google/truth/issues/717) | — | ✅ |
-| Thread-safe soft assertions | ❌ (stateless) | [JUnit 4 only](https://github.com/google/truth/issues/893) | [Buggy](https://github.com/assertj/assertj/issues/2356) | ✅ |
-| Fluent method chaining | ❌ | [No](https://github.com/google/truth/issues/884) | ✅ | ✅ |
-| Zero-boilerplate custom extension | — | ~50 lines | ~30 lines | **3 lines** |
-| Zero runtime dependencies (core) | ✅ | ❌ (Guava) | ✅ | ✅ |
-| `assertThat()` drop-in alias | — | ✅ | ✅ | ✅ |
-| Modern Java (17+, records, sealed) | Java 8 | Java 8 | Java 8 | **Java 17+** |
-
----
-
 ## Quick Start
 
 **Maven:**
@@ -70,10 +45,11 @@ testImplementation 'io.github.imetaxas:realitycheck-core:1.0.0'
 
 > Using multiple modules? See the [BOM setup](docs/USAGE.md#bom-setup) to manage versions in one place.
 
-### Your first test
+### Copy · Paste · Run
 
 ```java
 import static io.github.imetaxas.realitycheck.RealityAssertions.*;
+import static io.github.imetaxas.realitycheck.json.JsonReality.*;
 import org.junit.jupiter.api.Test;
 
 class QuickStartTest {
@@ -121,14 +97,39 @@ class QuickStartTest {
 assertThat("hello").isEqualTo("world");
 → expected: <world> but was: <hello>
 
-assertThatJson(json).fieldEquals("user.name", "Bob");
+assertThatJson(json).fieldEquals("user.name", "Bob");   // requires realitycheck-json
 → expected field <user.name> = <Bob> but was: <Alice>
 
-assertThatSnapshot(response).matchesSnapshot(...);
+assertThatSnapshot(response).matchesSnapshot(...);       // requires realitycheck-snapshot
 → snapshot differs:
 -   "status": "ok"
 +   "status": "error"
 ```
+
+---
+
+## Why Reality Check?
+
+| Feature | JUnit 5 | Google Truth | AssertJ | Reality Check |
+|---|:---:|:---:|:---:|:---:|
+| JSON structural diff | — | — | — | ✅ |
+| CSV assertions (RFC 4180) | — | — | — | ✅ |
+| XML assertions (XPath, XXE-safe) | — | — | — | ✅ |
+| YAML assertions (dot-path) | — | — | — | ✅ |
+| Snapshot / golden-file testing | — | — | — | ✅ |
+| Map dot-path navigation | — | — | — | ✅ |
+| Regex capture group assertions | — | — | — | ✅ |
+| URI/URL component assertions | — | — | Limited | ✅ |
+| Multiline diff in failure messages | — | — | — | ✅ |
+| Execution timing assertions | — | — | — | ✅ |
+| Exception cause chain traversal | — | Limited | Limited | ✅ |
+| Suppressed exception access | — | [Missing](https://github.com/google/truth/issues/717) | — | ✅ |
+| Thread-safe soft assertions | ❌ (stateless) | [JUnit 4 only](https://github.com/google/truth/issues/893) | [Buggy](https://github.com/assertj/assertj/issues/2356) | ✅ |
+| Fluent method chaining | ❌ | [No](https://github.com/google/truth/issues/884) | ✅ | ✅ |
+| Zero-boilerplate custom extension | — | ~50 lines | ~30 lines | **3 lines** |
+| Zero runtime dependencies (core) | ✅ | ❌ (Guava) | ✅ | ✅ |
+| `assertThat()` drop-in alias | — | ✅ | ✅ | ✅ |
+| Modern Java (17+, records, sealed) | Java 8 | Java 8 | Java 8 | **Java 17+** |
 
 ---
 
