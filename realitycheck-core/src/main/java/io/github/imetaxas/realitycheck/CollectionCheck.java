@@ -125,6 +125,12 @@ public final class CollectionCheck<T> extends AbstractCheck<CollectionCheck<T>, 
                 Arrays.toString(elements), found);
     }
 
+    /**
+     * Asserts that all elements satisfy the given predicate.
+     *
+     * @param predicate   the condition each element must meet
+     * @param description a human-readable label for the predicate (used in the failure message)
+     */
     public CollectionCheck<T> allMatch(Predicate<T> predicate, String description) {
         for (T e : actual()) {
             if (!predicate.test(e)) {
@@ -135,6 +141,19 @@ public final class CollectionCheck<T> extends AbstractCheck<CollectionCheck<T>, 
         return self();
     }
 
+    /**
+     * Asserts that all elements satisfy the given predicate (no-label overload).
+     */
+    public CollectionCheck<T> allMatch(Predicate<T> predicate) {
+        return allMatch(predicate, "predicate");
+    }
+
+    /**
+     * Asserts that no element satisfies the given predicate.
+     *
+     * @param predicate   the condition no element should meet
+     * @param description a human-readable label for the predicate (used in the failure message)
+     */
     public CollectionCheck<T> noneMatch(Predicate<T> predicate, String description) {
         for (T e : actual()) {
             if (predicate.test(e)) {
@@ -145,10 +164,30 @@ public final class CollectionCheck<T> extends AbstractCheck<CollectionCheck<T>, 
         return self();
     }
 
+    /**
+     * Asserts that no element satisfies the given predicate (no-label overload).
+     */
+    public CollectionCheck<T> noneMatch(Predicate<T> predicate) {
+        return noneMatch(predicate, "predicate");
+    }
+
+    /**
+     * Asserts that at least one element satisfies the given predicate.
+     *
+     * @param predicate   the condition to test
+     * @param description a human-readable label for the predicate (used in the failure message)
+     */
     public CollectionCheck<T> anyMatch(Predicate<T> predicate, String description) {
         return failureHandler().check(self(), actual().stream().anyMatch(predicate),
                 "expected at least one element matching [%s] but none did",
                 description);
+    }
+
+    /**
+     * Asserts that at least one element satisfies the given predicate (no-label overload).
+     */
+    public CollectionCheck<T> anyMatch(Predicate<T> predicate) {
+        return anyMatch(predicate, "predicate");
     }
 
     public ObjectCheck<T> first() {

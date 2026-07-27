@@ -37,6 +37,29 @@ public abstract class AbstractCheck<SELF extends AbstractCheck<SELF, ACTUAL>, AC
     }
 
     /**
+     * Sets a human-readable description label that is prepended to every subsequent
+     * failure message, mirroring AssertJ's {@code .as("label")} behaviour.
+     *
+     * <pre>{@code
+     * checkThat(user.getName()).as("user name").isEqualTo("Alice");
+     * }</pre>
+     *
+     * @param description a short label identifying the assertion site
+     * @return {@code this} for fluent chaining
+     */
+    public final SELF as(String description) {
+        failureHandler.withDescription(description);
+        return self();
+    }
+
+    /**
+     * Alias for {@link #as(String)}.
+     */
+    public final SELF withDescription(String description) {
+        return as(description);
+    }
+
+    /**
      * Returns {@code true} if actual is non-null. If null, records a structured
      * failure via the failure handler and returns {@code false}. Leaf check methods
      * that dereference {@link #actual()} should guard with:

@@ -44,12 +44,17 @@ import static io.github.imetaxas.realitycheck.RealityAssertions.*; // assertThat
 
 | AssertJ | Reality Check | Why |
 |---|---|---|
-| `usingRecursiveComparison()` | `assertThat(obj, MyCheck::new)` | No reflection — explicit field assertions |
+| `assertThat(obj).as("label")` | `assertThat(obj).as("label")` | **Identical** — same API |
+| `assertThat(obj).withFailMessage("…")` | `assertWithMessage("…").that(obj)` | Phrased differently |
+| `usingRecursiveComparison()` | `assertThat(obj).hasSameFieldsAs(expected)` | Explicit, shallow — first-level fields only |
+| `usingRecursiveComparison()` (deep) | `assertThat(obj, MyCheck::new)` | No reflection — explicit field assertions |
+| `assertThat(floatVal)` | `assertThat(floatVal)` | **Identical** — `float` is now a first-class overload |
 | `SoftAssertions.assertSoftly(s -> ...)` | `Reality.checkAll(s -> ...)` | Same pattern, different name |
 | `@ExtendWith(SoftAssertionsExtension.class)` | `@WithSoftChecks` | Annotation name differs |
 | `extracting(Foo::getBar)` | `.satisfies(f -> assertThat(f.getBar())...)` | Use `satisfies` with inline checks |
 | `AbstractAssert` subclass (~30 lines) | `record MyCheck(...) implements Check` (3 lines) | Records as checks |
 | `Condition` | `satisfies(Predicate, String)` | Predicate + description |
+| `assertThat(list).allMatch(pred)` | `assertThat(list).allMatch(pred)` | **Identical** — label is now optional |
 
 ### 4. Soft assertions
 
@@ -67,7 +72,40 @@ RealityAssertions.assertAll(softly -> {
 });
 ```
 
-### 5. Custom assertions
+### 5. Assertion labels (`.as()`)
+
+Reality Check supports the same `.as("label")` API as AssertJ — it works on every check type and stacks labels into soft-assertion failure reports:
+
+```java
+// Both compile and behave identically
+assertThat(user.getName()).as("user name").isEqualTo("Alice");
+assertThat(user.getAge()).as("user age").isBetween(18, 99);
+```
+
+### 5b. Object comparison (`usingRecursiveComparison` → `hasSameFieldsAs`)
+
+For simple POJOs and value objects, `hasSameFieldsAs` provides safe shallow field comparison without requiring `usingRecursiveComparison`:
+
+```java
+// Before (AssertJ)
+assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+
+// After (Reality Check — explicit, first-level fields only)
+assertThat(actual).hasSameFieldsAs(expected);
+
+// On mismatch:
+// field mismatch(es) in <User>:
+//   field 'name': expected <Bob> but was <Alice>
+//   field 'age': expected <25> but was <30>
+```
+
+For deep recursive comparison, use a custom check:
+
+```java
+assertThat(order, OrderCheck::new).hasMatchingItems(expected.getItems());
+```
+
+### 6. Custom assertions
 
 ```java
 // Before (AssertJ — ~30 lines)
@@ -142,6 +180,7 @@ import static io.github.imetaxas.realitycheck.RealityAssertions.*;
 | Truth | Reality Check | Why |
 |---|---|---|
 | No method chaining (returns `void`) | Full fluent chaining | RC returns `self()` |
+| No `.as("label")` API | `.as("label")` / `.withDescription("label")` | Full label support |
 | `assertThrows(X.class, () -> ...)` (JUnit) | `assertThatThrownBy(() -> ...).isInstanceOf(X.class)` | Fluent, with chaining |
 | Custom `Subject` (~50 lines) | `record MyCheck(...) implements Check` (3 lines) | 16x less boilerplate |
 | Guava dependency (3 MB) | Zero dependencies (96 KB) | No Guava needed |
@@ -149,6 +188,7 @@ import static io.github.imetaxas.realitycheck.RealityAssertions.*;
 | No `BigDecimal` subject | `assertThat(bigDecimal).isCloseTo(...)` | Built in |
 | No `Stream` subject | `assertThatStream(stream).contains(...)` | Built in |
 | No suppressed exceptions | `.hasSuppressed().suppressedException(0)` | Built in |
+| No `float` subject | `assertThat(floatVal)` | First-class float overload |
 
 ### 4. Truth's `isAtLeast` / `isAtMost` naming
 

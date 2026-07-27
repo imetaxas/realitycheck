@@ -102,10 +102,18 @@ public final class IterableCheck<T> extends AbstractCheck<IterableCheck<T>, Iter
         return self();
     }
 
+    public IterableCheck<T> allMatch(Predicate<T> predicate) {
+        return allMatch(predicate, "predicate");
+    }
+
     public IterableCheck<T> anyMatch(Predicate<T> predicate, String description) {
         return failureHandler().check(self(), materialize().stream().anyMatch(predicate),
                 "expected at least one element matching [%s] but none did",
                 description);
+    }
+
+    public IterableCheck<T> anyMatch(Predicate<T> predicate) {
+        return anyMatch(predicate, "predicate");
     }
 
     public IterableCheck<T> noneMatch(Predicate<T> predicate, String description) {
@@ -116,6 +124,10 @@ public final class IterableCheck<T> extends AbstractCheck<IterableCheck<T>, Iter
             }
         }
         return self();
+    }
+
+    public IterableCheck<T> noneMatch(Predicate<T> predicate) {
+        return noneMatch(predicate, "predicate");
     }
 
     /** Converts to a {@link CollectionCheck} for collection-specific assertions. */

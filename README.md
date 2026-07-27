@@ -126,9 +126,13 @@ assertThatSnapshot(response).matchesSnapshot(...);       // requires realitychec
 | Suppressed exception access | — | [Missing](https://github.com/google/truth/issues/717) | — | ✅ |
 | Thread-safe soft assertions | ❌ (stateless) | [JUnit 4 only](https://github.com/google/truth/issues/893) | [Buggy](https://github.com/assertj/assertj/issues/2356) | ✅ |
 | Fluent method chaining | ❌ | [No](https://github.com/google/truth/issues/884) | ✅ | ✅ |
+| Assertion labels (`.as("…")`) | — | — | ✅ | ✅ |
+| Shallow object field comparison | — | — | ✅ (recursive) | ✅ (explicit) |
+| `float` / `float[]` assertions | — | — | ✅ | ✅ |
 | Zero-boilerplate custom extension | — | ~50 lines | ~30 lines | **3 lines** |
 | Zero runtime dependencies (core) | ✅ | ❌ (Guava) | ✅ | ✅ |
 | `assertThat()` drop-in alias | — | ✅ | ✅ | ✅ |
+| Generic `assertThat(T)` fallback | — | ✅ | ✅ | ✅ |
 | Modern Java (17+, records, sealed) | Java 8 | Java 8 | Java 8 | **Java 17+** |
 
 ---
@@ -137,7 +141,7 @@ assertThatSnapshot(response).matchesSnapshot(...);       // requires realitychec
 
 | Module | Artifact ID | What it adds | Extra deps |
 |---|---|---|---|
-| Core | `realitycheck-core` | String, number, collection, map, file, URI, CSV, date/time, exception, execution, array, stream, iterable, multiline, enum, UUID, byte[] | None |
+| Core | `realitycheck-core` | String, number (int/long/double/**float**), collection, map, file, URI, CSV, date/time, exception, execution, array (**float[]** included), stream, iterable, multiline, enum, UUID, byte[], object comparison (`hasSameFieldsAs`), assertion labels (`.as()`) | None |
 | JSON | `realitycheck-json` | JSON structural diff, dot-path, array-index navigation | Jackson |
 | XML | `realitycheck-xml` | XPath assertions, XXE-safe parsing | JDK only |
 | YAML | `realitycheck-yaml` | YAML dot-path queries | SnakeYAML |
