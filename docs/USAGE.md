@@ -1,6 +1,6 @@
 # Usage Guide
 
-> **Quick navigation** · [Strings](#strings) · [Numbers](#numbers) · [Collections](#collections) · [Maps](#maps) · [Optionals](#optionals) · [Futures](#futures) · [Date/Time](#datetime) · [Files](#files) · [URIs](#uris) · [Exceptions](#exceptions) · [Execution Timing](#execution-timing) · [Multiline Strings](#multiline-strings) · [Regex](#regex-match-groups) · [Enum](#enums) · [Arrays](#arrays) · [Streams](#streams) · [Iterables](#iterables) · [Soft Assertions](#soft-assertions) · [Data Formats](#data-format-modules) · [Custom Extensions](#custom-extensions-3-lines)
+> **Quick navigation** · [Labels (.as)](#assertion-labels-as--withdescription) · [Strings](#strings) · [Numbers](#numbers) · [Collections](#collections) · [Objects](#objects-generic-fallback) · [Maps](#maps) · [Optionals](#optionals) · [Futures](#futures) · [Date/Time](#datetime) · [Files](#files) · [URIs](#uris) · [Exceptions](#exceptions) · [Execution Timing](#execution-timing) · [Multiline Strings](#multiline-strings) · [Regex](#regex-match-groups) · [Enum](#enums) · [Arrays](#arrays) · [Streams](#streams) · [Iterables](#iterables) · [Soft Assertions](#soft-assertions) · [Data Formats](#data-format-modules) · [Custom Extensions](#custom-extensions-3-lines)
 
 ## BOM Setup
 
@@ -39,6 +39,47 @@ Use the BOM to manage versions across multiple modules in one place:
 testImplementation(platform("io.github.imetaxas:realitycheck-bom:1.0.0"))
 testImplementation("io.github.imetaxas:realitycheck-core")
 testImplementation("io.github.imetaxas:realitycheck-json")
+```
+
+---
+
+## Assertion Labels (`.as` / `.withDescription`)
+
+Attach a short, human-readable label to any assertion. The label is prepended to every failure message produced by that check, making large test suites much easier to triage at a glance — especially in soft-assertion blocks.
+
+```java
+// Single assertion
+assertThat(user.getName()).as("user name").isEqualTo("Alice");
+// failure: [user name] expected: <Alice> but was: <Bob>
+
+// Works with any check type
+assertThat(user.getAge()).as("user age").isPositive().isBetween(18, 99);
+assertThat(user.getEmail()).as("email").contains("@");
+assertThat(results).as("search results").isNotEmpty().hasSize(5);
+assertThat(path).as("output file").exists().hasExtension("json");
+```
+
+### In soft-assertion blocks
+
+Labels shine brightest when collecting multiple failures — each message is prefixed with its label, so you know exactly which field failed without reading stack traces.
+
+```java
+assertAll(softly -> {
+    softly.assertThat(order.getId()).as("order ID").isNotNull();
+    softly.assertThat(order.getStatus()).as("order status").isEqualTo("PAID");
+    softly.assertThat(order.getItems()).as("order items").isNotEmpty();
+    softly.assertThat(order.getTotal()).as("order total").isPositive();
+});
+// On failure:
+// Multiple failures (2):
+//   1) [order status] expected: <PAID> but was: <PENDING>
+//   2) [order total] expected a positive number but was: <0>
+```
+
+`.withDescription(String)` is an alias for `.as(String)`:
+
+```java
+assertThat(value).withDescription("retry count").isAtLeast(0);
 ```
 
 ---
@@ -84,6 +125,10 @@ assertThat(3.14).isCloseTo(3.15, 0.02);
 assertThat(-5L).isNegative();
 assertThat(BigDecimal.valueOf(100.50)).isGreaterThan(BigDecimal.valueOf(100));
 assertThat(BigInteger.TWO.pow(64)).isPositive();
+
+// float is now a first-class primitive — routes to NumberCheck<Float>
+assertThat(3.14f).isPositive().isCloseTo(3.15f, 0.02f);
+assertThat(score).as("accuracy").isGreaterThan(0.9f);
 ```
 
 ---
@@ -93,10 +138,71 @@ assertThat(BigInteger.TWO.pow(64)).isPositive();
 ```java
 assertThat(List.of(1, 2, 3)).hasSize(3).contains(2).doesNotContain(5);
 assertThat(List.of("a", "b")).containsExactly("a", "b");
-assertThat(List.of(2, 4, 6)).allMatch(n -> n % 2 == 0, "is even");
-assertThat(List.of(1, 2, 3)).anyMatch(n -> n > 2, "greater than 2");
 assertThat(List.of("a", "b", "c")).containsExactlyInAnyOrder("c", "a", "b");
 ```
+
+### Predicate matching — `allMatch`, `anyMatch`, `noneMatch`
+
+The `description` label in predicate methods is optional — omit it when the predicate is self-documenting, or supply it to get a clearer failure message:
+
+```java
+// With label (appears in failure message)
+assertThat(scores).allMatch(n -> n >= 0, "non-negative");
+assertThat(names).noneMatch(String::isBlank, "non-blank");
+assertThat(ids).anyMatch(id -> id.startsWith("USR-"), "user-prefixed");
+
+// Without label (uses "predicate" as fallback label)
+assertThat(scores).allMatch(n -> n >= 0);
+assertThat(names).noneMatch(String::isBlank);
+assertThat(ids).anyMatch(id -> id.startsWith("USR-"));
+```
+
+---
+
+## Objects (generic fallback)
+
+`assertThat(anyObject)` routes any reference type without a dedicated overload to `ObjectCheck`, giving you identity and type assertions without reflection:
+
+```java
+// Generic assertThat(T) — works for any reference type
+assertThat(myService).isNotNull().isInstanceOf(PaymentService.class);
+assertThat(myService).hasToString("PaymentService[env=prod]");
+
+// Enum values route automatically to EnumCheck (richer API)
+// — no need to call assertThatEnum() explicitly
+assertThat(Status.ACTIVE).hasName("ACTIVE").hasOrdinal(0);
+assertThat(Priority.HIGH).isOneOf(Priority.HIGH, Priority.CRITICAL);
+```
+
+### Shallow field comparison — `hasSameFieldsAs`
+
+For simple POJOs and value objects, `hasSameFieldsAs` compares all first-level fields via safe shallow reflection. This is the explicit, opt-in escape hatch — the core philosophy still favours field-by-field assertions.
+
+```java
+// Given a simple POJO:
+record User(String name, int age, String email) {}
+
+User actual   = new User("Alice", 30, "alice@example.com");
+User expected = new User("Alice", 30, "alice@example.com");
+
+assertThat(actual).hasSameFieldsAs(expected);        // passes
+
+// On mismatch — clear per-field diff:
+User wrong = new User("Bob", 25, "bob@example.com");
+assertThat(actual).hasSameFieldsAs(wrong);
+// field mismatch(es) in <User>:
+//   field 'name': expected <Bob> but was <Alice>
+//   field 'age': expected <25> but was <30>
+//   field 'email': expected <bob@example.com> but was <alice@example.com>
+```
+
+**Safety guards** (all applied automatically):
+- Skips `static` and compiler-generated synthetic fields (e.g. JaCoCo `$jacocoData`).
+- Skips outer-class back-references (`this$...`) in non-static inner classes.
+- Skips Groovy's `metaClass` field.
+- Bails with a clear error when either object is a JDK proxy or CGLIB/Spring proxy (`$$`).
+- Gracefully skips JPMS-inaccessible fields and lists them in the failure message.
+- Compares first-level fields only — **no recursion** into nested objects.
 
 ---
 
@@ -294,6 +400,11 @@ assertThat(new int[]{1, 2, 3}).hasSize(3).contains(2);
 assertThat(new double[]{1.1, 2.2}).hasSize(2).contains(1.1);
 assertThat(new long[]{10L, 20L}).isSorted();
 
+// float[] — new in v1.0
+assertThat(new float[]{0.1f, 0.5f, 0.9f}).hasLength(3).isSorted().contains(0.5f);
+assertThat(weights).allMatch(w -> w >= 0.0 && w <= 1.0, "probability range");
+assertThat(weights).anyMatch(w -> w > 0.8);        // label is optional
+
 // Byte arrays
 assertThat(bytes).hasSize(16).toHex().startsWith("FF");
 assertThat(bytes).toBase64().isEqualTo(expectedBase64);
@@ -319,9 +430,13 @@ Assertions on any `Iterable<T>` — works with lazy generators, database cursors
 
 ```java
 assertThat(myIterable).hasSize(100).contains("value").doesNotContain("absent");
-assertThat(myIterable).allMatch(x -> x > 0, "positive");
-assertThat(myIterable).noneMatch(x -> x < 0, "negative");
 assertThat(myIterable).containsAll("a", "b", "c");
+
+// Predicate label is optional — same behaviour as CollectionCheck
+assertThat(myIterable).allMatch(x -> x > 0, "positive");  // label in failure
+assertThat(myIterable).allMatch(x -> x > 0);              // "predicate" as fallback
+assertThat(myIterable).noneMatch(x -> x < 0, "negative");
+assertThat(myIterable).anyMatch(x -> x.startsWith("USR-"), "user-prefixed");
 ```
 
 ---
@@ -496,6 +611,16 @@ expected query param <offset> but params were: [page, limit]
 
 ```
 path <database.connection.timeout> not found — key <timeout> is missing; available keys: [host, port]
+```
+
+```
+[user name] expected: <Alice> but was: <Bob>
+```
+
+```
+field mismatch(es) in <User>:
+  field 'name': expected <Bob> but was <Alice>
+  field 'age': expected <25> but was <30>
 ```
 
 ```

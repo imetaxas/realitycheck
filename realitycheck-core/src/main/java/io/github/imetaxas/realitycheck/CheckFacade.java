@@ -45,6 +45,10 @@ final class CheckFacade {
         return new NumberCheck<>(actual, handler);
     }
 
+    static NumberCheck<Float> floatNumber(float actual, FailureHandler handler) {
+        return new NumberCheck<>(actual, handler);
+    }
+
     static BooleanCheck bool(boolean actual, FailureHandler handler) {
         return new BooleanCheck(actual, handler);
     }
@@ -131,6 +135,10 @@ final class CheckFacade {
 
     static ByteArrayCheck byteArray(byte[] actual, FailureHandler handler) {
         return new ByteArrayCheck(actual, handler);
+    }
+
+    static FloatArrayCheck floatArray(float[] actual, FailureHandler handler) {
+        return new FloatArrayCheck(actual, handler);
     }
 
     static UriCheck uri(URI actual, FailureHandler handler) {

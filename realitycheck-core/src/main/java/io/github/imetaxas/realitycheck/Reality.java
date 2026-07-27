@@ -75,6 +75,10 @@ public final class Reality {
         return CheckFacade.doubleNumber(actual, new FailureHandler());
     }
 
+    public static NumberCheck<Float> checkThat(float actual) {
+        return CheckFacade.floatNumber(actual, new FailureHandler());
+    }
+
     // ── Booleans ─────────────────────────────────────────────────────────
 
     public static BooleanCheck checkThat(boolean actual) {
@@ -212,6 +216,10 @@ public final class Reality {
         return CheckFacade.byteArray(actual, new FailureHandler());
     }
 
+    public static FloatArrayCheck checkThat(float[] actual) {
+        return CheckFacade.floatArray(actual, new FailureHandler());
+    }
+
     // ── URIs ─────────────────────────────────────────────────────────────
 
     public static UriCheck checkThat(URI actual) {
@@ -222,6 +230,26 @@ public final class Reality {
 
     public static <E extends Enum<E>> EnumCheck<E> checkThatEnum(E actual) {
         return CheckFacade.enumValue(actual, new FailureHandler());
+    }
+
+    /**
+     * Overload that routes enum values to the richer {@link EnumCheck}.
+     * The compiler prefers this over the generic {@code checkThat(T)} fallback
+     * because {@code <E extends Enum<E>>} is a more-specific bound.
+     */
+    public static <E extends Enum<E>> EnumCheck<E> checkThat(E actual) {
+        return CheckFacade.enumValue(actual, new FailureHandler());
+    }
+
+    /**
+     * Generic object fallback — accepts any reference type that does not have a
+     * dedicated overload. Returns an {@link ObjectCheck} with identity/type checks.
+     *
+     * <p><b>Note:</b> if you need a specialised check (e.g. numeric assertions on a
+     * boxed {@code Integer}), call the primitive overload or cast accordingly.
+     */
+    public static <T> ObjectCheck<T> checkThat(T actual) {
+        return CheckFacade.object(actual, new FailureHandler());
     }
 
     // ── UUID ──────────────────────────────────────────────────────────────

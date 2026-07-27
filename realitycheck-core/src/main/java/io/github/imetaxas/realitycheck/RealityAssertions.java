@@ -59,6 +59,10 @@ public final class RealityAssertions {
         return Reality.checkThat(actual);
     }
 
+    public static NumberCheck<Float> assertThat(float actual) {
+        return Reality.checkThat(actual);
+    }
+
     // ── Booleans ─────────────────────────────────────────────────────────
 
     public static BooleanCheck assertThat(boolean actual) {
@@ -149,6 +153,10 @@ public final class RealityAssertions {
         return Reality.checkThat(actual);
     }
 
+    public static FloatArrayCheck assertThat(float[] actual) {
+        return Reality.checkThat(actual);
+    }
+
     // ── URIs ─────────────────────────────────────────────────────────────
 
     public static UriCheck assertThat(URI actual) {
@@ -200,6 +208,26 @@ public final class RealityAssertions {
 
     public static <E extends Enum<E>> EnumCheck<E> assertThatEnum(E actual) {
         return Reality.checkThatEnum(actual);
+    }
+
+    /**
+     * Overload that routes enum values to the richer {@link EnumCheck}.
+     * The compiler prefers this over the generic {@code assertThat(T)} fallback
+     * because {@code <E extends Enum<E>>} is a more-specific bound.
+     */
+    public static <E extends Enum<E>> EnumCheck<E> assertThat(E actual) {
+        return Reality.checkThat(actual);
+    }
+
+    /**
+     * Generic object fallback — accepts any reference type that does not have a
+     * dedicated overload. Returns an {@link ObjectCheck} with identity/type checks.
+     *
+     * <p><b>Note:</b> if you need a specialised check (e.g. numeric assertions on a
+     * boxed {@code Integer}), call the primitive overload or cast accordingly.
+     */
+    public static <T> ObjectCheck<T> assertThat(T actual) {
+        return Reality.checkThat(actual);
     }
 
     // ── Sealed classes ───────────────────────────────────────────────────

@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Assertion Labels
+- `.as(String description)` and `.withDescription(String)` on every check class — prepends a `[label]` to all subsequent failure messages, mirroring AssertJ's `.as()`. Works with soft assertions to make per-field failures easy to triage.
+
+#### Generic and Enum Entry Points
+- `assertThat(T actual)` / `checkThat(T actual)` — generic object fallback; accepts any reference type that has no dedicated overload and returns `ObjectCheck<T>`.
+- `assertThat(E actual)` / `checkThat(E actual)` — enum-specific overload (`<E extends Enum<E>>`); the compiler prefers this over the generic fallback, so enum values automatically get the richer `EnumCheck<E>` without needing `assertThatEnum()`.
+
+#### Float Assertions
+- `assertThat(float actual)` / `checkThat(float actual)` — first-class `float` primitive overload routing to `NumberCheck<Float>`.
+- `FloatArrayCheck` — fluent assertions for `float[]`: `isEmpty`, `isNotEmpty`, `hasLength`, `contains`, `doesNotContain`, `containsExactly`, `isSorted`, `allMatch(predicate, label)`, `allMatch(predicate)`, `anyMatch(predicate, label)`, `anyMatch(predicate)`.
+- `assertThat(float[] actual)` / `checkThat(float[] actual)` — routes to `FloatArrayCheck`.
+
+#### Optional Predicate Labels
+- `CollectionCheck.allMatch(Predicate)`, `noneMatch(Predicate)`, `anyMatch(Predicate)` — no-label overloads added (fall back to `"predicate"` in the failure message). The existing `(predicate, label)` forms are unchanged.
+- `IterableCheck.allMatch(Predicate)`, `noneMatch(Predicate)`, `anyMatch(Predicate)` — same no-label overloads.
+
+#### Shallow Field Comparison
+- `ObjectCheck.hasSameFieldsAs(T expected)` — safe shallow reflection comparing all first-level instance fields. Skips `static`, synthetic, outer-class (`this$...`), and Groovy `metaClass` fields. Produces a per-field diff in the failure message. Bails out cleanly for proxies and JPMS-restricted fields.
+
 #### Core Assertions
 - `StringCheck` — fluent string assertions (length, contains, starts/ends with, regex, case-insensitive)
 - `NumberCheck` — numeric assertions with tolerance (`isCloseTo`, `isBetween`, `isPositive`)

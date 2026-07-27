@@ -47,6 +47,10 @@ public final class SoftChecks {
         return CheckFacade.doubleNumber(actual, handler);
     }
 
+    public NumberCheck<Float> checkThat(float actual) {
+        return CheckFacade.floatNumber(actual, handler);
+    }
+
     public BooleanCheck checkThat(boolean actual) {
         return CheckFacade.bool(actual, handler);
     }
@@ -132,6 +136,10 @@ public final class SoftChecks {
         return CheckFacade.byteArray(actual, handler);
     }
 
+    public FloatArrayCheck checkThat(float[] actual) {
+        return CheckFacade.floatArray(actual, handler);
+    }
+
     public UriCheck checkThat(URI actual) {
         return CheckFacade.uri(actual, handler);
     }
@@ -158,6 +166,14 @@ public final class SoftChecks {
 
     public <E extends Enum<E>> EnumCheck<E> checkThatEnum(E actual) {
         return CheckFacade.enumValue(actual, handler);
+    }
+
+    public <E extends Enum<E>> EnumCheck<E> checkThat(E actual) {
+        return CheckFacade.enumValue(actual, handler);
+    }
+
+    public <T> ObjectCheck<T> checkThat(T actual) {
+        return CheckFacade.object(actual, handler);
     }
 
     public MultilineCheck checkThatMultiline(String actual) {
@@ -200,6 +216,7 @@ public final class SoftChecks {
     public NumberCheck<Integer> assertThat(int actual) { return checkThat(actual); }
     public NumberCheck<Long> assertThat(long actual) { return checkThat(actual); }
     public NumberCheck<Double> assertThat(double actual) { return checkThat(actual); }
+    public NumberCheck<Float> assertThat(float actual) { return checkThat(actual); }
     public BooleanCheck assertThat(boolean actual) { return checkThat(actual); }
     public FileCheck assertThat(Path actual) { return checkThat(actual); }
     public FileCheck assertThat(File actual) { return checkThat(actual); }
@@ -218,6 +235,7 @@ public final class SoftChecks {
     public LongArrayCheck assertThat(long[] actual) { return checkThat(actual); }
     public DoubleArrayCheck assertThat(double[] actual) { return checkThat(actual); }
     public ByteArrayCheck assertThat(byte[] actual) { return checkThat(actual); }
+    public FloatArrayCheck assertThat(float[] actual) { return checkThat(actual); }
     public UriCheck assertThat(URI actual) { return checkThat(actual); }
     public UuidCheck assertThat(UUID actual) { return checkThat(actual); }
     public BigDecimalCheck assertThat(BigDecimal actual) { return checkThat(actual); }
@@ -225,6 +243,8 @@ public final class SoftChecks {
     public <T> StreamCheck<T> assertThatStream(Stream<T> actual) { return checkThatStream(actual); }
     public SealedClassCheck assertThatSealed(Class<?> actual) { return checkThatSealed(actual); }
     public <E extends Enum<E>> EnumCheck<E> assertThatEnum(E actual) { return checkThatEnum(actual); }
+    public <E extends Enum<E>> EnumCheck<E> assertThat(E actual) { return checkThat(actual); }
+    public <T> ObjectCheck<T> assertThat(T actual) { return checkThat(actual); }
     public MultilineCheck assertThatMultiline(String actual) { return checkThatMultiline(actual); }
     public ExecutionCheck assertThatCode(ThrowingCallable callable) { return checkThatCode(callable); }
     public CsvCheck assertThatCsv(String csvContent) { return checkThatCsv(csvContent); }

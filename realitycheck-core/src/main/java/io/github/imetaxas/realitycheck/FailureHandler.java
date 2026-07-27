@@ -11,6 +11,7 @@ public class FailureHandler {
 
     private final String customMessage;
     private final String contextMessage;
+    private String description;
 
     public FailureHandler() {
         this.customMessage = null;
@@ -29,6 +30,17 @@ public class FailureHandler {
 
     static FailureHandler withContext(String context) {
         return new FailureHandler(null, context);
+    }
+
+    /**
+     * Sets a description label that is prepended to every failure message produced by
+     * this handler. Mirrors AssertJ's {@code .as("label")} behaviour.
+     *
+     * @return {@code this} for fluent use
+     */
+    public FailureHandler withDescription(String description) {
+        this.description = description;
+        return this;
     }
 
     /**
@@ -52,13 +64,18 @@ public class FailureHandler {
 
     protected String formatMessage(String format, Object... args) {
         String base = (args.length == 0) ? format : String.format(format, args);
+        String message;
         if (customMessage != null) {
-            return customMessage + "\n  detail: " + base;
+            message = customMessage + "\n  detail: " + base;
+        } else if (contextMessage != null) {
+            message = base + " [context: " + contextMessage + "]";
+        } else {
+            message = base;
         }
-        if (contextMessage != null) {
-            return base + " [context: " + contextMessage + "]";
+        if (description != null) {
+            message = "[" + description + "] " + message;
         }
-        return base;
+        return message;
     }
 
     public String customMessage() {
