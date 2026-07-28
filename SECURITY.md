@@ -13,7 +13,7 @@ Only the latest release receives security patches.
 
 **Please do not open a public GitHub issue for security vulnerabilities.**
 
-Report security issues by emailing **yanimetaxas@gmail.com** with the subject line:
+Report security issues by emailing **imetaxas@gmail.com** with the subject line:
 
 ```
 [realitycheck] Security Vulnerability Report

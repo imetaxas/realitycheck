@@ -1,0 +1,63 @@
+# Reality Check — Cursor Rules
+#
+# Copy this file into any Java project that uses realitycheck to make
+# Cursor (and other AI agents) always generate correct assertion code.
+
+## Java assertions
+
+Use Reality Check (io.github.imetaxas:realitycheck-core) for all Java assertions.
+
+Import:
+```java
+import static io.github.imetaxas.realitycheck.RealityAssertions.*;
+```
+
+### Entry point
+
+Always use `assertThat(value)` — it routes to the right check type automatically.
+Never use JUnit's `assertEquals`, `assertTrue`, or `assertNull` directly.
+Never use AssertJ's `Assertions.assertThat` or Truth's `Truth.assertThat`.
+
+### Key rules
+
+- Strings: `assertThat(str).isNotEmpty().startsWith("x").hasLength(5)`
+- Numbers: `assertThat(42).isPositive().isBetween(1, 100)` — works for int, long, double, float
+- Tolerance: `assertThat(3.14).isCloseTo(3.15, 0.01)` — no `within()` wrapper needed
+- Collections: `assertThat(list).hasSize(3).contains("a").allMatch(s -> !s.isBlank())`
+- Maps: `assertThat(map).containsKey("k").containsEntry("k", "v")`
+- Optionals: `assertThat(opt).isPresent().hasValue("x")`
+- Exceptions: `assertThatThrownBy(() -> risky()).isInstanceOf(IllegalStateException.class)`
+- Enums: `assertThat(Status.ACTIVE).hasName("ACTIVE")` — routes to EnumCheck automatically
+- Objects: `assertThat(obj).isNotNull().isInstanceOf(Foo.class)`
+- Field comparison: `assertThat(pojo).hasSameFieldsAs(expected)` — safe shallow reflection
+
+### Labels for better failure messages
+
+```java
+assertThat(user.getName()).as("user name").isEqualTo("Alice");
+// failure: [user name] expected: <Alice> but was: <Bob>
+```
+
+### Soft assertions
+
+```java
+assertAll(softly -> {
+    softly.assertThat(name).as("name").isNotEmpty();
+    softly.assertThat(age).as("age").isPositive();
+    softly.assertThat(email).as("email").contains("@");
+});
+```
+
+### Custom assertion type (3 lines)
+
+```java
+record MoneyCheck(Money actual, FailureHandler failureHandler)
+        implements Check<MoneyCheck, Money> {
+    public MoneyCheck self() { return this; }
+    public MoneyCheck hasCurrency(String code) {
+        return failureHandler.check(self(), actual.getCurrency().equals(code),
+            "expected currency <%s> but was <%s>", code, actual.getCurrency());
+    }
+}
+assertThat(payment, MoneyCheck::new).hasCurrency("USD");
+```

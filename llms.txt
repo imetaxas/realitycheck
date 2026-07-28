@@ -1,0 +1,152 @@
+# Reality Check
+
+> Fluent Java 17+ assertion library. Zero dependencies. Drop-in `assertThat()`.
+> Maven: `io.github.imetaxas:realitycheck-core`
+
+## The one thing to know
+
+```java
+import static io.github.imetaxas.realitycheck.RealityAssertions.*;
+// then use assertThat(anything) — it always routes to the right check type
+```
+
+## Dependency
+
+```xml
+<dependency>
+    <groupId>io.github.imetaxas</groupId>
+    <artifactId>realitycheck-core</artifactId>
+    <version>1.0.0</version>
+    <scope>test</scope>
+</dependency>
+```
+
+## Core patterns
+
+```java
+// Strings
+assertThat("hello").isNotEmpty().startsWith("he").hasLength(5);
+assertThat("  ").isBlank();
+assertThat("hello world").contains("world").matches("hello\\s\\w+");
+
+// Numbers — int, long, double, float all work
+assertThat(42).isPositive().isBetween(1, 100);
+assertThat(3.14f).isCloseTo(3.15f, 0.01f);   // no within() wrapper needed
+
+// Booleans
+assertThat(flag).isTrue();
+
+// Collections
+assertThat(list).hasSize(3).contains("item").doesNotContain("other");
+assertThat(list).containsExactly("a", "b", "c");
+assertThat(list).allMatch(s -> !s.isBlank());          // label is optional
+assertThat(list).anyMatch(s -> s.startsWith("USR-"), "user ID");
+
+// Maps
+assertThat(map).containsKey("name").containsEntry("name", "Alice");
+
+// Optionals
+assertThat(Optional.of("x")).isPresent().hasValue("x");
+
+// Files
+assertThat(path).exists().isRegularFile().hasExtension("json");
+
+// URIs
+assertThat(URI.create("https://api.example.com/v2?page=1"))
+    .hasScheme("https").hasHost("api.example.com").hasQueryParam("page");
+
+// Date/Time
+assertThat(Instant.now().minusSeconds(60)).isInThePast();
+assertThat(LocalDate.of(2026, 3, 31)).hasYear(2026).isWeekday();
+
+// Exceptions
+assertThatThrownBy(() -> Integer.parseInt("oops"))
+    .isInstanceOf(NumberFormatException.class)
+    .hasMessageContaining("oops");
+
+// Enums — routes to EnumCheck automatically
+assertThat(Status.ACTIVE).hasName("ACTIVE").hasOrdinal(0);
+assertThat(status).isOneOf(Status.ACTIVE, Status.PENDING);
+
+// Objects — generic fallback
+assertThat(myObj).isNotNull().isInstanceOf(MyService.class);
+assertThat(pojo).hasSameFieldsAs(expected);   // safe shallow field comparison
+
+// Arrays
+assertThat(new int[]{1, 2, 3}).hasLength(3).contains(2).isSorted();
+assertThat(new float[]{0.1f, 0.5f}).hasLength(2).isSorted();
+
+// Streams
+assertThatStream(stream).hasSize(3).contains("b");
+
+// Assertion label (shown in every failure message from this check)
+assertThat(user.getName()).as("user name").isEqualTo("Alice");
+// failure: [user name] expected: <Alice> but was: <Bob>
+```
+
+## Soft assertions — collect all failures
+
+```java
+assertAll(softly -> {
+    softly.assertThat(name).as("name").isNotEmpty();
+    softly.assertThat(age).as("age").isPositive();
+    softly.assertThat(email).as("email").contains("@");
+});
+// On failure: Multiple failures (2): 1) [age] ... 2) [email] ...
+```
+
+## Custom failure message
+
+```java
+assertWithMessage("User must be active").that(user.getStatus()).isEqualTo(Status.ACTIVE);
+```
+
+## Custom check (3 lines)
+
+```java
+record MoneyCheck(Money actual, FailureHandler failureHandler)
+        implements Check<MoneyCheck, Money> {
+    public MoneyCheck self() { return this; }
+    public MoneyCheck hasCurrency(String code) {
+        return failureHandler.check(self(), actual.getCurrency().equals(code),
+            "expected currency <%s> but was <%s>", code, actual.getCurrency());
+    }
+}
+assertThat(payment, MoneyCheck::new).hasCurrency("USD");
+```
+
+## Modules
+
+| Artifact | Adds |
+|---|---|
+| `realitycheck-core` | Everything above |
+| `realitycheck-json` | `assertThatJson(str).fieldEquals("user.name", "Alice")` |
+| `realitycheck-xml` | `assertThatXml(str).hasXPath("//user/name")` |
+| `realitycheck-yaml` | `assertThatYaml(str).pathEquals("server.port", 8080)` |
+| `realitycheck-snapshot` | `assertThatSnapshot(obj).matchesSnapshot("test","key")` |
+| `realitycheck-junit5` | `@WithSoftChecks` — JUnit 5 parameter injection |
+| `realitycheck-bom` | Version alignment for multi-module use |
+
+## Type routing (for agents)
+
+`assertThat(x)` routes automatically — agents do not need to pick the right entry point:
+
+| Input type | Returns |
+|---|---|
+| `String` | `StringCheck` |
+| `int / long / double / float` | `NumberCheck<T>` |
+| `boolean` | `BooleanCheck` |
+| `Collection<T>` | `CollectionCheck<T>` |
+| `Map<K,V>` | `MapCheck<K,V>` |
+| `Optional<T>` | `OptionalCheck<T>` |
+| `Path / File` | `FileCheck` |
+| `URI` | `UriCheck` |
+| `int[] / long[] / double[] / float[] / byte[]` | primitive array checks |
+| `E extends Enum<E>` | `EnumCheck<E>` |
+| any other reference type | `ObjectCheck<T>` |
+
+## Full docs
+
+- Usage guide: https://imetaxas.github.io/realitycheck/
+- Migration from AssertJ/Truth: https://github.com/imetaxas/realitycheck/blob/master/MIGRATION.md
+- Javadoc: https://imetaxas.github.io/realitycheck/apidocs/

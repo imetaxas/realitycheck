@@ -223,8 +223,20 @@ public final class RealityAssertions {
      * Generic object fallback — accepts any reference type that does not have a
      * dedicated overload. Returns an {@link ObjectCheck} with identity/type checks.
      *
-     * <p><b>Note:</b> if you need a specialised check (e.g. numeric assertions on a
-     * boxed {@code Integer}), call the primitive overload or cast accordingly.
+     * <p>This is the <em>preferred</em> way to assert on arbitrary objects. It routes
+     * automatically: enum values go to {@link EnumCheck}, everything else goes to
+     * {@link ObjectCheck}. You do <strong>not</strong> need to call
+     * {@link #assertThatObject(Object)} explicitly — use {@code assertThat(obj)} for
+     * all reference types.
+     *
+     * <pre>{@code
+     * assertThat(myService).isNotNull().isInstanceOf(PaymentService.class);
+     * assertThat(Status.ACTIVE).hasName("ACTIVE");   // routes to EnumCheck automatically
+     * assertThat(pojo).hasSameFieldsAs(expected);
+     * }</pre>
+     *
+     * <p><b>Note:</b> if you need numeric assertions on a boxed {@code Integer},
+     * call the primitive overload or unbox: {@code assertThat(integer.intValue())}.
      */
     public static <T> ObjectCheck<T> assertThat(T actual) {
         return Reality.checkThat(actual);
@@ -270,6 +282,14 @@ public final class RealityAssertions {
 
     // ── Generic object ───────────────────────────────────────────────────
 
+    /**
+     * Explicit form of the generic object fallback.
+     *
+     * <p>Prefer {@link #assertThat(Object)} for new code — it routes automatically and
+     * reads more naturally. Use {@code assertThatObject} when you want to make it
+     * explicit in the code that the value is being treated as a plain object (e.g. to
+     * signal intent to a reader, or to avoid ambiguity in legacy code).
+     */
     public static <T> ObjectCheck<T> assertThatObject(T actual) {
         return Reality.checkThatObject(actual);
     }
