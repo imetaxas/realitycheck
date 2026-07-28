@@ -51,6 +51,10 @@ public final class StatementBuilder {
         return CheckFacade.doubleNumber(actual, handler);
     }
 
+    public NumberCheck<Float> that(float actual) {
+        return CheckFacade.floatNumber(actual, handler);
+    }
+
     public FileCheck that(Path actual) {
         return CheckFacade.path(actual, handler);
     }
@@ -136,6 +140,10 @@ public final class StatementBuilder {
         return CheckFacade.byteArray(actual, handler);
     }
 
+    public FloatArrayCheck that(float[] actual) {
+        return CheckFacade.floatArray(actual, handler);
+    }
+
     public UriCheck that(URI actual) {
         return CheckFacade.uri(actual, handler);
     }
@@ -162,6 +170,26 @@ public final class StatementBuilder {
 
     public <E extends Enum<E>> EnumCheck<E> thatEnum(E actual) {
         return CheckFacade.enumValue(actual, handler);
+    }
+
+    /**
+     * Routes enum values to {@link EnumCheck}. The compiler prefers this over the
+     * generic {@link #that(Object)} fallback because {@code <E extends Enum<E>>} is
+     * a more-specific bound.
+     */
+    public <E extends Enum<E>> EnumCheck<E> that(E actual) {
+        return CheckFacade.enumValue(actual, handler);
+    }
+
+    /**
+     * Generic object fallback — accepts any reference type that does not have a
+     * dedicated {@code that()} overload. Returns an {@link ObjectCheck}.
+     *
+     * <p>Prefer {@link #thatObject(Object)} when you know the value is a plain
+     * object and want the intent to be explicit.
+     */
+    public <T> ObjectCheck<T> that(T actual) {
+        return CheckFacade.object(actual, handler);
     }
 
     public MultilineCheck thatMultiline(String actual) {

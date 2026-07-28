@@ -12,17 +12,17 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Guards against entry-point drift. The four public entry-points use different naming
- * conventions ({@code checkThat*} / {@code assertThat*} / {@code that*}), but within
- * the same convention the method sets must stay in sync.
+ * Guards against entry-point drift. All four public entry-points must stay in sync
+ * whenever a new type overload is added.
  *
  * <ul>
- *   <li>{@link Reality} and {@link SoftChecks} both use {@code checkThat*} — verified here.
- *   <li>{@link RealityAssertions} uses {@code assertThat*} aliases — verified here against Reality.
+ *   <li>{@link Reality} and {@link SoftChecks} — {@code checkThat*} names must match.
+ *   <li>{@link Reality} and {@link RealityAssertions} — {@code assertThat*} names must match.
+ *   <li>{@link Reality} and {@link StatementBuilder} — every first-parameter type accepted by
+ *       {@code Reality.checkThat*(T)} must also appear in some {@code StatementBuilder.that*(T)}
+ *       overload (by exact parameter type), with the exception of {@link ThrowingCallable} which
+ *       is intentionally absent from StatementBuilder.
  * </ul>
- *
- * If a new {@code checkThat*} method is added to {@link Reality} without also being added
- * to {@link SoftChecks}, this test will fail.
  */
 class EntryPointDriftTest {
 
@@ -52,11 +52,48 @@ class EntryPointDriftTest {
                 "RealityAssertions is missing assertThat methods from Reality: " + missing);
     }
 
+    /**
+     * For every first-parameter type accepted by {@code Reality.checkThat*(type)},
+     * {@link StatementBuilder} must have a matching {@code that*(type)} overload.
+     * This catches new primitive overloads (e.g. {@code float}, {@code float[]}) that
+     * were added to Reality but forgotten in StatementBuilder.
+     *
+     * <p>{@link ThrowingCallable} is excluded: {@code Reality.checkThatThrownBy(callable)}
+     * has no {@code StatementBuilder.that(callable)} equivalent by design.
+     * {@link CheckFactory} is also excluded as it is always paired with a second parameter.
+     */
+    @Test
+    void statementBuilder_coversAllRealityCheckThatParameterTypes() {
+        Set<Class<?>> realityParamTypes = firstParamTypesOf(Reality.class, "checkThat");
+        realityParamTypes.remove(ThrowingCallable.class);
+        realityParamTypes.remove(CheckFactory.class);
+
+        Set<Class<?>> builderParamTypes = firstParamTypesOf(StatementBuilder.class, "that");
+
+        Set<Class<?>> missing = new HashSet<>(realityParamTypes);
+        missing.removeAll(builderParamTypes);
+
+        assertTrue(missing.isEmpty(),
+                "StatementBuilder is missing that() overloads for parameter types: " + missing
+                + "\nAdd the missing overloads to StatementBuilder.");
+    }
+
+    // ── helpers ──────────────────────────────────────────────────────────────
+
     private static Set<String> methodsStartingWith(Class<?> cls, String... prefixes) {
         return Arrays.stream(cls.getDeclaredMethods())
                 .filter(m -> Modifier.isPublic(m.getModifiers()))
                 .map(Method::getName)
                 .filter(name -> Arrays.stream(prefixes).anyMatch(name::startsWith))
                 .collect(Collectors.toSet());
+    }
+
+    private static Set<Class<?>> firstParamTypesOf(Class<?> cls, String... prefixes) {
+        return Arrays.stream(cls.getDeclaredMethods())
+                .filter(m -> Modifier.isPublic(m.getModifiers()))
+                .filter(m -> Arrays.stream(prefixes).anyMatch(m.getName()::startsWith))
+                .filter(m -> m.getParameterCount() >= 1)
+                .map(m -> m.getParameterTypes()[0])
+                .collect(Collectors.toCollection(HashSet::new));
     }
 }
