@@ -74,8 +74,34 @@ class SoftChecksAliasTest {
     }
 
     @Test
+    void assertThat_float() {
+        assertDoesNotThrow(() -> checkAll(s -> s.assertThat(0.5f).isEqualTo(0.5f)));
+    }
+
+    @Test
     void assertThat_boolean() {
         assertDoesNotThrow(() -> checkAll(s -> s.assertThat(true).isTrue()));
+    }
+
+    @Test
+    void assertThat_floatArray() {
+        assertDoesNotThrow(() ->
+                checkAll(s -> s.assertThat(new float[] {0.5f}).contains(0.5f)));
+    }
+
+    @Test
+    void assertThat_enumAndObjectNaturalOverloads() {
+        assertDoesNotThrow(() -> checkAll(s -> {
+            s.assertThat(Thread.State.RUNNABLE).hasName("RUNNABLE");
+            s.assertThat(new Email("ada@example.com")).hasToString("Email[address=ada@example.com]");
+        }));
+    }
+
+    @Test
+    void assertThatThrownBy_routesThroughSoftHandler() {
+        assertDoesNotThrow(() ->
+                checkAll(s -> s.assertThatThrownBy(() -> { throw new IllegalStateException("boom"); })
+                        .isInstanceOf(IllegalStateException.class)));
     }
 
     @Test

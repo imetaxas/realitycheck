@@ -35,7 +35,7 @@ public final class ObjectCheck<T> extends AbstractCheck<ObjectCheck<T>, T> {
      * Asserts that the actual object has the same first-level field values as {@code expected},
      * using safe shallow reflection (no recursion into nested objects).
      *
-     * <h3>Safety guards applied</h3>
+     * <h4>Safety guards applied</h4>
      * <ul>
      *   <li>Skips {@code static} and synthetic fields (compiler-generated, e.g. {@code $jacocoData}).
      *   <li>Skips any field named {@code metaClass} (Groovy artefact).</li>
@@ -61,6 +61,13 @@ public final class ObjectCheck<T> extends AbstractCheck<ObjectCheck<T>, T> {
         }
 
         T act = actual();
+
+        if (!act.getClass().equals(expected.getClass())) {
+            failureHandler().fail(
+                    "hasSameFieldsAs: expected object type <%s> but actual type was <%s>",
+                    expected.getClass().getName(), act.getClass().getName());
+            return self();
+        }
 
         if (isProxy(act) || isProxy(expected)) {
             failureHandler().fail(

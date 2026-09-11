@@ -1,6 +1,7 @@
 package io.github.imetaxas.realitycheck;
 
 import static io.github.imetaxas.realitycheck.Reality.*;
+import static io.github.imetaxas.realitycheck.RealityAssertions.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -69,6 +70,25 @@ class StatementBuilderTest {
         assertCustomMessageInFailure(
                 "double check",
                 () -> checkWithMessage("double check").that(0.0).isPositive());
+    }
+
+    @Test
+    void that_float_preservesFloatTypeAndCustomMessage() {
+        assertDoesNotThrow(() -> assertWithMessage("float check").that(1.0f).isEqualTo(1.0f));
+        assertCustomMessageInFailure(
+                "float check",
+                () -> assertWithMessage("float check").that(1.0f).isEqualTo(2.0f));
+    }
+
+    @Test
+    void that_floatArray_exposesFloatArraySemanticsAndCustomMessage() {
+        assertDoesNotThrow(() ->
+                assertWithMessage("float[] check").that(new float[] {1.0f}).contains(1.0f));
+        assertCustomMessageInFailure(
+                "float[] check",
+                () -> assertWithMessage("float[] check")
+                        .that(new float[] {1.0f})
+                        .contains(2.0f));
     }
 
     @Test
@@ -479,6 +499,7 @@ class StatementBuilderTest {
     // ── New overloads: Enum ──────────────────────────────────────────────
 
     private enum Color { RED, GREEN, BLUE }
+    private record Profile(String name, int score) {}
 
     @Test
     void thatEnum_returnsEnumCheck() {
@@ -491,6 +512,26 @@ class StatementBuilderTest {
         assertCustomMessageInFailure(
                 "enum check",
                 () -> checkWithMessage("enum check").thatEnum(Color.RED).hasName("BLUE"));
+    }
+
+    @Test
+    void that_enumNaturalOverload_exposesEnumSemanticsAndCustomMessage() {
+        assertDoesNotThrow(() -> assertWithMessage("enum check").that(Color.RED).hasName("RED"));
+        assertCustomMessageInFailure(
+                "enum check",
+                () -> assertWithMessage("enum check").that(Color.RED).hasName("BLUE"));
+    }
+
+    @Test
+    void that_genericObjectFallback_exposesObjectSemanticsAndCustomMessage() {
+        Profile actual = new Profile("Ada", 10);
+        assertDoesNotThrow(() ->
+                assertWithMessage("object check").that(actual).hasSameFieldsAs(new Profile("Ada", 10)));
+        assertCustomMessageInFailure(
+                "object check",
+                () -> assertWithMessage("object check")
+                        .that(actual)
+                        .hasSameFieldsAs(new Profile("Grace", 10)));
     }
 
     // ── New overloads: Multiline ─────────────────────────────────────────
@@ -594,6 +635,7 @@ class StatementBuilderTest {
         assertDoesNotThrow(() -> checkWithMessage("ok").that(new int[] {1}).contains(1));
         assertDoesNotThrow(() -> checkWithMessage("ok").that(new long[] {1L}).isNotEmpty());
         assertDoesNotThrow(() -> checkWithMessage("ok").that(new double[] {1.0}).isNotEmpty());
+        assertDoesNotThrow(() -> checkWithMessage("ok").that(new float[] {1.0f}).contains(1.0f));
         assertDoesNotThrow(() -> checkWithMessage("ok").that(new byte[] {1}).isNotEmpty());
         assertDoesNotThrow(
                 () -> checkWithMessage("ok").that(URI.create("https://a.com")).isAbsolute());
@@ -603,6 +645,11 @@ class StatementBuilderTest {
         assertDoesNotThrow(() -> checkWithMessage("ok").thatStream(Stream.of(1)).isNotEmpty());
         assertDoesNotThrow(() -> checkWithMessage("ok").thatSealed(String.class).isNotSealed());
         assertDoesNotThrow(() -> checkWithMessage("ok").thatEnum(Color.GREEN).hasName("GREEN"));
+        assertDoesNotThrow(() -> checkWithMessage("ok").that(Color.GREEN).hasName("GREEN"));
+        assertDoesNotThrow(() ->
+                checkWithMessage("ok")
+                        .that(new Profile("Ada", 10))
+                        .hasSameFieldsAs(new Profile("Ada", 10)));
         assertDoesNotThrow(() -> checkWithMessage("ok").thatMultiline("a\nb").hasLineCount(2));
         assertDoesNotThrow(() -> checkWithMessage("ok").thatCode(() -> {}).doesNotThrow());
         CheckFactory<ObjectCheck<String>, String> factory = ObjectCheck::new;

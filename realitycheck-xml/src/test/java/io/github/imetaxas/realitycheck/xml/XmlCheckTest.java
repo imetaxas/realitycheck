@@ -150,6 +150,11 @@ class XmlCheckTest {
     }
 
     @Test
+    void hasXPath_emptyElementNode_passes() {
+        assertDoesNotThrow(() -> checkThatXml(CATALOG_SAMPLE).hasXPath("//empty"));
+    }
+
+    @Test
     void doesNotHaveXPath_emptyElementNode_fails() {
         assertThrows(AssertionError.class,
                 () -> checkThatXml(CATALOG_SAMPLE).doesNotHaveXPath("//empty"));

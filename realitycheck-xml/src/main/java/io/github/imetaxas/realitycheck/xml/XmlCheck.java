@@ -61,8 +61,8 @@ public final class XmlCheck extends AbstractCheck<XmlCheck, String> {
         if (doc == null) return self();
         try {
             var xpath = XPATH_FACTORY.newXPath();
-            String result = (String) xpath.evaluate(expression, doc, XPathConstants.STRING);
-            if (result == null || result.isEmpty()) {
+            var nodes = (org.w3c.dom.NodeList) xpath.evaluate(expression, doc, XPathConstants.NODESET);
+            if (nodes.getLength() == 0) {
                 failureHandler().fail("expected XPath <%s> to match but it returned no result",
                         expression);
             }

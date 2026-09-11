@@ -72,9 +72,13 @@ public final class Diff {
      */
     public static Result of(String expected, String actual) {
         return ofLines(
-                expected.lines().toList(),
-                actual.lines().toList()
+                splitLinesPreservingTrailingEmptyLine(expected),
+                splitLinesPreservingTrailingEmptyLine(actual)
         );
+    }
+
+    private static List<String> splitLinesPreservingTrailingEmptyLine(String value) {
+        return List.of(value.split("\\R", -1));
     }
 
     // int[m+1][n+1] * 4 bytes — at this limit: ~(2001)^2 * 4 ≈ 16 MB, safe in typical test-run heaps.

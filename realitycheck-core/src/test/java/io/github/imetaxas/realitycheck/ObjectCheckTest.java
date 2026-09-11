@@ -3,10 +3,16 @@ package io.github.imetaxas.realitycheck;
 import static io.github.imetaxas.realitycheck.Reality.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Proxy;
 import org.junit.jupiter.api.Test;
 
 class ObjectCheckTest {
+
+    private record Person(String name, Integer age) {}
+    private record Team(String name, Integer size) {}
+    private interface Marker {}
 
     @Test
     void hasToString_passes() {
@@ -87,5 +93,59 @@ class ObjectCheckTest {
     void hasSameHashCodeAs_failsNullActualVsNonNull() {
         assertThrows(AssertionError.class,
                 () -> checkThatObject(null).hasSameHashCodeAs(Integer.valueOf(42)));
+    }
+
+    @Test
+    void hasSameFieldsAs_passesWhenShallowFieldsMatch() {
+        assertDoesNotThrow(() ->
+                checkThatObject(new Person("Ada", 37)).hasSameFieldsAs(new Person("Ada", 37)));
+    }
+
+    @Test
+    void hasSameFieldsAs_reportsEveryMismatchedField() {
+        AssertionError error = assertThrows(
+                AssertionError.class,
+                () -> checkThatObject(new Person("Ada", 37))
+                        .hasSameFieldsAs(new Person("Grace", 40)));
+        assertTrue(error.getMessage().contains("field 'name'"));
+        assertTrue(error.getMessage().contains("field 'age'"));
+    }
+
+    @Test
+    void hasSameFieldsAs_rejectsNullExpectedValue() {
+        AssertionError error = assertThrows(
+                AssertionError.class,
+                () -> checkThatObject(new Person("Ada", 37)).hasSameFieldsAs(null));
+        assertTrue(error.getMessage().contains("expected object must not be null"));
+    }
+
+    @Test
+    void hasSameFieldsAs_ignoresComparisonAfterNullActualFailure() {
+        assertThrows(
+                AssertionError.class,
+                () -> checkThatObject((Person) null).hasSameFieldsAs(new Person("Ada", 37)));
+    }
+
+    @Test
+    void hasSameFieldsAs_reportsTypeMismatchAsAssertionFailure() {
+        Object actual = new Person("Ada", 37);
+        AssertionError error = assertThrows(
+                AssertionError.class,
+                () -> checkThatObject(actual).hasSameFieldsAs(new Team("Ada", 37)));
+        assertTrue(error.getMessage().contains("expected object type"));
+        assertTrue(error.getMessage().contains(Person.class.getName()));
+        assertTrue(error.getMessage().contains(Team.class.getName()));
+    }
+
+    @Test
+    void hasSameFieldsAs_rejectsProxyObjects() {
+        Marker proxy = (Marker) Proxy.newProxyInstance(
+                Marker.class.getClassLoader(),
+                new Class<?>[] {Marker.class},
+                (ignoredProxy, method, args) -> null);
+        AssertionError error = assertThrows(
+                AssertionError.class,
+                () -> checkThatObject(proxy).hasSameFieldsAs(proxy));
+        assertTrue(error.getMessage().contains("cannot compare proxy objects"));
     }
 }

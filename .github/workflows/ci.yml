@@ -18,6 +18,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       # Fix #1: let both matrix legs complete and report independently
       fail-fast: false
@@ -37,6 +38,20 @@ jobs:
       # Fix #3: -ntp suppresses noisy transfer-progress lines
       - name: Build and test
         run: mvn -B -ntp verify
+
+      - name: Verify committed snapshots in strict mode
+        run: >-
+          mvn -B -ntp -pl realitycheck-snapshot -am
+          -Dtest=CommittedSnapshotTest
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Drealitycheck.strict-ci=true test
+
+      - name: Verify tests did not modify tracked fixtures
+        run: git diff --exit-code
+
+      - name: Validate Javadoc
+        if: matrix.java == '17'
+        run: mvn -B -ntp javadoc:aggregate -DskipTests
 
       - name: Upload coverage to Codecov
         if: matrix.java == '17'

@@ -63,6 +63,17 @@ class DiffTest {
     }
 
     @Test
+    void trailingNewlineDifference_isReported() {
+        Diff.Result added = Diff.of("same", "same\n");
+        assertTrue(added.hasDifferences());
+        assertTrue(added.format().contains("+ "));
+
+        Diff.Result removed = Diff.of("same\n", "same");
+        assertTrue(removed.hasDifferences());
+        assertTrue(removed.format().contains("- "));
+    }
+
+    @Test
     void format_returns_noDifferences() {
         Diff.Result result = Diff.of("same", "same");
         assertEquals("(no differences)", result.format());

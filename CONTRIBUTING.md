@@ -4,7 +4,7 @@ Thank you for your interest in contributing! Here's how to get started.
 
 ## Development Setup
 
-1. **Java 17+** and **Maven 3.5.4+** are required
+1. **Java 17+** and **Maven 3.5.4+** are required. CI verifies Java 17 and Java 21.
 2. Clone the repo and build:
 
 ```bash
@@ -13,7 +13,8 @@ cd realitycheck
 mvn clean verify
 ```
 
-All 1,800+ tests should pass. JaCoCo enforces a minimum 95% line coverage per module.
+All 1,900+ tests should pass. JaCoCo enforces a minimum 95% line coverage per module.
+This is a line-coverage gate, not a branch-coverage or mutation-testing guarantee.
 
 ## Making Changes
 
@@ -46,8 +47,10 @@ void myMethod_fails() {
 2. Add `checkThat(Foo)` to `Reality.java`
 3. Add `assertThat(Foo)` to `RealityAssertions.java`
 4. Add `checkThat(Foo)` and `assertThat(Foo)` to `SoftChecks.java`
-5. Create `FooCheckTest.java` with pass/fail tests for every method
-6. Update `README.md` with usage examples
+5. Add the custom-message route to `StatementBuilder.java`
+6. Create `FooCheckTest.java` with pass/fail tests for every method and a
+   `StatementBuilderTest` case that verifies routing and failure-message propagation
+7. Update `README.md` with usage examples
 
 ### Commit Messages
 
@@ -60,7 +63,7 @@ void myMethod_fails() {
 1. Fork the repository
 2. Create a feature branch from `master`
 3. Make your changes with tests
-4. Run `mvn clean verify` — all tests must pass, coverage must meet threshold
+4. Run `mvn clean verify` — all tests must pass and coverage must meet threshold
 5. Open a PR against `master`
 6. Describe what your change does and why
 
