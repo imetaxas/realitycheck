@@ -26,13 +26,13 @@ Assertion missing? [Open an issue](https://github.com/imetaxas/realitycheck/issu
 <dependency>
     <groupId>io.github.imetaxas</groupId>
     <artifactId>realitycheck-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>io.github.imetaxas</groupId>
     <artifactId>realitycheck-json</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -40,15 +40,15 @@ Assertion missing? [Open an issue](https://github.com/imetaxas/realitycheck/issu
 **Gradle (Kotlin DSL):**
 
 ```kotlin
-testImplementation("io.github.imetaxas:realitycheck-core:1.0.0")
-testImplementation("io.github.imetaxas:realitycheck-json:1.0.0")
+testImplementation("io.github.imetaxas:realitycheck-core:1.1.0")
+testImplementation("io.github.imetaxas:realitycheck-json:1.1.0")
 ```
 
 **Gradle (Groovy DSL):**
 
 ```groovy
-testImplementation 'io.github.imetaxas:realitycheck-core:1.0.0'
-testImplementation 'io.github.imetaxas:realitycheck-json:1.0.0'
+testImplementation 'io.github.imetaxas:realitycheck-core:1.1.0'
+testImplementation 'io.github.imetaxas:realitycheck-json:1.1.0'
 ```
 
 > Using multiple modules? See the [BOM setup](docs/USAGE.md#bom-setup) to manage versions in one place.
