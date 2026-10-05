@@ -124,6 +124,7 @@ assertThat(payment, MoneyCheck::new).hasCurrency("USD");
 | `realitycheck-xml` | `assertThatXml(str).hasXPath("//user/name")` |
 | `realitycheck-yaml` | `assertThatYaml(str).pathEquals("server.port", 8080)` |
 | `realitycheck-snapshot` | `assertThatSnapshot(obj).matchesSnapshot("test","key")` |
+| `realitycheck-spring` | `assertThatContext(ctx).hasSingleBean(MyService.class).bean(MyService.class).hasBean("name").hasNotFailed()` |
 | `realitycheck-junit5` | `@WithSoftChecks` — JUnit 5 parameter injection |
 | `realitycheck-bom` | Version alignment for multi-module use |
 

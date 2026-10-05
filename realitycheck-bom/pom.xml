@@ -47,6 +47,11 @@
                 <artifactId>realitycheck-junit5</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.github.imetaxas</groupId>
+                <artifactId>realitycheck-spring</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

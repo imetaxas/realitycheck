@@ -66,6 +66,11 @@ class RealityAssertionsTest {
     }
 
     @Test
+    void assertThat_float() {
+        assertDoesNotThrow(() -> RealityAssertions.assertThat(0.5f).isEqualTo(0.5f));
+    }
+
+    @Test
     void assertThat_boolean() {
         assertDoesNotThrow(() -> assertThat(true).isTrue());
     }
@@ -113,6 +118,21 @@ class RealityAssertionsTest {
     @Test
     void assertThat_byteArray() {
         assertDoesNotThrow(() -> assertThat(new byte[]{1, 2}).isNotEmpty());
+    }
+
+    @Test
+    void assertThat_floatArray() {
+        assertDoesNotThrow(() ->
+                RealityAssertions.assertThat(new float[] {0.5f}).contains(0.5f));
+    }
+
+    @Test
+    void assertThat_enumAndObjectNaturalOverloads() {
+        assertDoesNotThrow(() ->
+                RealityAssertions.assertThat(Thread.State.RUNNABLE).hasName("RUNNABLE"));
+        assertDoesNotThrow(() ->
+                RealityAssertions.assertThat(new Email("ada@example.com"))
+                        .hasToString("Email[address=ada@example.com]"));
     }
 
     @Test

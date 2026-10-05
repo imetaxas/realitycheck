@@ -60,9 +60,7 @@ public final class XmlCheck extends AbstractCheck<XmlCheck, String> {
         Document doc = parseDocument();
         if (doc == null) return self();
         try {
-            var xpath = XPATH_FACTORY.newXPath();
-            String result = (String) xpath.evaluate(expression, doc, XPathConstants.STRING);
-            if (result == null || result.isEmpty()) {
+            if (!xpathMatches(doc, expression)) {
                 failureHandler().fail("expected XPath <%s> to match but it returned no result",
                         expression);
             }
@@ -95,16 +93,45 @@ public final class XmlCheck extends AbstractCheck<XmlCheck, String> {
         if (doc == null) return self();
         try {
             var xpath = XPATH_FACTORY.newXPath();
-            var nodeList = (org.w3c.dom.NodeList) xpath.evaluate(expression, doc, XPathConstants.NODESET);
-            if (nodeList.getLength() > 0) {
-                failureHandler().fail("expected XPath <%s> to match nothing but found <%d> nodes",
-                        expression, nodeList.getLength());
+            try {
+                var nodeList = (org.w3c.dom.NodeList) xpath.evaluate(expression, doc, XPathConstants.NODESET);
+                if (nodeList.getLength() > 0) {
+                    failureHandler().fail("expected XPath <%s> to match nothing but found <%d> nodes",
+                            expression, nodeList.getLength());
+                }
+            } catch (XPathExpressionException nodesetFailed) {
+                try {
+                    if (Boolean.TRUE.equals(xpath.evaluate(expression, doc, XPathConstants.BOOLEAN))) {
+                        failureHandler().fail("expected XPath <%s> to match nothing but it matched",
+                                expression);
+                    }
+                } catch (XPathExpressionException ignored) {
+                    throw nodesetFailed;
+                }
             }
         } catch (XPathExpressionException e) {
             failureHandler().fail("invalid XPath expression <%s>: %s",
                     expression, e.getMessage());
         }
         return self();
+    }
+
+    /**
+     * Node/attribute paths use {@code NODESET}. Function and boolean paths ({@code count(...)},
+     * {@code string(...)}, {@code boolean(...)}) fall back to XPath boolean conversion.
+     */
+    private boolean xpathMatches(Document doc, String expression) throws XPathExpressionException {
+        var xpath = XPATH_FACTORY.newXPath();
+        try {
+            var nodes = (org.w3c.dom.NodeList) xpath.evaluate(expression, doc, XPathConstants.NODESET);
+            return nodes.getLength() > 0;
+        } catch (XPathExpressionException nodesetFailed) {
+            try {
+                return Boolean.TRUE.equals(xpath.evaluate(expression, doc, XPathConstants.BOOLEAN));
+            } catch (XPathExpressionException ignored) {
+                throw nodesetFailed;
+            }
+        }
     }
 
     public XmlCheck hasRootElement(String expectedName) {

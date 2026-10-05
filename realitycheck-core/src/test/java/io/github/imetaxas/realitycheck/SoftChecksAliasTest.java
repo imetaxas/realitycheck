@@ -2,6 +2,7 @@ package io.github.imetaxas.realitycheck;
 
 import static io.github.imetaxas.realitycheck.Reality.checkAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
@@ -54,6 +55,18 @@ class SoftChecksAliasTest {
     static final class Triangle implements Shape {}
 
     @Test
+    void failureHandler_isSharedAcrossChecks() {
+        assertDoesNotThrow(
+                () ->
+                        checkAll(
+                                s -> {
+                                    s.checkThat("a").isNotEmpty();
+                                    s.checkThat("b").isNotEmpty();
+                                    assertTrue(s.failureHandler() == s.checkThat("c").failureHandler());
+                                }));
+    }
+
+    @Test
     void assertThat_string() {
         assertDoesNotThrow(() -> checkAll(s -> s.assertThat("hello").isNotEmpty()));
     }
@@ -74,8 +87,34 @@ class SoftChecksAliasTest {
     }
 
     @Test
+    void assertThat_float() {
+        assertDoesNotThrow(() -> checkAll(s -> s.assertThat(0.5f).isEqualTo(0.5f)));
+    }
+
+    @Test
     void assertThat_boolean() {
         assertDoesNotThrow(() -> checkAll(s -> s.assertThat(true).isTrue()));
+    }
+
+    @Test
+    void assertThat_floatArray() {
+        assertDoesNotThrow(() ->
+                checkAll(s -> s.assertThat(new float[] {0.5f}).contains(0.5f)));
+    }
+
+    @Test
+    void assertThat_enumAndObjectNaturalOverloads() {
+        assertDoesNotThrow(() -> checkAll(s -> {
+            s.assertThat(Thread.State.RUNNABLE).hasName("RUNNABLE");
+            s.assertThat(new Email("ada@example.com")).hasToString("Email[address=ada@example.com]");
+        }));
+    }
+
+    @Test
+    void assertThatThrownBy_routesThroughSoftHandler() {
+        assertDoesNotThrow(() ->
+                checkAll(s -> s.assertThatThrownBy(() -> { throw new IllegalStateException("boom"); })
+                        .isInstanceOf(IllegalStateException.class)));
     }
 
     @Test

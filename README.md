@@ -29,18 +29,26 @@ Assertion missing? [Open an issue](https://github.com/imetaxas/realitycheck/issu
     <version>1.0.0</version>
     <scope>test</scope>
 </dependency>
+<dependency>
+    <groupId>io.github.imetaxas</groupId>
+    <artifactId>realitycheck-json</artifactId>
+    <version>1.0.0</version>
+    <scope>test</scope>
+</dependency>
 ```
 
 **Gradle (Kotlin DSL):**
 
 ```kotlin
 testImplementation("io.github.imetaxas:realitycheck-core:1.0.0")
+testImplementation("io.github.imetaxas:realitycheck-json:1.0.0")
 ```
 
 **Gradle (Groovy DSL):**
 
 ```groovy
 testImplementation 'io.github.imetaxas:realitycheck-core:1.0.0'
+testImplementation 'io.github.imetaxas:realitycheck-json:1.0.0'
 ```
 
 > Using multiple modules? See the [BOM setup](docs/USAGE.md#bom-setup) to manage versions in one place.
@@ -146,14 +154,17 @@ assertThatSnapshot(response).matchesSnapshot(...);       // requires realitychec
 | XML | `realitycheck-xml` | XPath assertions, XXE-safe parsing | JDK only |
 | YAML | `realitycheck-yaml` | YAML dot-path queries | SnakeYAML |
 | Snapshot | `realitycheck-snapshot` | Golden-file snapshot testing | None |
+| Spring | `realitycheck-spring` | `ApplicationContext` assertions (`hasSingleBean`, `hasBean`, `doesNotHaveBean`, `bean`, `hasFailed` / `hasNotFailed`, `failure`) | Spring Context (provided) |
 | JUnit 5 | `realitycheck-junit5` | `@WithSoftChecks` parameter injection | JUnit Jupiter API |
 | BOM | `realitycheck-bom` | Version alignment for multi-module use | — |
 
 ---
 
-## Philosophy: No Reflection. No Surprises.
+## Philosophy: No Recursive Reflection. No Surprises.
 
-Reality Check uses explicit, user-defined assertions instead of reflective object traversal. Custom checks are **3 lines** with Java records:
+Reality Check uses explicit, user-defined assertions instead of recursive reflective object
+traversal. The opt-in `hasSameFieldsAs` method performs a guarded shallow comparison; custom checks
+remain the preferred approach and are **3 lines** with Java records:
 
 ```java
 record MoneyCheck(Money actual, FailureHandler failureHandler)
@@ -182,7 +193,7 @@ See [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md) for the full rationale.
 | [MIGRATION.md](MIGRATION.md) | Step-by-step migration from AssertJ and Google Truth |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | What shipped in v1.0 and what's coming next |
 | [CHANGELOG.md](CHANGELOG.md) | Release history |
-| [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md) | Why no reflection, soft assertion design, extension model |
+| [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md) | Why recursive reflection is avoided, soft assertion design, extension model |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Development setup, coding standards, PR process |
 | [Javadoc](https://imetaxas.github.io/realitycheck/) | Full API reference |
 
@@ -198,6 +209,9 @@ See [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md) for the full rationale.
 ```bash
 mvn clean verify
 ```
+
+The enforced threshold is 95% **line** coverage per module. It is not a branch-coverage
+or mutation-testing guarantee.
 
 ## License
 

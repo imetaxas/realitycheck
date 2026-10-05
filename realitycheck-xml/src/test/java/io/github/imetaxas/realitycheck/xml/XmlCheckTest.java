@@ -54,6 +54,35 @@ class XmlCheckTest {
     }
 
     @Test
+    void hasXPath_countFunction_passesWhenNodesExist() {
+        assertDoesNotThrow(() -> checkThatXml(SAMPLE).hasXPath("count(//user) > 0"));
+    }
+
+    @Test
+    void hasXPath_countFunction_failsWhenZero() {
+        var e = assertThrows(AssertionError.class,
+                () -> checkThatXml(SAMPLE).hasXPath("count(//phone) > 0"));
+        assertTrue(e.getMessage().contains("no result"));
+    }
+
+    @Test
+    void doesNotHaveXPath_countFunction_passesWhenZero() {
+        assertDoesNotThrow(() -> checkThatXml(SAMPLE).doesNotHaveXPath("count(//phone) > 0"));
+    }
+
+    @Test
+    void doesNotHaveXPath_countFunction_failsWhenTrue() {
+        var e = assertThrows(AssertionError.class,
+                () -> checkThatXml(SAMPLE).doesNotHaveXPath("count(//user) > 0"));
+        assertTrue(e.getMessage().contains("it matched"));
+    }
+
+    @Test
+    void hasXPath_booleanFunction_passes() {
+        assertDoesNotThrow(() -> checkThatXml(SAMPLE).hasXPath("boolean(//user)"));
+    }
+
+    @Test
     void xpathEquals_passes() {
         assertDoesNotThrow(() -> checkThatXml(SAMPLE).xpathEquals("//user[1]/name", "Alice"));
     }
@@ -147,6 +176,11 @@ class XmlCheckTest {
     void hasXPath_emptyElementReturnsEmptyString_fails() {
         assertThrows(AssertionError.class,
                 () -> checkThatXml(CATALOG_SAMPLE).hasXPath("//empty/text()"));
+    }
+
+    @Test
+    void hasXPath_emptyElementNode_passes() {
+        assertDoesNotThrow(() -> checkThatXml(CATALOG_SAMPLE).hasXPath("//empty"));
     }
 
     @Test

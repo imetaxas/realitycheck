@@ -2,10 +2,10 @@ package io.github.imetaxas.realitycheck;
 
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,84 +16,64 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * whenever a new type overload is added.
  *
  * <ul>
- *   <li>{@link Reality} and {@link SoftChecks} — {@code checkThat*} names must match.
- *   <li>{@link Reality} and {@link RealityAssertions} — {@code assertThat*} names must match.
- *   <li>{@link Reality} and {@link StatementBuilder} — every first-parameter type accepted by
- *       {@code Reality.checkThat*(T)} must also appear in some {@code StatementBuilder.that*(T)}
- *       overload (by exact parameter type), with the exception of {@link ThrowingCallable} which
- *       is intentionally absent from StatementBuilder.
+ *   <li>{@link Reality} and {@link SoftChecks} — complete {@code checkThat*} signatures must match.
+ *   <li>{@link Reality} and {@link RealityAssertions} — complete {@code checkThat*}/{@code
+ *       assertThat*} signatures must match.
+ *   <li>{@link Reality} and {@link StatementBuilder} — complete {@code checkThat*}/{@code that*}
+ *       signatures must match, except {@link Reality#checkThatThrownBy(ThrowingCallable)}.
  * </ul>
  */
 class EntryPointDriftTest {
 
     @Test
     void softChecks_exposesAllCheckMethodsFromReality() {
-        // checkAll/checkWithMessage/checkWithContext are static factory utilities on Reality,
-        // intentionally absent from SoftChecks (SoftChecks itself IS the soft context).
-        Set<String> realityCheckMethods = methodsStartingWith(Reality.class, "checkThat");
-        Set<String> softCheckMethods = methodsStartingWith(SoftChecks.class, "checkThat");
-
-        Set<String> missing = new HashSet<>(realityCheckMethods);
-        missing.removeAll(softCheckMethods);
-
-        assertTrue(missing.isEmpty(),
-                "SoftChecks is missing check methods from Reality: " + missing);
+        assertNoMissingSignatures(
+                signatures(Reality.class, "checkThat", "checkThat"),
+                signatures(SoftChecks.class, "checkThat", "checkThat"),
+                "SoftChecks");
     }
 
     @Test
     void realityAssertions_exposesAllAssertThatMethodsFromReality() {
-        Set<String> realityAssertMethods = methodsStartingWith(Reality.class, "assertThat");
-        Set<String> aliasAssertMethods = methodsStartingWith(RealityAssertions.class, "assertThat");
-
-        Set<String> missing = new HashSet<>(realityAssertMethods);
-        missing.removeAll(aliasAssertMethods);
-
-        assertTrue(missing.isEmpty(),
-                "RealityAssertions is missing assertThat methods from Reality: " + missing);
+        assertNoMissingSignatures(
+                signatures(Reality.class, "checkThat", "assertThat"),
+                signatures(RealityAssertions.class, "assertThat", "assertThat"),
+                "RealityAssertions");
     }
 
-    /**
-     * For every first-parameter type accepted by {@code Reality.checkThat*(type)},
-     * {@link StatementBuilder} must have a matching {@code that*(type)} overload.
-     * This catches new primitive overloads (e.g. {@code float}, {@code float[]}) that
-     * were added to Reality but forgotten in StatementBuilder.
-     *
-     * <p>{@link ThrowingCallable} is excluded: {@code Reality.checkThatThrownBy(callable)}
-     * has no {@code StatementBuilder.that(callable)} equivalent by design.
-     * {@link CheckFactory} is also excluded as it is always paired with a second parameter.
-     */
     @Test
-    void statementBuilder_coversAllRealityCheckThatParameterTypes() {
-        Set<Class<?>> realityParamTypes = firstParamTypesOf(Reality.class, "checkThat");
-        realityParamTypes.remove(ThrowingCallable.class);
-        realityParamTypes.remove(CheckFactory.class);
+    void statementBuilder_exposesAllSupportedRealitySignatures() {
+        Set<Signature> expected = signatures(Reality.class, "checkThat", "that");
+        expected.removeIf(signature -> signature.name().equals("thatThrownBy"));
 
-        Set<Class<?>> builderParamTypes = firstParamTypesOf(StatementBuilder.class, "that");
-
-        Set<Class<?>> missing = new HashSet<>(realityParamTypes);
-        missing.removeAll(builderParamTypes);
-
-        assertTrue(missing.isEmpty(),
-                "StatementBuilder is missing that() overloads for parameter types: " + missing
-                + "\nAdd the missing overloads to StatementBuilder.");
+        assertNoMissingSignatures(
+                expected,
+                signatures(StatementBuilder.class, "that", "that"),
+                "StatementBuilder");
     }
 
     // ── helpers ──────────────────────────────────────────────────────────────
 
-    private static Set<String> methodsStartingWith(Class<?> cls, String... prefixes) {
-        return Arrays.stream(cls.getDeclaredMethods())
+    private static Set<Signature> signatures(
+            Class<?> type, String sourcePrefix, String normalizedPrefix) {
+        return Arrays.stream(type.getDeclaredMethods())
                 .filter(m -> Modifier.isPublic(m.getModifiers()))
-                .map(Method::getName)
-                .filter(name -> Arrays.stream(prefixes).anyMatch(name::startsWith))
-                .collect(Collectors.toSet());
-    }
-
-    private static Set<Class<?>> firstParamTypesOf(Class<?> cls, String... prefixes) {
-        return Arrays.stream(cls.getDeclaredMethods())
-                .filter(m -> Modifier.isPublic(m.getModifiers()))
-                .filter(m -> Arrays.stream(prefixes).anyMatch(m.getName()::startsWith))
-                .filter(m -> m.getParameterCount() >= 1)
-                .map(m -> m.getParameterTypes()[0])
+                .filter(method -> method.getName().startsWith(sourcePrefix))
+                .map(method -> new Signature(
+                        normalizedPrefix + method.getName().substring(sourcePrefix.length()),
+                        List.of(method.getParameterTypes()),
+                        method.getReturnType()))
                 .collect(Collectors.toCollection(HashSet::new));
     }
+
+    private static void assertNoMissingSignatures(
+            Set<Signature> expected, Set<Signature> actual, String entryPoint) {
+        Set<Signature> missing = new HashSet<>(expected);
+        missing.removeAll(actual);
+        assertTrue(
+                missing.isEmpty(),
+                () -> entryPoint + " is missing entry-point signatures: " + missing);
+    }
+
+    private record Signature(String name, List<Class<?>> parameterTypes, Class<?> returnType) {}
 }

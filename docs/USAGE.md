@@ -288,7 +288,7 @@ assertThat(Duration.ofSeconds(30)).isPositive().isGreaterThan(Duration.ofSeconds
 assertThat(path).exists().isRegularFile().hasExtension("json");
 assertThat(path).hasContent("expected content");
 assertThat(dir).isDirectory().isNonEmptyDirectory();
-assertThat(file).hasSizeGreaterThan(0).hasContentMatchingRegex(".*error.*");
+assertThat(file).hasSize(expectedBytes).hasContent(expectedContent);
 ```
 
 ### File content diff on failure
@@ -312,8 +312,7 @@ assertThat(URI.create("https://api.example.com/v2?page=1"))
     .hasScheme("https")
     .hasHost("api.example.com")
     .hasPath("/v2")
-    .hasQueryParam("page")
-    .queryParam("page").isEqualTo("1");
+    .hasQueryParam("page", "1");
 ```
 
 ---
@@ -326,7 +325,7 @@ assertThatThrownBy(() -> Integer.parseInt("oops"))
     .hasMessageContaining("oops");
 
 // Exact type (no subclasses)
-assertThatThrownBy(() -> risky()).throwsExactly(IllegalStateException.class);
+assertThatCode(() -> risky()).throwsExactly(IllegalStateException.class);
 
 // Cause chain traversal
 assertThatThrownBy(() -> dao.save(entity))
@@ -346,10 +345,14 @@ assertThatThrownBy(() -> cleanup())
 ## Execution Timing
 
 ```java
-assertThatExecution(() -> myService.process())
+assertThatCode(() -> myService.process())
     .completesWithin(Duration.ofMillis(200))
-    .isLongerThan(Duration.ofMillis(10));
+    .measuredTime().isGreaterThan(Duration.ofMillis(10));
 ```
+
+`completesWithin` measures elapsed time after the callable returns; it does not interrupt or
+terminate a callable that hangs. Use the test framework's timeout support when execution must be
+bounded.
 
 ---
 
@@ -396,8 +399,8 @@ assertThat(status).isNoneOf(Status.DELETED, Status.ARCHIVED);
 ## Arrays
 
 ```java
-assertThat(new int[]{1, 2, 3}).hasSize(3).contains(2);
-assertThat(new double[]{1.1, 2.2}).hasSize(2).contains(1.1);
+assertThat(new int[]{1, 2, 3}).hasLength(3).contains(2);
+assertThat(new double[]{1.1, 2.2}).hasLength(2).contains(1.1);
 assertThat(new long[]{10L, 20L}).isSorted();
 
 // float[] — new in v1.0
@@ -406,7 +409,7 @@ assertThat(weights).allMatch(w -> w >= 0.0 && w <= 1.0, "probability range");
 assertThat(weights).anyMatch(w -> w > 0.8);        // label is optional
 
 // Byte arrays
-assertThat(bytes).hasSize(16).toHex().startsWith("FF");
+assertThat(bytes).hasLength(16).toHex().startsWith("FF");
 assertThat(bytes).toBase64().isEqualTo(expectedBase64);
 ```
 
@@ -503,8 +506,8 @@ RFC 4180-compliant parser — handles quoted fields, embedded commas, embedded n
 ```java
 assertThatCsv(csvContent)
     .hasRowCount(5)
-    .row(0).hasColumn("name", "Alice")
-    .row(1).hasColumn("age", "30");
+    .headerEquals("name", "age")
+    .containsRow("Alice", "30");
 ```
 
 ### XML (`realitycheck-xml`)
@@ -533,6 +536,52 @@ assertThatYaml(config)
     .pathListHasSize("features", 3);
 ```
 
+### Spring (`realitycheck-spring`)
+
+Drop-in replacements for AssertJ's `ApplicationContextAssert` methods used in
+auto-configuration tests. The entry point is `assertThatContext` so it can be
+imported next to `RealityAssertions.assertThat` without a clash.
+
+```java
+import static io.github.imetaxas.realitycheck.spring.SpringReality.assertThatContext;
+
+assertThatContext(context).hasSingleBean(MyService.class);
+assertThatContext(context).doesNotHaveBean(LegacyService.class);
+assertThatContext(context).doesNotHaveBean("legacyService");
+assertThatContext(context).hasBean("myService");
+assertThatContext(context).bean(MyService.class).isInstanceOf(MyServiceImpl.class);
+assertThatContext(context).hasNotFailed();
+assertThatContext(failedContext).hasFailed();
+assertThatContext(failedContext).failure().isInstanceOf(BeanCreationException.class);
+```
+
+`hasFailed()`, `hasNotFailed()`, and `failure()` prefer `getStartupFailure()` when
+the context exposes it (Spring Boot `ApplicationContextRunner`). Otherwise a
+`ConfigurableApplicationContext` is treated as failed when `isActive()` is false.
+`bean(Class)` uses `getBean(Class)` when more than one bean exists, so `@Primary` is
+honoured. `hasSingleBean` still requires exactly one bean of that type.
+
+`spring-context` is `provided`: your app/test classpath must already include Spring.
+Use the BOM so `realitycheck-spring` and `realitycheck-core` stay on the same version.
+
+Soft assertions:
+
+```java
+Reality.checkAll(softly -> {
+    SpringReality.checkThatContext(context, softly).hasSingleBean(MyService.class);
+    softly.checkThat(name).isNotEmpty();
+});
+```
+
+On failure:
+
+```
+expected a single bean of type <com.example.MyService> but found 2: [svcA, svcB]
+expected no bean of type <com.example.LegacyService> but found 1: [legacy]
+expected a bean named <myService>
+expected the ApplicationContext to have failed to start
+```
+
 ### Snapshot Testing (`realitycheck-snapshot`)
 
 ```java
@@ -544,6 +593,7 @@ assertThatSnapshot(apiResponse)
 // First run: creates the snapshot file
 // Subsequent runs: compares against saved snapshot with diff on failure
 // Update snapshots: mvn test -Drealitycheck.update-snapshots=true
+// CI: add -Drealitycheck.strict-ci=true so missing snapshots fail instead of being created
 ```
 
 ---

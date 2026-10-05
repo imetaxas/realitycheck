@@ -13,6 +13,15 @@ import org.junit.jupiter.api.Test;
 
 class ThrowableCheckTest {
 
+    @Test
+    void of_sharesFailureHandler() {
+        FailureHandler handler = new FailureHandler();
+        IllegalStateException boom = new IllegalStateException("boom");
+        ThrowableCheck check = ThrowableCheck.of(boom, handler);
+        assertTrue(check.failureHandler() == handler);
+        assertDoesNotThrow(() -> check.hasMessage("boom"));
+    }
+
     @Nested
     class NullMessage {
         // hasMessageStartingWith / hasMessageMatching with `msg != null && ...`

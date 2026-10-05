@@ -2,9 +2,10 @@
 
 This document explains the key design decisions behind Reality Check and the trade-offs involved.
 
-## 1. No Reflective Object Comparison
+## 1. No Recursive Reflective Object Comparison
 
-Reality Check does not perform reflective object comparison. Libraries that recurse into your objects via `setAccessible(true)` introduce a class of subtle test failures:
+Reality Check does not perform recursive reflective object comparison. Libraries that recurse into
+object graphs via `setAccessible(true)` introduce a class of subtle test failures:
 
 - **Coverage tools** inject synthetic fields (`$jacocoData`) that pollute comparisons
 - **Java module system** blocks `setAccessible` without `--add-opens` flags
@@ -40,7 +41,11 @@ assertThat(person.getName()).isEqualTo("Yani");
 assertThat(person.getAge()).isBetween(18, 65);
 ```
 
-Both approaches produce clear, deterministic failure messages, work across all JVM configurations, and never touch your object's internals via reflection.
+Both approaches produce clear, deterministic failure messages and never touch your object's
+internals via reflection. For migration cases, `ObjectCheck.hasSameFieldsAs` is an explicit,
+shallow-reflection escape hatch. It skips synthetic/static fields and rejects proxy and
+different-runtime-type comparisons; it is not recursive and may be restricted by the Java module
+system.
 
 ## 2. Simple Soft Assertions (No Proxies)
 
@@ -63,7 +68,7 @@ The `realitycheck-core` module has zero runtime dependencies. This avoids:
 - Android compatibility issues from annotation processing
 - Unnecessary classpath bloat for a test-only library
 
-Format-specific modules (`realitycheck-json`, `realitycheck-yaml`) depend on their respective parsers (Jackson, SnakeYAML), but these are isolated — you only pull in what you use.
+Format-specific modules (`realitycheck-json`, `realitycheck-yaml`, `realitycheck-spring`) depend on their respective libraries (Jackson, SnakeYAML, Spring Context), but these are isolated — you only pull in what you use. Spring bean assertions live in `realitycheck-spring` rather than core so `realitycheck-core` stays dependency-free. `spring-context` is `provided` so the consuming app's Spring version wins. Startup-failure checks duck-type `getStartupFailure()` (Boot `ApplicationContextRunner`) and otherwise use `ConfigurableApplicationContext.isActive()`. Optional modules construct `ObjectCheck`/`ThrowableCheck` via `of(actual, handler)` so they share soft-assertion handlers without depending on package-private constructors.
 
 ## 5. Java Records for Custom Extensions
 
@@ -78,7 +83,8 @@ Using Java records as the extension mechanism (instead of abstract class inherit
 
 ### Q: Why doesn't Reality Check have `usingRecursiveComparison`?
 
-See section 1 above. The trade-off is explicit: you write 3 lines of check code per type, and in return you get deterministic, reflection-free assertions that work across all JVM configurations.
+See section 1 above. The trade-off is explicit: use a small custom check for deterministic,
+reflection-free assertions, or opt into the limited shallow `hasSameFieldsAs` comparison.
 
 ### Q: Does Reality Check work with Kotlin?
 

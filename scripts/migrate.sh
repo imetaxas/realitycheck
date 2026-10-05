@@ -2,7 +2,7 @@
 # migrate.sh — Migrate test imports from AssertJ or Google Truth to Reality Check.
 #
 # Usage:
-#   ./scripts/migrate.sh [directory]    # defaults to src/test
+#   bash scripts/migrate.sh [directory]    # defaults to src/test
 #
 # What it does:
 #   1. Replaces static import of org.assertj.core.api.Assertions.* → RealityAssertions.*
@@ -19,7 +19,7 @@
 set -euo pipefail
 
 TARGET="${1:-src/test}"
-RC_IMPORT="com.yanimetaxas.realitycheck.RealityAssertions"
+RC_IMPORT="io.github.imetaxas.realitycheck.RealityAssertions"
 
 if [ ! -d "$TARGET" ]; then
   echo "Error: directory '$TARGET' not found"
@@ -51,7 +51,7 @@ find "$TARGET" -name '*.java' -type f | while read -r file; do
   # AssertJ SoftAssertions
   if grep -q 'org\.assertj\.core\.api\.SoftAssertions' "$file" 2>/dev/null; then
     sed -i.bak \
-      's|import org\.assertj\.core\.api\.SoftAssertions;|import static com.yanimetaxas.realitycheck.Reality.checkAll;|g' \
+      's|import org\.assertj\.core\.api\.SoftAssertions;|import static io.github.imetaxas.realitycheck.Reality.checkAll;|g' \
       "$file"
     # Flag for manual review
     sed -i.bak \

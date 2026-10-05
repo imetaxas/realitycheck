@@ -55,6 +55,13 @@ import static io.github.imetaxas.realitycheck.RealityAssertions.*; // assertThat
 | `AbstractAssert` subclass (~30 lines) | `record MyCheck(...) implements Check` (3 lines) | Records as checks |
 | `Condition` | `satisfies(Predicate, String)` | Predicate + description |
 | `assertThat(list).allMatch(pred)` | `assertThat(list).allMatch(pred)` | **Identical** — label is now optional |
+| `assertThat(ctx).hasSingleBean(T.class)` | `assertThatContext(ctx).hasSingleBean(T.class)` | `realitycheck-spring`; distinct name so it coexists with `assertThat` |
+| `assertThat(ctx).doesNotHaveBean(T.class)` | `assertThatContext(ctx).doesNotHaveBean(T.class)` | Same module |
+| `assertThat(ctx).hasBean("name")` | `assertThatContext(ctx).hasBean("name")` | Same module |
+| `assertThat(ctx).doesNotHaveBean("name")` | `assertThatContext(ctx).doesNotHaveBean("name")` | Same module |
+| `assertThat(ctx).getBean(T.class)` | `assertThatContext(ctx).bean(T.class)` | Returns `ObjectCheck<T>`; honours `@Primary` when multiple beans exist |
+| `assertThat(ctx).hasFailed()` / `hasNotFailed()` | `assertThatContext(ctx).hasFailed()` / `hasNotFailed()` | Uses `getStartupFailure()` when present |
+| `assertThat(ctx).getFailure()` | `assertThatContext(ctx).failure()` | Returns `ThrowableCheck` |
 
 ### 4. Soft assertions
 

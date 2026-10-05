@@ -24,6 +24,15 @@ public final class ThrowableCheck extends AbstractCheck<ThrowableCheck, Throwabl
         super(actual, handler);
     }
 
+    /**
+     * Creates a check that shares {@code handler} with the caller. Used by optional modules
+     * ({@code realitycheck-spring}) so {@code .as()} and soft assertions keep working.
+     * Requires the same {@code realitycheck-core} version as the calling module.
+     */
+    public static ThrowableCheck of(Throwable actual, FailureHandler handler) {
+        return new ThrowableCheck(actual, handler);
+    }
+
     public ThrowableCheck isExactlyInstanceOf(Class<? extends Throwable> type) {
         if (actual() == null) return self();
         return failureHandler().check(self(), actual().getClass().equals(type),

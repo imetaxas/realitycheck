@@ -20,6 +20,7 @@
         <module>realitycheck-yaml</module>
         <module>realitycheck-snapshot</module>
         <module>realitycheck-junit5</module>
+        <module>realitycheck-spring</module>
         <module>realitycheck-bom</module>
     </modules>
 

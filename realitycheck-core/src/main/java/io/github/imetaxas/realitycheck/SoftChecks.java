@@ -258,6 +258,21 @@ public final class SoftChecks {
     public <C extends Check<C, T>, T> C assertThat(T actual, CheckFactory<C, T> factory) { return checkThat(actual, factory); }
 
     /**
+     * The handler used by this soft block. Pass it to optional modules so their checks
+     * collect into the same {@link #assertAll()} report:
+     *
+     * <pre>{@code
+     * Reality.checkAll(softly -> {
+     *     softly.checkThat(name).isNotEmpty();
+     *     SpringReality.checkThatContext(context, softly).hasSingleBean(Foo.class);
+     * });
+     * }</pre>
+     */
+    public FailureHandler failureHandler() {
+        return handler;
+    }
+
+    /**
      * Reports all collected failures. Called automatically by {@code Reality.checkAll()}.
      */
     public void assertAll() {

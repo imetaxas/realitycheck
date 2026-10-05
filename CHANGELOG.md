@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Spring ApplicationContext Assertions
+- `realitycheck-spring` — optional module (`spring-context` is `provided`) with
+  `assertThatContext(ApplicationContext)` covering the AssertJ
+  `ApplicationContextAssert` v1 surface: `hasSingleBean(Class)`,
+  `doesNotHaveBean(Class|String)`, `hasBean(String)`, `bean(Class)` →
+  `ObjectCheck` (honours `@Primary` via `getBean(Class)` when several beans exist),
+  `hasFailed()` / `hasNotFailed()`, and `failure()` → `ThrowableCheck`.
+  Named `assertThatContext` so it can sit next to `RealityAssertions.assertThat`
+  without a static-import clash. Startup-failure checks prefer `getStartupFailure()`
+  (Spring Boot `ApplicationContextRunner`); otherwise a `ConfigurableApplicationContext`
+  is failed when `isActive()` is false. Soft assertions:
+  `SpringReality.checkThatContext(ctx, softly)`. Must be used with the same
+  `realitycheck-core` version (BOM). `ObjectCheck.of` / `ThrowableCheck.of` share
+  the failure handler with optional modules.
+
 #### Assertion Labels
 - `.as(String description)` and `.withDescription(String)` on every check class — prepends a `[label]` to all subsequent failure messages, mirroring AssertJ's `.as()`. Works with soft assertions to make per-field failures easy to triage.
 
